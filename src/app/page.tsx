@@ -16,10 +16,10 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section id="home" className="w-full min-h-[85vh] flex flex-col items-center justify-center relative px-6 text-center">
+      <section id="home" className="w-full pt-32 pb-24 flex flex-col items-center relative px-6 text-center">
         <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[var(--color-scout-blue)] rounded-full blur-[150px] opacity-20 pointer-events-none" />
 
-        <div className="z-10 flex flex-col items-center mt-28 md:mt-40">
+        <div className="z-10 flex flex-col items-center">
           <div className="inline-block mb-6 px-4 py-1.5 rounded-full bg-[var(--color-scout-blue)]/20 border border-[var(--color-scout-blue)]/30 text-[var(--color-scout-blue-light)] text-sm font-bold backdrop-blur-sm">
             أعرق العشائر الكشفية الجامعية
           </div>
@@ -31,11 +31,23 @@ export default function Home() {
           <p className="text-lg md:text-2xl text-gray-300 max-w-3xl font-medium leading-relaxed mb-12">
             منصة متكاملة لأرشيف العشيرة، التدرج القيادي، الإنجازات، وتوثيق بطولات الجوالة على مدار السنين.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-
-            <Link href="/join" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg transition-all backdrop-blur-md">
-              انضم إلينا الآن
-            </Link>
+          <div className="flex flex-col sm:flex-row gap-4 mt-2">
+            <div className="relative inline-block group">
+              {/* Pulsing vibrant outer glow */}
+              <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-600 via-cyan-400 to-indigo-600 rounded-full blur-md opacity-60 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
+              
+              <Link href="/join" className="relative flex items-center justify-center gap-3 bg-[#081221] px-12 py-5 rounded-full text-white font-black text-2xl overflow-hidden transition-all duration-300 transform group-hover:scale-[1.03] border border-cyan-500/30">
+                {/* Internal subtle gradient/shine */}
+                <span className="absolute inset-0 w-full h-full opacity-30 bg-gradient-to-b from-white/10 via-transparent to-black/50"></span>
+                
+                {/* Expanding white circle on hover for a flash effect */}
+                <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-full group-hover:h-56 opacity-10"></span>
+                
+                <span className="relative z-10 bg-gradient-to-r from-cyan-100 to-white bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] pb-1">
+                  انضم إلينا الآن!
+                </span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

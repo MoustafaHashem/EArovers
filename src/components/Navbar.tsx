@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, LogIn } from "lucide-react";
@@ -19,10 +19,12 @@ const navLinks = [
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const [activeHash, setActiveHash] = useState("");
+  const [isScrollingToHash, setIsScrollingToHash] = useState(false);
+  const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 });
+  const navRef = useRef<HTMLDivElement>(null);
 
   const pathname = usePathname();
-  const [activeHash, setActiveHash] = useState("");
 
   // Track scroll, hash changes, and active sections via IntersectionObserver
   useEffect(() => {
@@ -58,8 +60,8 @@ export function Navbar() {
             hasChanges = true;
           }
         });
-        
-        if (hasChanges) {
+
+        if (hasChanges && !isScrollingToHash) {
           // Find the first visible section based on navLinks order
           for (const link of navLinks) {
             const id = link.href.split("#")[1];
@@ -76,10 +78,10 @@ export function Navbar() {
     sectionElements.forEach((section) => observer.observe(section));
 
     const handleHashChange = () => {
-      setActiveHash(window.location.hash);
+      if (!isScrollingToHash) setActiveHash(window.location.hash);
     };
     window.addEventListener("hashchange", handleHashChange);
-    
+
     // Set initial hash
     if (window.location.hash) {
       setActiveHash(window.location.hash);
@@ -90,16 +92,34 @@ export function Navbar() {
       window.removeEventListener("hashchange", handleHashChange);
       observer.disconnect();
     };
-  }, []);
+  }, [isScrollingToHash]);
+
+  // Update pill position whenever activeHash or pathname changes
+  useEffect(() => {
+    if (!navRef.current) return;
+    
+    // We added data-active="true" to the currently active Link
+    const activeEl = navRef.current.querySelector('[data-active="true"]') as HTMLElement;
+    
+    if (activeEl) {
+      setPillStyle({
+        left: activeEl.offsetLeft,
+        width: activeEl.offsetWidth,
+        opacity: 1
+      });
+    } else {
+      setPillStyle(prev => ({ ...prev, opacity: 0 }));
+    }
+  }, [activeHash, pathname, isScrolled]);
 
   return (
     <div className="fixed top-4 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
       <nav
         className={cn(
-          "pointer-events-auto transition-all duration-500 rounded-full",
+          "pointer-events-auto transition-colors duration-500 rounded-full",
           isScrolled
             ? "bg-[var(--color-scout-navy)]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] border border-white/10 px-6 py-3"
-            : "bg-transparent px-4 py-4 w-full max-w-7xl"
+            : "bg-transparent px-6 py-3 w-full max-w-7xl"
         )}
       >
         <div className={cn("flex justify-between items-center", isScrolled ? "gap-8" : "w-full")}>
@@ -116,12 +136,21 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-2 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md">
+          <div ref={navRef} className="hidden lg:flex relative items-center gap-2 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md">
+            {/* The pure CSS sliding pill */}
+            <div 
+              className="absolute top-1 bottom-1 bg-[var(--color-glow-cyan)] rounded-full shadow-[0_0_15px_var(--color-glow-cyan)] pointer-events-none transition-all duration-300 ease-out z-0"
+              style={{
+                left: `${pillStyle.left}px`,
+                width: `${pillStyle.width}px`,
+                opacity: pillStyle.opacity
+              }}
+            />
             {navLinks.map((link) => {
               const isHashLink = link.href.includes("#");
               const hashPart = isHashLink ? link.href.split("#")[1] : "";
               const routePart = link.href.split("#")[0] || "/";
-              
+
               let isActive = false;
               if (isHashLink) {
                 isActive = pathname === routePart && activeHash === `#${hashPart}`;
@@ -133,19 +162,62 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => isHashLink && setActiveHash(`#${hashPart}`)}
+                  data-active={isActive}
+                  onClick={(e) => {
+                    const isSamePageHome = link.href === "/" && pathname === "/";
+                    
+                    if (isHashLink || isSamePageHome) {
+                      e.preventDefault();
+                      setIsScrollingToHash(true);
+                      
+                      let targetPosition = 0;
+                      
+                      if (isHashLink) {
+                        setActiveHash(`#${hashPart}`);
+                        const targetElement = document.getElementById(hashPart);
+                        if (targetElement) {
+                          targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 100;
+                        } else {
+                          // If target doesn't exist, just unpause and let it be
+                          setIsScrollingToHash(false);
+                          return;
+                        }
+                        // Update URL without jumping
+                        window.history.pushState(null, "", `#${hashPart}`);
+                      } else {
+                        setActiveHash("");
+                        window.history.pushState(null, "", window.location.pathname);
+                      }
+                      
+                      const startPosition = window.scrollY;
+                      const distance = targetPosition - startPosition;
+                      const duration = 600; // 600ms fast glide
+                      let start: number | null = null;
+
+                      const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+
+                      const step = (timestamp: number) => {
+                        if (!start) start = timestamp;
+                        const progress = timestamp - start;
+                        const percent = Math.min(progress / duration, 1);
+                        
+                        window.scrollTo(0, startPosition + distance * easeOutQuart(percent));
+                        
+                        if (progress < duration) {
+                          window.requestAnimationFrame(step);
+                        }
+                      };
+                      window.requestAnimationFrame(step);
+                      
+                      // Unpause observer after scroll finishes
+                      setTimeout(() => setIsScrollingToHash(false), 800);
+                    }
+                  }}
                   className={cn(
-                    "relative px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 z-10",
+                    "relative px-4 py-2 rounded-full text-sm font-bold transition-colors duration-300 z-10",
                     isActive ? "text-[var(--color-scout-navy)]" : "text-gray-300 hover:text-white hover:bg-white/10"
                   )}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-pill"
-                      className="absolute inset-0 bg-[var(--color-glow-cyan)] rounded-full -z-10 shadow-[0_0_15px_var(--color-glow-cyan)]"
-                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    />
-                  )}
                   <span className="relative z-10">{link.label}</span>
                 </Link>
               );
@@ -161,14 +233,16 @@ export function Navbar() {
                 transition={{ duration: 0.3 }}
                 className="hidden lg:flex items-center gap-5 overflow-hidden whitespace-nowrap"
               >
-                <Link
-                  href="/join"
-                  className="relative group px-5 py-2 overflow-hidden rounded-full font-bold bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] transition-all duration-300 hover:scale-105"
-                >
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  <span className="absolute -inset-1 rounded-full blur bg-gradient-to-r from-[var(--color-scout-blue)] to-[var(--color-glow-cyan)] opacity-40 group-hover:opacity-70 transition-opacity duration-300 -z-10"></span>
-                  <span className="relative z-10">انضم إلينا</span>
-                </Link>
+                <div className="p-2">
+                  <Link
+                    href="/join"
+                    className="relative group block px-5 py-2 overflow-hidden rounded-full font-bold bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] transition-all duration-300 hover:scale-105"
+                  >
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                    <span className="absolute -inset-1 rounded-full blur bg-gradient-to-r from-[var(--color-scout-blue)] to-[var(--color-glow-cyan)] opacity-40 group-hover:opacity-70 transition-opacity duration-300 -z-10"></span>
+                    <span className="relative z-10">انضم إلينا</span>
+                  </Link>
+                </div>
 
                 <a
                   href="/login"
@@ -236,7 +310,7 @@ export function Navbar() {
                   const isHashLink = link.href.includes("#");
                   const hashPart = isHashLink ? link.href.split("#")[1] : "";
                   const routePart = link.href.split("#")[0] || "/";
-                  
+
                   let isActive = false;
                   if (isHashLink) {
                     isActive = pathname === routePart && activeHash === `#${hashPart}`;
