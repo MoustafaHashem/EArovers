@@ -158,20 +158,49 @@ export const clanTreeData: ComplexYearData[] = [
       highCouncil: {
         title: "مجلس القيادة",
         members: [
+          { person: p.media, role: "مساعد قائد العشيرة" },
+          { person: p.rahtDeputy1, role: "الرائد الأكبر" },
           { person: p.rahtLeader1, role: "قائد العشيرة" },
+          { person: p.secAssist, role: "قائدة الجوالات" },
+          { person: p.rover1, role: "الرائدة الكبرى" },
         ],
       },
       auxiliary: {
         title: "الهيكل المعاون",
-        members: [],
+        members: [
+          { 
+            person: p.rover2, role: "قائد الميديا",
+            subordinates: [{ person: p.candidate1, role: "مساعد الميديا" }]
+          },
+          { 
+            person: p.candidate2, role: "قائد السكرتارية",
+            subordinates: [{ person: p.mediaAssist, role: "مساعد السكرتارية" }]
+          },
+          { 
+            person: p.sec, role: "أمين العهدة" 
+          },
+        ],
       },
       management: {
         title: "مجلس الإدارة",
-        members: []
+        members: [
+          { 
+            person: p.rahtDeputy2, role: "رائد رهط الفايكنج",
+            subordinates: [{ person: p.assistantLeader, role: "وكيل الرهط" }]
+          },
+          { 
+            person: p.quartermaster, role: "رائد رهط الفرسان",
+            subordinates: [{ person: p.seniorGuide, role: "وكيل الرهط" }]
+          },
+        ]
       },
       base: {
         title: "قاعدة العشيرة",
-        members: []
+        members: [
+          { person: p.leader, role: "جوال (فايكنج)" },
+          { person: p.guideLeader, role: "مرشح (فايكنج)" },
+          { person: p.seniorRover, role: "جوال (فرسان)" },
+        ]
       }
     },
   },

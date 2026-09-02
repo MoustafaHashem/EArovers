@@ -96,6 +96,8 @@ function TierSection({
   isFadingOut: boolean;
   forceSingleRow?: boolean;
 }) {
+  if (tier.members.length === 0) return null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -110,12 +112,7 @@ function TierSection({
       </div>
 
       {/* Members Container */}
-      <div
-        className={cn(
-          "flex justify-center gap-6 relative z-10 w-full",
-          forceSingleRow ? "flex-nowrap min-w-max px-4" : "flex-wrap max-w-6xl"
-        )}
-      >
+      <div className="flex justify-center gap-4 sm:gap-6 relative z-10 w-full flex-wrap max-w-6xl px-2 sm:px-4">
         {tier.members.map((node) => (
           <NodeWithSubordinates
             key={node.person.id}
@@ -133,8 +130,8 @@ function TierSection({
   );
 }
 
-export function ClanTree() {
-  const [currentYear, setCurrentYear] = useState(2024);
+export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear?: number; hideTabs?: boolean }) {
+  const [currentYear, setCurrentYear] = useState(defaultYear);
   const [clickedId, setClickedId] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -155,34 +152,36 @@ export function ClanTree() {
   return (
     <div className="flex flex-col items-center min-h-[80vh] py-12 w-full px-4 overflow-x-hidden">
       {/* Timeline Tabs */}
-      <div className="mb-20 bg-white/5 backdrop-blur-md p-2 rounded-full border border-white/10 flex items-center justify-center gap-2">
-        {clanTreeData.map((data) => (
-          <button
-            key={data.year}
-            className={cn(
-              "relative px-8 py-3 rounded-full text-lg font-bold transition-colors duration-300 z-10",
-              currentYear === data.year ? "text-[var(--color-scout-navy)]" : "text-[var(--color-scout-blue)] hover:text-white"
-            )}
-            onClick={() => !isAnimating && setCurrentYear(data.year)}
-          >
-            {currentYear === data.year && (
-              <motion.div
-                layoutId="timeline-bubble-3"
-                className="absolute inset-0 bg-[var(--color-glow-cyan)] rounded-full -z-10 shadow-[0_0_15px_var(--color-glow-cyan)]"
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              />
-            )}
-            <span className="relative z-10">{data.year}</span>
-          </button>
-        ))}
-      </div>
+      {!hideTabs && (
+        <div className="mb-20 bg-white/5 backdrop-blur-md p-2 rounded-full border border-white/10 flex items-center justify-center gap-2">
+          {clanTreeData.map((data) => (
+            <button
+              key={data.year}
+              className={cn(
+                "relative px-8 py-3 rounded-full text-lg font-bold transition-colors duration-300 z-10",
+                currentYear === data.year ? "text-[var(--color-scout-navy)]" : "text-[var(--color-scout-blue)] hover:text-white"
+              )}
+              onClick={() => !isAnimating && setCurrentYear(data.year)}
+            >
+              {currentYear === data.year && (
+                <motion.div
+                  layoutId="timeline-bubble-3"
+                  className="absolute inset-0 bg-[var(--color-glow-cyan)] rounded-full -z-10 shadow-[0_0_15px_var(--color-glow-cyan)]"
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                />
+              )}
+              <span className="relative z-10">{data.year}</span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Main Tree Container */}
-      <div className="relative w-full overflow-x-auto pb-12 custom-scrollbar">
+      <div className="relative w-full pb-12 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentYear}
-            className="flex flex-col items-center min-w-max mx-auto relative"
+            className="flex flex-col items-center w-full max-w-7xl mx-auto relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.2 } }}

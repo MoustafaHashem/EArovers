@@ -1,0 +1,204 @@
+// Prisma Schema for جوالة هندسة عين شمس
+// Database: Supabase (PostgreSQL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================================
+// User Profiles (linked to Supabase auth.users)
+// ============================================================
+enum UserRole {
+  scout
+  admin
+}
+
+model Profile {
+  id           String    @id @db.Uuid // Same as Supabase auth.users.id
+  fullName     String    @map("full_name")
+  phone        String?
+  academicYear String?   @map("academic_year")
+  avatarUrl    String?   @map("avatar_url")
+  role         UserRole  @default(scout)
+  bio          String?
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  eventsCreated     Event[]            @relation("EventCreator")
+  eventParticipants EventParticipant[]
+  reviewedRequests  JoinRequest[]      @relation("RequestReviewer")
+  uploadedMedia     Media[]
+  person            Person?
+
+  @@map("profiles")
+}
+
+// ============================================================
+// People (may or may not have accounts)
+// Historical leaders, instructors, alumni, etc.
+// ============================================================
+model Person {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName      String   @map("full_name")
+  roleTitle     String?  @map("role_title")     // e.g., "قائد العشيرة"
+  tier          String?                          // "high_council", "auxiliary", "management", "base"
+  year          Int                              // Year they held this role
+  avatarUrl     String?  @map("avatar_url")
+  promotesToYear Int?    @map("promotes_to_year")
+  bio           String?
+  profileId     String?  @unique @map("profile_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  profile Profile? @relation(fields: [profileId], references: [id])
+
+  @@map("people")
+}
+
+// ============================================================
+// Events
+// ============================================================
+model Event {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String
+  description     String?
+  eventType       String    @map("event_type")    // "معسكر", "مسابقة", "درع", "ندوة"
+  location        String?
+  startDate       DateTime  @map("start_date")
+  endDate         DateTime? @map("end_date")
+  maxParticipants Int?      @map("max_participants")
+  isPublic        Boolean   @default(false) @map("is_public")
+  createdBy       String?   @map("created_by") @db.Uuid
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  creator      Profile?           @relation("EventCreator", fields: [createdBy], references: [id])
+  participants EventParticipant[]
+  sessions     Session[]
+  media        Media[]
+
+  @@map("events")
+}
+
+// ============================================================
+// Event Participation
+// ============================================================
+model EventParticipant {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId   String   @map("event_id") @db.Uuid
+  profileId String   @map("profile_id") @db.Uuid
+  status    String   @default("registered")   // "registered", "attended", "cancelled"
+  joinedAt  DateTime @default(now()) @map("joined_at")
+
+  // Relations
+  event   Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, profileId])
+  @@map("event_participants")
+}
+
+// ============================================================
+// Achievements / Hall of Fame
+// ============================================================
+model Achievement {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String
+  year            Int
+  placement       String?                    // e.g., "المركز الأول"
+  competitionName String?  @map("competition_name")
+  awards          String[]                   // Array of award descriptions
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("achievements")
+}
+
+// ============================================================
+// Scout Shields (Activity Categories)
+// ============================================================
+model Shield {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  description String?
+  sortOrder   Int      @default(0) @map("sort_order")
+
+  activities ShieldActivity[]
+
+  @@map("shields")
+}
+
+model ShieldActivity {
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shieldId    String  @map("shield_id") @db.Uuid
+  name        String
+  description String?
+  icon        String?  // Emoji or icon name
+  sortOrder   Int      @default(0) @map("sort_order")
+
+  shield Shield @relation(fields: [shieldId], references: [id], onDelete: Cascade)
+
+  @@map("shield_activities")
+}
+
+// ============================================================
+// Training Sessions
+// ============================================================
+model Session {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  description String?
+  instructor  String?
+  sessionDate DateTime? @map("session_date")
+  eventId     String?   @map("event_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  event Event? @relation(fields: [eventId], references: [id])
+
+  @@map("sessions")
+}
+
+// ============================================================
+// Media Gallery
+// ============================================================
+model Media {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String?
+  url          String                        // Cloudinary URL
+  thumbnailUrl String?  @map("thumbnail_url")
+  category     String?                       // "مسابقات", "معسكرات", "دروع", "كواليس"
+  eventId      String?  @map("event_id") @db.Uuid
+  uploadedBy   String?  @map("uploaded_by") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  event    Event?   @relation(fields: [eventId], references: [id])
+  uploader Profile? @relation(fields: [uploadedBy], references: [id])
+
+  @@map("media")
+}
+
+// ============================================================
+// Join Requests (Public Form Submissions)
+// ============================================================
+model JoinRequest {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName     String    @map("full_name")
+  phone        String
+  academicYear String    @map("academic_year")
+  interests    String?
+  status       String    @default("pending")  // "pending", "approved", "rejected"
+  reviewedBy   String?   @map("reviewed_by") @db.Uuid
+  createdAt    DateTime  @default(now()) @map("created_at")
+  reviewedAt   DateTime? @map("reviewed_at")
+
+  reviewer Profile? @relation("RequestReviewer", fields: [reviewedBy], references: [id])
+
+  @@map("join_requests")
+}

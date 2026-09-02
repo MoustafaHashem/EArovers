@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { type RoleNode } from "@/data/clanData";
 import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
+import Image from "next/image";
 
 type PersonCardProps = {
   node: RoleNode;
@@ -19,10 +20,11 @@ export function PersonCard({ node, onClick, isClicked }: PersonCardProps) {
     <motion.div
       layoutId={person.id}
       className={cn(
-        "relative flex flex-col items-center p-4 rounded-2xl w-48 transition-all duration-300",
+        "relative flex flex-col items-center p-4 rounded-2xl w-36 sm:w-40 md:w-48 transition-all duration-300",
         "glass-card cursor-default z-10",
         isPromotable && "cursor-pointer glass-card-hover",
-        isClicked && "ring-2 ring-[var(--color-glow-cyan)] ring-offset-2 ring-offset-[var(--color-dark-bg)] shadow-[0_0_20px_var(--color-glow-cyan)]"
+        isClicked &&
+          "ring-2 ring-[var(--color-glow-cyan)] ring-offset-2 ring-offset-[var(--color-dark-bg)] shadow-[0_0_20px_var(--color-glow-cyan)]"
       )}
       onClick={isPromotable ? onClick : undefined}
       whileHover={isPromotable && !isClicked ? { scale: 1.05, y: -5 } : {}}
@@ -46,19 +48,21 @@ export function PersonCard({ node, onClick, isClicked }: PersonCardProps) {
         </motion.div>
       )}
 
-      {/* Avatar (Initials for now) */}
+      {/* Avatar */}
       <div
         className={cn(
-          "w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold mb-3 shadow-inner overflow-hidden",
+          "w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-lg sm:text-xl font-bold mb-3 shadow-inner overflow-hidden",
           role.includes("قائد") && !role.includes("مساعد")
             ? "bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] text-white border-2 border-[var(--color-glow-cyan)]"
             : "bg-[var(--color-anchor)] text-gray-200 border border-[var(--color-dark-border)]"
         )}
       >
         {person.avatar ? (
-          <img
+          <Image
             src={person.avatar}
             alt={person.name}
+            width={64}
+            height={64}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -68,10 +72,12 @@ export function PersonCard({ node, onClick, isClicked }: PersonCardProps) {
 
       {/* Info */}
       <div className="text-center">
-        <h3 className="font-bold text-sm truncate w-full text-white">
+        <h3 className="font-bold text-xs sm:text-sm truncate w-full text-white">
           {person.name}
         </h3>
-        <p className="text-xs text-[var(--color-scout-blue-light)] mt-1 font-semibold">{role}</p>
+        <p className="text-xs text-[var(--color-scout-blue-light)] mt-1 font-semibold">
+          {role}
+        </p>
       </div>
 
       {/* Subtle bottom glow for Clan Leader only */}

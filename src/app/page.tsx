@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/Navbar";
 import { ClanTree } from "@/components/ClanTree";
 import { ScoutShields } from "@/components/ScoutShields";
 import { HallOfFame } from "@/components/HallOfFame";
@@ -5,39 +6,20 @@ import { MediaGallery } from "@/components/MediaGallery";
 import { Sessions } from "@/components/Sessions";
 import { JoinForm } from "@/components/JoinForm";
 import { Identity } from "@/components/Identity";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center overflow-x-hidden">
-      
+
       {/* Navbar */}
-      <nav className="w-full bg-[var(--color-scout-navy)]/90 backdrop-blur-md border-b border-[var(--color-dark-border)] sticky top-0 z-50 shadow-xl">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] rounded-full flex items-center justify-center shadow-lg text-white font-bold text-lg">
-              ج
-            </div>
-            <span className="text-xl font-bold text-white tracking-wide">
-              جوالة هندسة عين شمس
-            </span>
-          </div>
-          <div className="hidden md:flex items-center gap-6 text-sm text-[var(--color-scout-blue-light)] font-bold">
-            <a href="#home" className="hover:text-white transition-colors">الرئيسية</a>
-            <a href="#hierarchy" className="hover:text-white transition-colors">الشجرة</a>
-            <a href="#fame" className="hover:text-white transition-colors">الشرف</a>
-            <a href="#shields" className="hover:text-white transition-colors">الدروع</a>
-            <a href="#media" className="hover:text-white transition-colors">الميديا</a>
-            <a href="#sessions" className="hover:text-white transition-colors">التأهيل</a>
-            <a href="#join" className="bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] px-4 py-2 rounded-full hover:bg-white transition-colors">انضم إلينا</a>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section id="home" className="w-full min-h-[85vh] flex flex-col items-center justify-center relative px-6 text-center">
         <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[var(--color-scout-blue)] rounded-full blur-[150px] opacity-20 pointer-events-none" />
-        
-        <div className="z-10 flex flex-col items-center mt-10">
+
+        <div className="z-10 flex flex-col items-center mt-28 md:mt-40">
           <div className="inline-block mb-6 px-4 py-1.5 rounded-full bg-[var(--color-scout-blue)]/20 border border-[var(--color-scout-blue)]/30 text-[var(--color-scout-blue-light)] text-sm font-bold backdrop-blur-sm">
             أعرق العشائر الكشفية الجامعية
           </div>
@@ -50,33 +32,12 @@ export default function Home() {
             منصة متكاملة لأرشيف العشيرة، التدرج القيادي، الإنجازات، وتوثيق بطولات الجوالة على مدار السنين.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a href="#hierarchy" className="bg-[var(--color-scout-blue)] hover:bg-[var(--color-scout-blue-light)] text-[var(--color-scout-navy)] px-8 py-4 rounded-full font-bold text-lg transition-all shadow-[0_0_20px_rgba(92,124,182,0.4)] hover:shadow-[0_0_30px_rgba(124,161,230,0.6)] hover:-translate-y-1">
-              اكتشف شجرة العشيرة
-            </a>
-            <a href="#join" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg transition-all backdrop-blur-md">
+
+            <Link href="/join" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-full font-bold text-lg transition-all backdrop-blur-md">
               انضم إلينا الآن
-            </a>
+            </Link>
           </div>
         </div>
-      </section>
-
-      {/* Hierarchy Section */}
-      <section id="hierarchy" className="w-full flex flex-col items-center py-24 bg-gradient-to-b from-transparent to-black/20 border-t border-[var(--color-dark-border)] z-10">
-        <div className="text-center mb-10 px-6">
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-4">الهيكل التنظيمي والقيادي</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            تدرج المناصب القيادية عبر السنين. اضغط على أي قائد أو رائد رهط لمشاهدة رحلته القيادية في السنوات التالية.
-          </p>
-        </div>
-        
-        <div className="w-full">
-          <ClanTree />
-        </div>
-      </section>
-
-      {/* Hall of Fame */}
-      <section id="fame" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)] bg-[var(--color-scout-navy)]">
-        <HallOfFame />
       </section>
 
       {/* Scout Shields */}
@@ -93,14 +54,48 @@ export default function Home() {
         <MediaGallery />
       </section>
 
+      {/* Hall of Fame */}
+      <section id="fame" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)] bg-[var(--color-scout-navy)]">
+        <HallOfFame />
+      </section>
+
       {/* Sessions & Studies */}
       <section id="sessions" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)]">
         <Sessions />
       </section>
 
-      {/* Join Us */}
-      <section id="join" className="w-full py-32 px-6 z-10 relative border-t border-[var(--color-dark-border)] bg-gradient-to-b from-transparent to-blue-900/20">
-        <JoinForm />
+      {/* Hierarchy Preview Section */}
+      <section id="hierarchy-preview" className="w-full flex flex-col items-center pt-24 pb-12 bg-gradient-to-b from-transparent to-black/20 border-t border-[var(--color-dark-border)] z-10 overflow-hidden">
+        <div className="text-center mb-6 px-6">
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-4">الهيكل التنظيمي والقيادي</h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            مجلس القيادة والهيكل المعاون للعام الحالي 2026.
+          </p>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto">
+          <ClanTree defaultYear={2026} hideTabs={true} />
+        </div>
+
+        <div className="mt-4 px-6 text-center">
+          <Link href="/hierarchy" className="inline-block bg-[var(--color-scout-navy-light)] hover:bg-[var(--color-anchor)] text-[var(--color-scout-blue-light)] hover:text-white border border-[var(--color-dark-border)] px-10 py-4 rounded-2xl font-bold text-xl transition-all shadow-lg hover:shadow-[0_0_30px_rgba(92,124,182,0.3)] hover:-translate-y-1">
+            عرض المزيد
+            <span className="block text-sm font-normal text-gray-400 mt-1">تصفح شجرة العشيرة لجميع الأجيال</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* Join Us CTA Section */}
+      <section id="join" className="w-full flex flex-col items-center py-32 px-6 z-10 relative border-t border-[var(--color-dark-border)] bg-gradient-to-b from-transparent to-blue-900/20">
+        <div className="text-center max-w-2xl">
+          <h2 className="text-4xl md:text-6xl font-black text-white mb-6">مستعد للمغامرة؟</h2>
+          <p className="text-gray-300 text-xl mb-10">
+            انضم إلى عشيرة جوالة هندسة عين شمس واكتشف قدراتك الحقيقية. نحن نبحث دائماً عن قادة المستقبل.
+          </p>
+          <Link href="/join" className="inline-block bg-gradient-to-r from-[var(--color-scout-blue)] to-blue-500 hover:from-blue-500 hover:to-[var(--color-scout-blue-light)] text-white px-12 py-5 rounded-full font-bold text-2xl transition-all shadow-[0_0_20px_rgba(92,124,182,0.5)] hover:shadow-[0_0_40px_rgba(124,161,230,0.8)] hover:scale-105">
+            سجل بياناتك الآن
+          </Link>
+        </div>
       </section>
 
       {/* Footer / Identity */}
