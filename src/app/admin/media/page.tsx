@@ -22,7 +22,7 @@ export default async function MediaPage() {
         title: "مسابقة التميز الكشفي",
         url: "https://images.unsplash.com/photo-1526976663112-0059bf6b595b",
         category: "مسابقات",
-        createdAt: new Date(Date.now() - 86400000 * 2),
+        createdAt: new Date("2024-01-01T00:00:00Z"),
       }
     ] as any;
   }

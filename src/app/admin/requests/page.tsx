@@ -26,7 +26,7 @@ export default async function RequestsPage() {
         academicYear: "الفرقة الأولى عمارة",
         interests: "الفنون والأعمال اليدوية الكشفية",
         status: "approved",
-        createdAt: new Date(Date.now() - 86400000), // 1 day ago
+        createdAt: new Date("2024-01-01T00:00:00Z"), // Static date
       }
     ] as any;
   }
