@@ -1,10 +1,36 @@
 "use client";
 
-import { ImageIcon, PlayCircle, Filter } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ImageIcon, PlayCircle, Loader2 } from "lucide-react";
+import { fetchMediaAction } from "@/app/actions/media";
+import type { CloudinaryImage } from "@/lib/cloudinary";
 
 export function MediaGallery() {
-  // Placeholder scaffolding
   const categories = ["الكل", "مسابقات", "دروع", "معسكرات", "كواليس"];
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
+  const [images, setImages] = useState<CloudinaryImage[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    
+    fetchMediaAction(activeCategory)
+      .then((data) => {
+        if (mounted) {
+          setImages(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        if (mounted) setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [activeCategory]);
   
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col items-center">
@@ -14,32 +40,58 @@ export function MediaGallery() {
       </div>
 
       <div className="flex flex-wrap justify-center gap-3 mb-10">
-        {categories.map((cat, i) => (
-          <button key={cat} className={`px-5 py-2 rounded-full text-sm font-bold border transition-colors ${i === 0 ? 'bg-[var(--color-scout-blue-light)] text-[var(--color-scout-navy)] border-transparent' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}>
+        {categories.map((cat) => (
+          <button 
+            key={cat} 
+            onClick={() => setActiveCategory(cat)}
+            className={`px-5 py-2 rounded-full text-sm font-bold border transition-colors ${activeCategory === cat ? 'bg-[var(--color-scout-blue-light)] text-[var(--color-scout-navy)] border-transparent' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
+          >
             {cat}
           </button>
         ))}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-        {/* Placeholder images */}
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <div key={i} className={`relative rounded-xl overflow-hidden group bg-[var(--color-dark-card)] ${i === 1 || i === 4 ? 'row-span-2' : ''} ${i === 3 ? 'col-span-2' : ''} min-h-[150px] md:min-h-[200px] flex items-center justify-center cursor-pointer border border-[var(--color-dark-border)] hover:border-[var(--color-glow-cyan)] transition-colors`}>
-            {i % 3 === 0 ? (
-              <PlayCircle className="text-gray-500 group-hover:text-white transition-colors z-10" size={48} />
-            ) : (
-              <ImageIcon className="text-gray-500 group-hover:text-white transition-colors z-10" size={40} />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-              <span className="text-white font-bold text-sm">ذكرى رقم {i}</span>
-            </div>
+      <div className="w-full min-h-[400px]">
+        {loading ? (
+          <div className="w-full h-full flex flex-col items-center justify-center text-[var(--color-scout-blue-light)] py-20">
+            <Loader2 className="animate-spin mb-4" size={48} />
+            <p className="text-gray-400 font-bold">جاري تحميل الذكريات...</p>
           </div>
-        ))}
+        ) : images.length === 0 ? (
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 py-20">
+            <ImageIcon size={64} className="mb-4 opacity-50" />
+            <p className="text-lg font-bold">لا توجد صور في هذا القسم حالياً</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+            {images.map((img, i) => (
+              <div key={img.id} className={`relative rounded-xl overflow-hidden group bg-[var(--color-dark-card)] ${i === 1 || i === 4 ? 'row-span-2' : ''} ${i === 3 ? 'col-span-2' : ''} min-h-[150px] md:min-h-[200px] flex items-center justify-center cursor-pointer border border-[var(--color-dark-border)] hover:border-[var(--color-glow-cyan)] transition-colors`}>
+                {img.format === 'mp4' ? (
+                  <PlayCircle className="absolute text-white/70 group-hover:text-white transition-colors z-20" size={48} />
+                ) : null}
+                
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={img.url} 
+                  alt="Gallery Item" 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 z-10">
+                  <span className="text-white font-bold text-sm">ذكرى جديدة</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       
-      <button className="mt-12 border border-[var(--color-scout-blue)] text-[var(--color-scout-blue-light)] px-8 py-3 rounded-full font-bold hover:bg-[var(--color-scout-blue)] hover:text-[var(--color-scout-navy)] transition-colors">
-        عرض المزيد
-      </button>
+      {!loading && images.length > 0 && (
+        <button className="mt-12 border border-[var(--color-scout-blue)] text-[var(--color-scout-blue-light)] px-8 py-3 rounded-full font-bold hover:bg-[var(--color-scout-blue)] hover:text-[var(--color-scout-navy)] transition-colors">
+          عرض المزيد
+        </button>
+      )}
     </div>
   );
 }
