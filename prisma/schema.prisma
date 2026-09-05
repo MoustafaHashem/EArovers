@@ -36,6 +36,8 @@ model Profile {
   reviewedRequests  JoinRequest[]      @relation("RequestReviewer")
   uploadedMedia     Media[]
   person            Person?
+  userShields       UserShield[]
+  awardedShields    UserShield[]       @relation("ShieldAwarder")
 
   @@map("profiles")
 }
@@ -47,19 +49,35 @@ model Profile {
 model Person {
   id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   fullName      String   @map("full_name")
-  roleTitle     String?  @map("role_title")     // e.g., "قائد العشيرة"
-  tier          String?                          // "high_council", "auxiliary", "management", "base"
-  year          Int                              // Year they held this role
   avatarUrl     String?  @map("avatar_url")
-  promotesToYear Int?    @map("promotes_to_year")
   bio           String?
   profileId     String?  @unique @map("profile_id") @db.Uuid
   createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
 
   // Relations
-  profile Profile? @relation(fields: [profileId], references: [id])
+  profile       Profile?       @relation(fields: [profileId], references: [id])
+  roles         RoleHistory[]
 
   @@map("people")
+}
+
+// ============================================================
+// Role History (Tracking a Person's roles across years)
+// ============================================================
+model RoleHistory {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  personId      String   @map("person_id") @db.Uuid
+  year          Int
+  tier          String   // "highCouncil", "auxiliary", "management", "base"
+  roleTitle     String   @map("role_title") // e.g., "قائد العشيرة", "قائد الميديا"
+  isSecondary   Boolean  @default(false) @map("is_secondary") // e.g., true for auxiliary roles
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  person        Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@unique([personId, year, roleTitle])
+  @@map("role_history")
 }
 
 // ============================================================
@@ -131,6 +149,7 @@ model Shield {
   sortOrder   Int      @default(0) @map("sort_order")
 
   activities ShieldActivity[]
+  userShields UserShield[]
 
   @@map("shields")
 }
@@ -146,6 +165,24 @@ model ShieldActivity {
   shield Shield @relation(fields: [shieldId], references: [id], onDelete: Cascade)
 
   @@map("shield_activities")
+}
+
+// ============================================================
+// User Shields (Awarded to profiles)
+// ============================================================
+model UserShield {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId String   @map("profile_id") @db.Uuid
+  shieldId  String   @map("shield_id") @db.Uuid
+  awardedAt DateTime @default(now()) @map("awarded_at")
+  awardedBy String?  @map("awarded_by") @db.Uuid
+
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  shield    Shield   @relation(fields: [shieldId], references: [id], onDelete: Cascade)
+  awarder   Profile? @relation("ShieldAwarder", fields: [awardedBy], references: [id])
+
+  @@unique([profileId, shieldId])
+  @@map("user_shields")
 }
 
 // ============================================================
@@ -176,6 +213,8 @@ model Media {
   category     String?                       // "مسابقات", "معسكرات", "دروع", "كواليس"
   eventId      String?  @map("event_id") @db.Uuid
   uploadedBy   String?  @map("uploaded_by") @db.Uuid
+  sortOrder    Int      @default(0) @map("sort_order")
+  isFeatured   Boolean  @default(false) @map("is_featured")
   createdAt    DateTime @default(now()) @map("created_at")
 
   event    Event?   @relation(fields: [eventId], references: [id])
@@ -191,6 +230,7 @@ model JoinRequest {
   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   fullName     String    @map("full_name")
   phone        String
+  email        String?
   academicYear String    @map("academic_year")
   interests    String?
   status       String    @default("pending")  // "pending", "approved", "rejected"
@@ -201,4 +241,15 @@ model JoinRequest {
   reviewer Profile? @relation("RequestReviewer", fields: [reviewedBy], references: [id])
 
   @@map("join_requests")
+}
+
+// ============================================================
+// Website Traffic Tracking
+// ============================================================
+model PageVisit {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  path      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("page_visits")
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
+import { Toaster } from 'sonner';
+import { TrafficTracker } from '@/components/TrafficTracker';
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -24,7 +26,11 @@ export default function RootLayout({
       className={`${cairo.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-cairo text-right">{children}</body>
+      <body className="min-h-full flex flex-col font-cairo text-right">
+        {children}
+        <TrafficTracker />
+        <Toaster position="bottom-right" richColors dir="rtl" />
+      </body>
     </html>
   );
 }

@@ -1,13 +1,25 @@
 "use server";
 
-import { getCloudinaryImages, CloudinaryImage } from "@/lib/cloudinary";
+import { prisma } from "@/lib/prisma";
 
-export async function fetchMediaAction(category: string): Promise<CloudinaryImage[]> {
-  // Map categories to cloudinary folders or tags.
-  // Assuming "gallery" is the root folder, and category names map to subfolders.
-  // If "الكل" (All), fetch from the root or leave folder empty.
-  const folder = category === "الكل" ? "gallery" : `gallery/${category}`;
+export async function fetchMediaAction(category: string, limit?: number) {
+  // Fetch from the local database where we manage sortOrder, isFeatured, and category
+  const whereClause = category === "الكل" ? {} : { category };
   
-  const images = await getCloudinaryImages(folder, 12);
-  return images;
+  const media = await prisma.media.findMany({
+    where: whereClause,
+    orderBy: [
+      { sortOrder: 'asc' },
+      { createdAt: 'desc' }
+    ],
+    take: limit, // If undefined, Prisma returns all records matching the query
+  });
+  
+  // Format exactly how the frontend expects it (matching CloudinaryImage type)
+  return media.map(m => ({
+    id: m.id,
+    url: m.url,
+    title: m.title || "ذكرى جديدة",
+    format: m.url.endsWith(".mp4") ? "mp4" : "jpg"
+  }));
 }

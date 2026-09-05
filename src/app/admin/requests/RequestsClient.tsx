@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, XCircle, Clock, Filter } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Filter, Mail } from "lucide-react";
 import { updateRequestStatus } from "./actions";
+import { toast } from "sonner";
 
 type JoinRequest = {
   id: string;
   fullName: string;
+  email: string | null;
   phone: string;
   academicYear: string;
   interests: string | null;
@@ -29,14 +31,24 @@ export default function RequestsClient({ initialRequests }: { initialRequests: J
     setRequests(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
     setLoadingId(id);
     
-    const result = await updateRequestStatus(id, newStatus);
+    const promise = updateRequestStatus(id, newStatus);
     
-    if (!result.success) {
-      // Revert on failure
-      setRequests(prev => prev.map(r => r.id === id ? { ...r, status: previousRequest.status } : r));
-      alert("فشل تحديث حالة الطلب");
-    }
-    
+    toast.promise(promise, {
+      loading: newStatus === "approved" ? "جاري الموافقة وإنشاء الحساب..." : "جاري رفض الطلب...",
+      success: (result) => {
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        return newStatus === "approved" ? "تم قبول الطلب وإرسال دعوة بنجاح!" : "تم رفض الطلب";
+      },
+      error: (err) => {
+        // Revert on failure
+        setRequests(prev => prev.map(r => r.id === id ? { ...r, status: previousRequest.status } : r));
+        return err.message || "حدث خطأ غير متوقع";
+      }
+    });
+
+    await promise;
     setLoadingId(null);
   };
 
@@ -101,6 +113,13 @@ export default function RequestsClient({ initialRequests }: { initialRequests: J
                   <a href={`tel:${request.phone}`} className="text-white hover:text-[var(--color-scout-blue)] transition-colors" dir="ltr font-mono">{request.phone}</a>
                 </div>
                 
+                {request.email && (
+                  <div className="flex justify-between items-center py-2 border-b border-[var(--color-dark-border)]">
+                    <span className="text-gray-400">البريد الإلكتروني</span>
+                    <a href={`mailto:${request.email}`} className="text-white hover:text-[var(--color-scout-blue)] transition-colors truncate max-w-[200px]" dir="ltr">{request.email}</a>
+                  </div>
+                )}
+                
                 <div className="flex justify-between items-center py-2 border-b border-[var(--color-dark-border)]">
                   <span className="text-gray-400">تاريخ الطلب</span>
                   <span className="text-white" dir="ltr">{new Date(request.createdAt).toLocaleDateString("ar-EG")}</span>
@@ -118,7 +137,8 @@ export default function RequestsClient({ initialRequests }: { initialRequests: J
                 <div className="grid grid-cols-2 gap-3 mt-auto">
                   <button
                     onClick={() => handleStatusChange(request.id, "approved")}
-                    disabled={loadingId === request.id}
+                    disabled={loadingId === request.id || !request.email}
+                    title={!request.email ? "لا يمكن القبول بدون بريد إلكتروني" : ""}
                     className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-medium transition-colors disabled:opacity-50"
                   >
                     <CheckCircle2 size={18} />

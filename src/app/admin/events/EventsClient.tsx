@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Search, Plus, Trash2, Edit, Users, CalendarDays, MapPin } from "lucide-react";
 import { addEvent, deleteEvent } from "./actions";
+import Link from "next/link";
+import { toast } from "sonner";
 
 type Event = {
   id: string;
@@ -31,11 +33,19 @@ export default function EventsClient({ initialEvents }: { initialEvents: Event[]
     const previous = [...events];
     setEvents(prev => prev.filter(e => e.id !== id));
     
-    const res = await deleteEvent(id);
-    if (!res.success) {
-      setEvents(previous);
-      alert("فشل الحذف");
-    }
+    const promise = deleteEvent(id);
+    
+    toast.promise(promise, {
+      loading: "جاري الحذف...",
+      success: (res) => {
+        if (!res.success) throw new Error("فشل الحذف");
+        return "تم حذف الفعالية بنجاح";
+      },
+      error: () => {
+        setEvents(previous);
+        return "فشل حذف الفعالية";
+      }
+    });
   };
 
   const getEventTypeBadge = (type: string) => {
@@ -85,14 +95,21 @@ export default function EventsClient({ initialEvents }: { initialEvents: Event[]
         <form 
           action={async (formData) => {
             setLoading(true);
-            const res = await addEvent(formData);
-            if (res.success) {
-              setIsAdding(false);
-              window.location.reload(); 
-            } else {
-              alert("فشل الإضافة");
-              setLoading(false);
-            }
+            const promise = addEvent(formData);
+            
+            toast.promise(promise, {
+              loading: "جاري الإضافة...",
+              success: (res) => {
+                if (!res.success) throw new Error("فشل الإضافة");
+                setIsAdding(false);
+                window.location.reload();
+                return "تمت الإضافة بنجاح";
+              },
+              error: () => {
+                setLoading(false);
+                return "فشل إضافة الفعالية";
+              }
+            });
           }}
           className="glass-card p-6 rounded-2xl border border-[var(--color-dark-border)] grid grid-cols-1 md:grid-cols-2 gap-4"
         >
@@ -196,9 +213,9 @@ export default function EventsClient({ initialEvents }: { initialEvents: Event[]
                 <span className={event.isPublic ? "text-green-400" : "text-gray-500"}>
                   {event.isPublic ? "عام" : "خاص باللجان"}
                 </span>
-                <a href={`/admin/events/${event.id}`} className="text-[var(--color-scout-blue)] font-medium hover:underline">
+                <Link href={`/admin/events/${event.id}`} className="text-[var(--color-scout-blue)] font-medium hover:underline">
                   إدارة المشتركين
-                </a>
+                </Link>
               </div>
             </div>
           ))

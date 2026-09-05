@@ -3,19 +3,31 @@
 import { useEffect, useState } from "react";
 import { ImageIcon, PlayCircle, Loader2 } from "lucide-react";
 import { fetchMediaAction } from "@/app/actions/media";
-import type { CloudinaryImage } from "@/lib/cloudinary";
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+import Link from "next/link";
+
+type GalleryImage = {
+  id: string;
+  url: string;
+  title: string;
+  format: string;
+};
 
 export function MediaGallery() {
-  const categories = ["الكل", "مسابقات", "دروع", "معسكرات", "كواليس"];
+  const categories = ["مسابقات", "دروع", "معسكرات", "كواليس"];
   const [activeCategory, setActiveCategory] = useState(categories[0]);
-  const [images, setImages] = useState<CloudinaryImage[]>([]);
+  const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lightboxIndex, setLightboxIndex] = useState(-1);
 
   useEffect(() => {
     let mounted = true;
-    setLoading(true);
     
-    fetchMediaAction(activeCategory)
+    fetchMediaAction(activeCategory, 12)
       .then((data) => {
         if (mounted) {
           setImages(data);
@@ -43,7 +55,7 @@ export function MediaGallery() {
         {categories.map((cat) => (
           <button 
             key={cat} 
-            onClick={() => setActiveCategory(cat)}
+            onClick={() => { setLoading(true); setActiveCategory(cat); }}
             className={`px-5 py-2 rounded-full text-sm font-bold border transition-colors ${activeCategory === cat ? 'bg-[var(--color-scout-blue-light)] text-[var(--color-scout-navy)] border-transparent' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
           >
             {cat}
@@ -65,7 +77,11 @@ export function MediaGallery() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
             {images.map((img, i) => (
-              <div key={img.id} className={`relative rounded-xl overflow-hidden group bg-[var(--color-dark-card)] ${i === 1 || i === 4 ? 'row-span-2' : ''} ${i === 3 ? 'col-span-2' : ''} min-h-[150px] md:min-h-[200px] flex items-center justify-center cursor-pointer border border-[var(--color-dark-border)] hover:border-[var(--color-glow-cyan)] transition-colors`}>
+              <div 
+                key={img.id} 
+                onClick={() => setLightboxIndex(i)}
+                className={`relative rounded-xl overflow-hidden group bg-[var(--color-dark-card)] ${i === 1 || i === 4 ? 'row-span-2' : ''} ${i === 3 ? 'col-span-2' : ''} min-h-[150px] md:min-h-[200px] flex items-center justify-center cursor-pointer border border-[var(--color-dark-border)] hover:border-[var(--color-glow-cyan)] transition-colors`}
+              >
                 {img.format === 'mp4' ? (
                   <PlayCircle className="absolute text-white/70 group-hover:text-white transition-colors z-20" size={48} />
                 ) : null}
@@ -88,10 +104,21 @@ export function MediaGallery() {
       </div>
       
       {!loading && images.length > 0 && (
-        <button className="mt-12 border border-[var(--color-scout-blue)] text-[var(--color-scout-blue-light)] px-8 py-3 rounded-full font-bold hover:bg-[var(--color-scout-blue)] hover:text-[var(--color-scout-navy)] transition-colors">
-          عرض المزيد
-        </button>
+        <Link href="/gallery" className="mt-12 border border-[var(--color-scout-blue)] text-[var(--color-scout-blue-light)] px-8 py-3 rounded-full font-bold hover:bg-[var(--color-scout-blue)] hover:text-[var(--color-scout-navy)] transition-colors">
+          عرض كل الصور
+        </Link>
       )}
+
+      <Lightbox
+        index={lightboxIndex}
+        open={lightboxIndex >= 0}
+        close={() => setLightboxIndex(-1)}
+        slides={images.map(img => ({ src: img.url }))}
+        plugins={[Zoom, Thumbnails]}
+        zoom={{
+          maxZoomPixelRatio: 3,
+        }}
+      />
     </div>
   );
 }

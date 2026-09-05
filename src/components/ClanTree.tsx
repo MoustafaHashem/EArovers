@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { clanTreeData, type ClanTier, type RoleNode } from "@/data/clanData";
+import { type ClanTier, type RoleNode } from "@/data/clanData";
 import { PersonCard } from "./PersonCard";
 import { cn } from "@/lib/utils";
 
-// Component for a Node that might have subordinates branching from it
 function NodeWithSubordinates({
   node,
   onPromote,
@@ -82,7 +81,6 @@ function NodeWithSubordinates({
   );
 }
 
-// Component for a full Tier
 function TierSection({
   tier,
   onPromote,
@@ -106,12 +104,10 @@ function TierSection({
       transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
       className="relative flex flex-col items-center w-full my-8"
     >
-      {/* Tier Title */}
       <div className="text-xl font-bold text-[var(--color-scout-blue-light)] mb-8 bg-[var(--color-scout-navy)] px-6 py-2 rounded-full border border-[var(--color-dark-border)] shadow-[0_0_15px_rgba(0,0,0,0.5)] z-20">
         {tier.title}
       </div>
 
-      {/* Members Container */}
       <div className="flex justify-center gap-4 sm:gap-6 relative z-10 w-full flex-wrap max-w-6xl px-2 sm:px-4">
         {tier.members.map((node) => (
           <NodeWithSubordinates
@@ -124,18 +120,98 @@ function TierSection({
         ))}
       </div>
 
-      {/* Vertical connection line to next tier */}
       <div className="absolute top-[100%] w-px h-16 bg-gradient-to-b from-[var(--color-scout-blue)] to-transparent opacity-50 -z-10" />
     </motion.div>
   );
 }
 
-export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear?: number; hideTabs?: boolean }) {
-  const [currentYear, setCurrentYear] = useState(defaultYear);
+// Format DB data into the structure ClanTree expects
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function formatTreeData(dbData: any[]) {
+  return dbData.map(yearGroup => {
+    // We need to re-attach subordinates manually by heuristics based on roles.
+    const rebuiltTiers = JSON.parse(JSON.stringify(yearGroup.tiers));
+    
+    // Process Auxiliary: Leaders have assistants
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const aux = rebuiltTiers.auxiliary.members as any[];
+    const auxLeaders = aux.filter(m => !m.role.includes("مساعد"));
+    const auxAssists = aux.filter(m => m.role.includes("مساعد"));
+    
+    auxLeaders.forEach(leader => {
+      leader.subordinates = [];
+      const roleBase = leader.role.replace("قائد ", "");
+      const assist = auxAssists.find(a => a.role === `مساعد ${roleBase}`);
+      if (assist) {
+        leader.subordinates.push(assist);
+      }
+    });
+    rebuiltTiers.auxiliary.members = auxLeaders;
+    
+    // Process Management: Raht Leaders have Deputies
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const man = rebuiltTiers.management.members as any[];
+    const manLeaders = man.filter(m => m.role.includes("رائد"));
+    const manDeputies = man.filter(m => m.role.includes("وكيل"));
+    
+    manLeaders.forEach(leader => {
+      leader.subordinates = [];
+      // Example matching: "رائد رهط الفايكنج" with "وكيل رهط الفايكنج"
+      const roleBase = leader.role.replace("رائد ", "");
+      const deputy = manDeputies.find(d => d.role === `وكيل ${roleBase}`);
+      if (deputy) {
+        leader.subordinates.push(deputy);
+      }
+    });
+    rebuiltTiers.management.members = manLeaders;
+
+    // Order High Council so Leader is in middle
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const hc = rebuiltTiers.highCouncil.members as any[];
+    // Target order (rough): Assist, Senior Rover, Leader, Guide Leader, Senior Guide
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const orderedHc: any[] = [];
+    const getByRole = (r: string) => hc.find(m => m.role === r);
+    const assistL = getByRole("مساعد قائد العشيرة");
+    const sr = getByRole("الرائد الأكبر");
+    const leader = getByRole("قائد العشيرة");
+    const gl = getByRole("قائدة الجوالات");
+    const sg = getByRole("الرائدة الكبرى");
+
+    if (assistL) orderedHc.push(assistL);
+    if (sr) orderedHc.push(sr);
+    if (leader) orderedHc.push(leader);
+    if (gl) orderedHc.push(gl);
+    if (sg) orderedHc.push(sg);
+    
+    // Add any missing
+    hc.forEach(m => {
+      if (!orderedHc.find(om => om.person.id === m.person.id)) {
+        orderedHc.push(m);
+      }
+    });
+    
+    rebuiltTiers.highCouncil.members = orderedHc;
+
+    return {
+      year: yearGroup.year,
+      tiers: rebuiltTiers
+    };
+  });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function ClanTree({ dbData = [], defaultYear, hideTabs = false }: { dbData?: any[], defaultYear?: number; hideTabs?: boolean }) {
+  const treeData = formatTreeData(dbData);
+  const initialYear = defaultYear || (treeData.length > 0 ? treeData[0].year : new Date().getFullYear());
+  
+  const [currentYear, setCurrentYear] = useState(initialYear);
   const [clickedId, setClickedId] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const activeData = clanTreeData.find((d) => d.year === currentYear) || clanTreeData[0];
+  const activeData = treeData.find((d) => d.year === currentYear) || treeData[0];
+
+  if (!activeData) return <div className="text-center text-white py-10">لا يوجد بيانات لعرض الهيكل.</div>;
 
   const handlePromote = (targetYear: number, personId: string) => {
     if (isAnimating) return;
@@ -151,10 +227,9 @@ export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear
 
   return (
     <div className="flex flex-col items-center min-h-[80vh] py-12 w-full px-4 overflow-x-hidden">
-      {/* Timeline Tabs */}
-      {!hideTabs && (
+      {!hideTabs && treeData.length > 0 && (
         <div className="mb-20 bg-white/5 backdrop-blur-md p-2 rounded-full border border-white/10 flex items-center justify-center gap-2">
-          {clanTreeData.map((data) => (
+          {treeData.map((data) => (
             <button
               key={data.year}
               className={cn(
@@ -176,7 +251,6 @@ export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear
         </div>
       )}
 
-      {/* Main Tree Container */}
       <div className="relative w-full pb-12 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
@@ -186,7 +260,6 @@ export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.2 } }}
           >
-            {/* 1. High Council (Forced Single Row) */}
             <TierSection
               tier={activeData.tiers.highCouncil}
               onPromote={handlePromote}
@@ -195,7 +268,6 @@ export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear
               forceSingleRow={true}
             />
 
-            {/* 2. Auxiliary (Leaders with Assistants below them) */}
             <TierSection
               tier={activeData.tiers.auxiliary}
               onPromote={handlePromote}
@@ -203,7 +275,6 @@ export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear
               isFadingOut={!!clickedId}
             />
 
-            {/* 3. Management (Raht Leaders with Deputies below them) */}
             <TierSection
               tier={activeData.tiers.management}
               onPromote={handlePromote}
@@ -211,7 +282,6 @@ export function ClanTree({ defaultYear = 2024, hideTabs = false }: { defaultYear
               isFadingOut={!!clickedId}
             />
 
-            {/* 4. Base (Rovers & Candidates) */}
             <TierSection
               tier={activeData.tiers.base}
               onPromote={handlePromote}

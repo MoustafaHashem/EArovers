@@ -1,10 +1,3 @@
-import { Cairo } from "next/font/google";
-
-const cairo = Cairo({
-  variable: "--font-cairo",
-  subsets: ["arabic", "latin"],
-});
-
 export default function AuthLayout({
   children,
 }: {

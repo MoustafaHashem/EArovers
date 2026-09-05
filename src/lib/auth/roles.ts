@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/lib/prisma";
 
 export type UserRole = "scout" | "admin";
 
@@ -10,11 +11,9 @@ export async function getCurrentUser() {
 
   if (!user) return null;
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
+  const profile = await prisma.profile.findUnique({
+    where: { id: user.id }
+  });
 
   return {
     ...user,
@@ -30,11 +29,10 @@ export async function getUserRole(): Promise<UserRole | null> {
 
   if (!user) return null;
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
+  const profile = await prisma.profile.findUnique({
+    where: { id: user.id },
+    select: { role: true }
+  });
 
   return (profile?.role as UserRole) || "scout";
 }

@@ -112,7 +112,7 @@ export function Navbar() {
 
     // Set initial hash
     if (window.location.hash) {
-      setActiveHash(window.location.hash);
+      setTimeout(() => setActiveHash(window.location.hash), 0);
     }
 
     return () => {

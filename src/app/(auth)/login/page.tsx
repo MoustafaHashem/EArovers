@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { LogIn, Eye, EyeOff, AlertCircle, Loader2, ArrowRight } from "lucide-react";
+import { LogIn, ArrowRight, AlertCircle, Eye, EyeOff, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { loginFormSchema, type LoginFormData } from "@/lib/validations";
 import { createClient } from "@/lib/supabase/client";
 
@@ -57,7 +58,7 @@ export default function LoginPage() {
       }
 
       // Redirect to dashboard on success
-      window.location.href = "/dashboard";
+      window.location.assign("/dashboard");
     } catch {
       setErrorMessage("حدث خطأ غير متوقع. حاول مرة أخرى.");
       setFormState("error");
@@ -70,13 +71,13 @@ export default function LoginPage() {
       <div className="absolute top-0 left-0 w-32 h-32 bg-[var(--color-scout-blue)] rounded-full blur-[80px] opacity-20" />
 
       {/* Back to home */}
-      <a
+      <Link
         href="/"
         className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm mb-8 relative z-10"
       >
         <ArrowRight size={16} />
         <span>العودة للرئيسية</span>
-      </a>
+      </Link>
 
       {/* Header */}
       <div className="text-center mb-8 relative z-10">

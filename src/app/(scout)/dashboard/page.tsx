@@ -1,6 +1,8 @@
 import { requireAuth } from "@/lib/auth/roles";
 import { prisma } from "@/lib/prisma";
-import { Calendar, Award, User, LogOut } from "lucide-react";
+import { LogOut, Calendar, Award, User } from "lucide-react";
+import Link from "next/link";
+import { DashboardActions } from "./DashboardActions";
 
 export const metadata = {
   title: "لوحة الجوال | جوالة هندسة عين شمس",
@@ -9,31 +11,25 @@ export const metadata = {
 export default async function ScoutDashboardPage() {
   const user = await requireAuth();
   
-  // Try to fetch user's events from DB
-  let upcomingEvents = [];
-  try {
-    upcomingEvents = await prisma.event.findMany({
-      where: {
-        participants: {
-          some: { profileId: user.id }
-        },
-        startDate: { gte: new Date() }
+  const upcomingEvents = await prisma.event.findMany({
+    where: {
+      participants: {
+        some: { profileId: user.id }
       },
-      orderBy: { startDate: "asc" },
-      take: 3
-    });
-  } catch (error) {
-    console.error("DB connection failed for Scout Dashboard:", error);
-    // Mock data for UI
-    upcomingEvents = [
-      {
-        id: "mock-1",
-        title: "معسكر إعداد قادة",
-        startDate: new Date(Date.now() + 86400000 * 3),
-        location: "الكشافة البحرية - الجيزة"
-      }
-    ] as any;
-  }
+      startDate: { gte: new Date() }
+    },
+    orderBy: { startDate: "asc" },
+    take: 3
+  });
+
+  const allShields = await prisma.shield.findMany({
+    orderBy: { sortOrder: "asc" }
+  });
+
+  const userShields = await prisma.userShield.findMany({
+    where: { profileId: user.id },
+    include: { shield: true }
+  });
 
   return (
     <div className="min-h-screen bg-[var(--color-dark-bg)] text-white p-6 md:p-10 font-sans">
@@ -52,18 +48,13 @@ export default async function ScoutDashboardPage() {
               <p className="text-gray-400 text-sm">{user.profile?.academicYear || "عضو في العشيرة"}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {user.profile?.role === "admin" && (
-              <a href="/admin" className="px-5 py-2 rounded-xl bg-purple-500/20 text-purple-400 font-bold border border-purple-500/30 hover:bg-purple-500/30 transition-colors">
+              <Link href="/admin" className="px-5 py-2 rounded-xl bg-purple-500/20 text-purple-400 font-bold border border-purple-500/30 hover:bg-purple-500/30 transition-colors shadow-[0_0_15px_rgba(168,85,247,0.15)]">
                 لوحة الإدارة
-              </a>
+              </Link>
             )}
-            <form action="/auth/signout" method="POST">
-              <button type="submit" className="flex items-center gap-2 px-5 py-2 rounded-xl bg-white/5 text-gray-300 font-medium hover:bg-white/10 hover:text-white transition-colors border border-[var(--color-dark-border)]">
-                <LogOut size={18} />
-                خروج
-              </button>
-            </form>
+            <DashboardActions />
           </div>
         </header>
 
@@ -72,7 +63,7 @@ export default async function ScoutDashboardPage() {
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Upcoming Events */}
-            <section className="glass-card rounded-2xl p-6 border border-[var(--color-dark-border)]">
+            <section className="glass-card rounded-2xl p-6 border border-[var(--color-scout-blue)]/20 shadow-[0_0_30px_rgba(40,160,255,0.05)]">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <Calendar className="text-[var(--color-scout-blue)]" />
@@ -87,6 +78,7 @@ export default async function ScoutDashboardPage() {
                     لم تقم بالتسجيل في أي فعاليات قادمة
                   </div>
                 ) : (
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   upcomingEvents.map((event: any) => (
                     <div key={event.id} className="flex flex-col sm:flex-row gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-transparent hover:border-[var(--color-dark-border)]">
                       <div className="w-16 h-16 rounded-xl bg-[var(--color-dark-bg)] border border-[var(--color-dark-border)] flex flex-col items-center justify-center shrink-0">
@@ -109,26 +101,54 @@ export default async function ScoutDashboardPage() {
             </section>
 
             {/* Progress / Shields */}
-            <section className="glass-card rounded-2xl p-6 border border-[var(--color-dark-border)]">
+            <section className="glass-card rounded-2xl p-6 border border-[var(--color-scout-blue)]/20 shadow-[0_0_30px_rgba(40,160,255,0.05)]">
               <h2 className="text-xl font-bold flex items-center gap-2 mb-6">
                 <Award className="text-[var(--color-scout-blue)]" />
-                تقدمك الكشفي
+                تقدمك الكشفي (الدروع)
               </h2>
-              <div className="text-center py-10 px-4 bg-white/5 rounded-xl border border-dashed border-[var(--color-dark-border)]">
-                <div className="w-16 h-16 mx-auto mb-4 bg-[var(--color-dark-bg)] rounded-full flex items-center justify-center border-2 border-[var(--color-dark-border)] text-gray-500">
-                  <Award size={32} />
-                </div>
-                <h3 className="text-lg font-bold text-gray-300 mb-2">قريباً: نظام التقدم والدروع</h3>
-                <p className="text-gray-500 text-sm max-w-sm mx-auto">
-                  ستتمكن قريباً من متابعة تقدمك في الحصول على الدروع الكشفية والشارات من خلال هذه اللوحة.
-                </p>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {allShields.map(shield => {
+                  const earned = userShields.find(us => us.shieldId === shield.id);
+                  return (
+                    <div 
+                      key={shield.id}
+                      className={`p-4 rounded-xl border flex flex-col items-center text-center transition-all ${
+                        earned 
+                          ? "bg-[var(--color-scout-blue)]/10 border-[var(--color-scout-blue)]/30" 
+                          : "bg-white/5 border-transparent grayscale opacity-50"
+                      }`}
+                    >
+                      <div className={`w-12 h-12 rounded-full mb-3 flex items-center justify-center ${
+                        earned ? "bg-[var(--color-scout-blue)]/20 text-[var(--color-scout-blue)]" : "bg-black/20 text-gray-500"
+                      }`}>
+                        <Award size={24} />
+                      </div>
+                      <h3 className={`font-bold text-sm mb-1 ${earned ? "text-white" : "text-gray-400"}`}>{shield.name}</h3>
+                      {earned ? (
+                        <span className="text-[10px] text-[var(--color-scout-blue-light)] mt-auto pt-2 border-t border-[var(--color-scout-blue)]/20 w-full block">
+                          تم الحصول عليه
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-gray-500 mt-auto pt-2 border-t border-white/5 w-full block">
+                          قفل
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+                {allShields.length === 0 && (
+                  <div className="col-span-full text-center py-8 text-gray-500 bg-white/5 rounded-xl border border-dashed border-[var(--color-dark-border)]">
+                    لا توجد دروع متاحة حالياً
+                  </div>
+                )}
               </div>
             </section>
           </div>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <div className="glass-card rounded-2xl p-6 border border-[var(--color-dark-border)]">
+            <div className="glass-card rounded-2xl p-6 border border-[var(--color-scout-blue)]/20 shadow-[0_0_30px_rgba(40,160,255,0.05)]">
               <h3 className="font-bold mb-4 flex items-center gap-2">
                 <User size={18} className="text-gray-400" />
                 الملف الشخصي
@@ -151,9 +171,9 @@ export default async function ScoutDashboardPage() {
                   <span className="font-medium text-gray-300" dir="ltr">{user.profile?.phone || "—"}</span>
                 </div>
               </div>
-              <button className="w-full mt-6 py-2 rounded-xl bg-white/5 text-sm font-medium hover:bg-white/10 transition-colors border border-[var(--color-dark-border)]">
+              <Link href="/dashboard/edit" className="flex items-center justify-center gap-2 mt-6 w-full px-6 py-3 rounded-xl bg-[var(--color-scout-blue)]/20 border border-[var(--color-scout-blue)]/30 text-[var(--color-scout-blue-light)] font-bold hover:bg-[var(--color-scout-blue)]/30 transition-all shadow-[0_0_15px_rgba(40,160,255,0.2)]">
                 تعديل البيانات
-              </button>
+              </Link>
             </div>
           </div>
           

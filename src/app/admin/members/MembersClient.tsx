@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Search, ShieldAlert, UserCog, MoreVertical, Shield } from "lucide-react";
-import { updateUserRole } from "./actions";
+import { Search, ShieldAlert, UserCog, MoreVertical, Shield, Star } from "lucide-react";
+import { updateUserRole, awardShield } from "./actions";
 import { UserRole } from "@prisma/client";
+import { toast } from "sonner";
+
+type ShieldType = { id: string; name: string };
 
 type Profile = {
   id: string;
@@ -14,10 +17,13 @@ type Profile = {
   createdAt: Date;
 };
 
-export default function MembersClient({ initialMembers }: { initialMembers: Profile[] }) {
+export default function MembersClient({ initialMembers, initialShields = [] }: { initialMembers: Profile[], initialShields?: ShieldType[] }) {
   const [members, setMembers] = useState(initialMembers);
   const [search, setSearch] = useState("");
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  
+  const [awardingTo, setAwardingTo] = useState<string | null>(null);
+  const [selectedShield, setSelectedShield] = useState<string>("");
 
   const filteredMembers = members.filter(m => 
     m.fullName.toLowerCase().includes(search.toLowerCase()) || 
@@ -31,14 +37,42 @@ export default function MembersClient({ initialMembers }: { initialMembers: Prof
     setMembers(prev => prev.map(m => m.id === id ? { ...m, role: newRole as UserRole } : m));
     setLoadingId(id);
     
-    const result = await updateUserRole(id, newRole);
+    const promise = updateUserRole(id, newRole);
     
-    if (!result.success) {
-      // Revert on failure
-      setMembers(prev => prev.map(m => m.id === id ? { ...m, role: currentRole } : m));
-      alert("فشل تحديث الصلاحية");
-    }
+    toast.promise(promise, {
+      loading: "جاري تغيير الصلاحية...",
+      success: (result) => {
+        if (!result.success) throw new Error(result.error);
+        return "تم تغيير الصلاحية بنجاح";
+      },
+      error: () => {
+        setMembers(prev => prev.map(m => m.id === id ? { ...m, role: currentRole } : m));
+        return "فشل تحديث الصلاحية";
+      }
+    });
+
+    await promise;
+    setLoadingId(null);
+  };
+
+  const handleAwardShield = async (id: string) => {
+    if (!selectedShield) return;
+    setLoadingId(id);
     
+    const promise = awardShield(id, selectedShield);
+    
+    toast.promise(promise, {
+      loading: "جاري منح الدرع...",
+      success: (result) => {
+        if (!result.success) throw new Error(result.error);
+        setAwardingTo(null);
+        setSelectedShield("");
+        return "تم منح الدرع بنجاح";
+      },
+      error: (err) => err.message || "فشل منح الدرع"
+    });
+
+    await promise;
     setLoadingId(null);
   };
 
@@ -108,18 +142,52 @@ export default function MembersClient({ initialMembers }: { initialMembers: Prof
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <button
-                        onClick={() => handleRoleChange(member.id, member.role)}
-                        disabled={loadingId === member.id}
-                        className="text-gray-400 hover:text-white disabled:opacity-50 transition-colors"
-                        title="تغيير الصلاحية"
-                      >
-                        {loadingId === member.id ? (
-                          <div className="w-5 h-5 border-2 border-t-[var(--color-scout-blue)] border-white/20 rounded-full animate-spin" />
-                        ) : (
-                          <ShieldAlert size={18} />
+                      <div className="flex items-center gap-2 relative">
+                        <button
+                          onClick={() => handleRoleChange(member.id, member.role)}
+                          disabled={loadingId === member.id}
+                          className="p-2 text-gray-400 hover:text-white disabled:opacity-50 transition-colors bg-white/5 rounded-lg"
+                          title="تغيير الصلاحية"
+                        >
+                          {loadingId === member.id ? (
+                            <div className="w-4 h-4 border-2 border-t-[var(--color-scout-blue)] border-white/20 rounded-full animate-spin" />
+                          ) : (
+                            <ShieldAlert size={16} />
+                          )}
+                        </button>
+                        
+                        {initialShields.length > 0 && (
+                          <div className="relative">
+                            <button
+                              onClick={() => setAwardingTo(awardingTo === member.id ? null : member.id)}
+                              className="p-2 text-gray-400 hover:text-yellow-400 hover:bg-yellow-400/10 rounded-lg transition-colors bg-white/5"
+                              title="منح درع"
+                            >
+                              <Star size={16} />
+                            </button>
+                            
+                            {awardingTo === member.id && (
+                              <div className="absolute top-10 right-0 z-50 w-48 bg-[var(--color-dark-bg)] border border-[var(--color-dark-border)] rounded-xl p-3 shadow-xl">
+                                <h4 className="text-xs font-bold text-gray-400 mb-2">اختر الدرع:</h4>
+                                <select 
+                                  className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-lg text-sm text-white p-2 mb-2 focus:outline-none focus:border-[var(--color-scout-blue)]"
+                                  value={selectedShield}
+                                  onChange={(e) => setSelectedShield(e.target.value)}
+                                >
+                                  <option value="">-- اختر درع --</option>
+                                  {initialShields.map(s => (
+                                    <option key={s.id} value={s.id}>{s.name}</option>
+                                  ))}
+                                </select>
+                                <div className="flex gap-2">
+                                  <button onClick={() => handleAwardShield(member.id)} disabled={!selectedShield || loadingId === member.id} className="flex-1 bg-[var(--color-scout-blue)] text-white text-xs font-bold py-1.5 rounded-lg hover:bg-blue-600 disabled:opacity-50 transition-colors">منح</button>
+                                  <button onClick={() => setAwardingTo(null)} className="flex-1 bg-white/10 text-gray-300 text-xs py-1.5 rounded-lg hover:bg-white/20 transition-colors">إلغاء</button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         )}
-                      </button>
+                      </div>
                     </td>
                   </tr>
                 ))
