@@ -2,17 +2,17 @@
 
 @theme {
   --font-cairo: var(--font-cairo);
-  
+
   --color-scout-navy: #0A192F;
   --color-scout-navy-light: #112240;
   --color-scout-blue: #5C7CB6;
   --color-scout-blue-light: #7CA1E6;
   --color-anchor: #1B3A6B;
-  
+
   --color-dark-bg: var(--color-scout-navy);
   --color-dark-card: rgba(17, 34, 64, 0.7);
   --color-dark-border: rgba(92, 124, 182, 0.2);
-  
+
   --color-glow-cyan: var(--color-scout-blue-light);
   --color-glow-gold: #ffd700;
 }
@@ -23,8 +23,14 @@
 }
 
 body {
-  background: var(--background);
-  background-image: radial-gradient(circle at 50% -20%, var(--color-scout-navy-light) 0%, var(--color-scout-navy) 70%);
+  background-color: #030712; /* Very deep slate */
+  background-image: 
+    conic-gradient(from 180deg at 50% -20%, rgba(27, 58, 107, 0.6) 0deg, transparent 60deg, transparent 300deg, rgba(27, 58, 107, 0.6) 360deg),
+    radial-gradient(ellipse at 50% 0%, rgba(92, 124, 182, 0.25) 0%, transparent 70%),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 100% 100%, 36px 36px;
+  background-position: center top, center top, center center;
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-cairo), sans-serif;
   min-height: 100vh;
