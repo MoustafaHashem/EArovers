@@ -9,13 +9,31 @@ import Link from "next/link";
 
 // Standard brand SVGs
 const FacebookIcon = ({ size = 20 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
   </svg>
 );
 
 const InstagramIcon = ({ size = 20 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -23,21 +41,39 @@ const InstagramIcon = ({ size = 20 }: { size?: number }) => (
 );
 
 const YoutubeIcon = ({ size = 20 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
     <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
   </svg>
 );
 
 const CloudIcon = ({ size = 20 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path>
   </svg>
 );
 
 const navLinks = [
   { href: "/", label: "الرئيسية" },
-  { href: "/#shields", label: "الدروع" },
+  { href: "/daro3", label: "الدروع" },
   { href: "/#media", label: "الميديا" },
   { href: "/#fame", label: "الشرف" },
   { href: "/#sessions", label: "التأهيل" },
@@ -100,7 +136,7 @@ export function Navbar() {
           }
         }
       },
-      { rootMargin: "-20% 0px -40% 0px", threshold: 0 }
+      { rootMargin: "-20% 0px -40% 0px", threshold: 0 },
     );
 
     sectionElements.forEach((section) => observer.observe(section));
@@ -125,18 +161,20 @@ export function Navbar() {
   // Update pill position whenever activeHash or pathname changes
   useEffect(() => {
     if (!navRef.current) return;
-    
+
     // We added data-active="true" to the currently active Link
-    const activeEl = navRef.current.querySelector('[data-active="true"]') as HTMLElement;
-    
+    const activeEl = navRef.current.querySelector(
+      '[data-active="true"]',
+    ) as HTMLElement;
+
     if (activeEl) {
       setPillStyle({
         left: activeEl.offsetLeft,
         width: activeEl.offsetWidth,
-        opacity: 1
+        opacity: 1,
       });
     } else {
-      setPillStyle(prev => ({ ...prev, opacity: 0 }));
+      setPillStyle((prev) => ({ ...prev, opacity: 0 }));
     }
   }, [activeHash, pathname, isScrolled]);
 
@@ -148,20 +186,30 @@ export function Navbar() {
           "pointer-events-auto transition-colors duration-500 rounded-full",
           isScrolled
             ? "bg-[var(--color-scout-navy)]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] border border-white/10 px-6 py-3"
-            : "bg-transparent px-6 py-3 w-full max-w-7xl"
+            : "bg-transparent px-6 py-3 w-full max-w-7xl",
         )}
       >
-        <div className={cn("flex items-center", isScrolled ? "justify-center gap-8" : "w-full")}>
-          
+        <div
+          className={cn(
+            "flex items-center",
+            isScrolled ? "justify-center gap-8" : "w-full",
+          )}
+        >
           {/* Left Side (Logo) */}
-          <motion.div layout className={cn("flex items-center", isScrolled ? "" : "flex-1 justify-start")}>
+          <motion.div
+            layout
+            className={cn(
+              "flex items-center",
+              isScrolled ? "" : "flex-1 justify-start",
+            )}
+          >
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(92,124,182,0.4)] group-hover:shadow-[0_0_25px_rgba(92,124,182,0.7)] text-white font-black text-lg transition-all duration-300 shrink-0">
                 ج
               </div>
               <AnimatePresence>
                 {!isScrolled && (
-                  <motion.span 
+                  <motion.span
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: "auto" }}
                     exit={{ opacity: 0, width: 0 }}
@@ -175,14 +223,18 @@ export function Navbar() {
           </motion.div>
 
           {/* Center (Desktop Navigation) */}
-          <motion.div layout ref={navRef} className="hidden lg:flex relative items-center gap-2 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md">
+          <motion.div
+            layout
+            ref={navRef}
+            className="hidden lg:flex relative items-center gap-2 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md"
+          >
             {/* The pure CSS sliding pill */}
-            <div 
+            <div
               className="absolute top-1 bottom-1 bg-[var(--color-glow-cyan)] rounded-full shadow-[0_0_15px_var(--color-glow-cyan)] pointer-events-none transition-all duration-300 ease-out z-0"
               style={{
                 left: `${pillStyle.left}px`,
                 width: `${pillStyle.width}px`,
-                opacity: pillStyle.opacity
+                opacity: pillStyle.opacity,
               }}
             />
             {navLinks.map((link) => {
@@ -192,7 +244,8 @@ export function Navbar() {
 
               let isActive = false;
               if (isHashLink) {
-                isActive = pathname === routePart && activeHash === `#${hashPart}`;
+                isActive =
+                  pathname === routePart && activeHash === `#${hashPart}`;
               } else {
                 isActive = pathname === link.href && activeHash === "";
               }
@@ -203,19 +256,23 @@ export function Navbar() {
                   href={link.href}
                   data-active={isActive}
                   onClick={(e) => {
-                    const isSamePageHome = link.href === "/" && pathname === "/";
-                    
+                    const isSamePageHome =
+                      link.href === "/" && pathname === "/";
+
                     if (isHashLink || isSamePageHome) {
                       e.preventDefault();
                       setIsScrollingToHash(true);
-                      
+
                       let targetPosition = 0;
-                      
+
                       if (isHashLink) {
                         setActiveHash(`#${hashPart}`);
                         const targetElement = document.getElementById(hashPart);
                         if (targetElement) {
-                          targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - 100;
+                          targetPosition =
+                            targetElement.getBoundingClientRect().top +
+                            window.scrollY -
+                            100;
                         } else {
                           // If target doesn't exist, just unpause and let it be
                           setIsScrollingToHash(false);
@@ -225,36 +282,46 @@ export function Navbar() {
                         window.history.pushState(null, "", `#${hashPart}`);
                       } else {
                         setActiveHash("");
-                        window.history.pushState(null, "", window.location.pathname);
+                        window.history.pushState(
+                          null,
+                          "",
+                          window.location.pathname,
+                        );
                       }
-                      
+
                       const startPosition = window.scrollY;
                       const distance = targetPosition - startPosition;
                       const duration = 600; // 600ms fast glide
                       let start: number | null = null;
 
-                      const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+                      const easeOutQuart = (t: number) =>
+                        1 - Math.pow(1 - t, 4);
 
                       const step = (timestamp: number) => {
                         if (!start) start = timestamp;
                         const progress = timestamp - start;
                         const percent = Math.min(progress / duration, 1);
-                        
-                        window.scrollTo(0, startPosition + distance * easeOutQuart(percent));
-                        
+
+                        window.scrollTo(
+                          0,
+                          startPosition + distance * easeOutQuart(percent),
+                        );
+
                         if (progress < duration) {
                           window.requestAnimationFrame(step);
                         }
                       };
                       window.requestAnimationFrame(step);
-                      
+
                       // Unpause observer after scroll finishes
                       setTimeout(() => setIsScrollingToHash(false), 800);
                     }
                   }}
                   className={cn(
                     "relative px-4 py-2 rounded-full text-sm font-bold transition-colors duration-300 z-10",
-                    isActive ? "text-[var(--color-scout-navy)]" : "text-gray-300 hover:text-white hover:bg-white/10"
+                    isActive
+                      ? "text-[var(--color-scout-navy)]"
+                      : "text-gray-300 hover:text-white hover:bg-white/10",
                   )}
                 >
                   <span className="relative z-10">{link.label}</span>
@@ -264,7 +331,13 @@ export function Navbar() {
           </motion.div>
 
           {/* Right Side (Actions) */}
-          <motion.div layout className={cn("flex items-center", isScrolled ? "" : "flex-1 justify-end mr-8")}>
+          <motion.div
+            layout
+            className={cn(
+              "flex items-center",
+              isScrolled ? "" : "flex-1 justify-end mr-8",
+            )}
+          >
             <AnimatePresence>
               {!isScrolled && (
                 <motion.div
@@ -276,16 +349,40 @@ export function Navbar() {
                 >
                   {/* Social Icons */}
                   <div className="flex items-center gap-3 px-2">
-                    <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
+                    <a
+                      href="https://www.facebook.com/scoutingteam.eas"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-[#1877F2] transition-colors"
+                      title="Facebook"
+                    >
                       <FacebookIcon size={18} />
                     </a>
-                    <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-colors" title="Instagram">
+                    <a
+                      href="https://www.instagram.com/eng_asu_rovers/?hl=en"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-[#E4405F] transition-colors"
+                      title="Instagram"
+                    >
                       <InstagramIcon size={18} />
                     </a>
-                    <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF0000] transition-colors" title="YouTube">
+                    <a
+                      href="https://www.youtube.com/@eng_asurovers3282/featured"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-[#FF0000] transition-colors"
+                      title="YouTube"
+                    >
                       <YoutubeIcon size={18} />
                     </a>
-                    <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#ff5500] transition-colors" title="SoundCloud">
+                    <a
+                      href="https://m.soundcloud.com/eng_asu-rovers"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-400 hover:text-[#ff5500] transition-colors"
+                      title="SoundCloud"
+                    >
                       <CloudIcon size={18} />
                     </a>
                   </div>
@@ -374,7 +471,8 @@ export function Navbar() {
 
                   let isActive = false;
                   if (isHashLink) {
-                    isActive = pathname === routePart && activeHash === `#${hashPart}`;
+                    isActive =
+                      pathname === routePart && activeHash === `#${hashPart}`;
                   } else {
                     isActive = pathname === link.href && activeHash === "";
                   }
@@ -396,7 +494,7 @@ export function Navbar() {
                           "block w-full text-right px-4 py-3 rounded-xl font-bold transition-colors",
                           isActive
                             ? "bg-[var(--color-scout-blue)]/20 text-[var(--color-scout-blue-light)] border border-[var(--color-scout-blue)]/30"
-                            : "text-gray-300 hover:bg-white/5 hover:text-white"
+                            : "text-gray-300 hover:bg-white/5 hover:text-white",
                         )}
                       >
                         {link.label}
@@ -410,16 +508,40 @@ export function Navbar() {
               <div className="p-4 border-t border-[var(--color-dark-border)] space-y-4">
                 {/* Social Icons - Mobile */}
                 <div className="flex items-center justify-center gap-6 py-2">
-                  <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
+                  <a
+                    href="https://www.facebook.com/scoutingteam.eas"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-[#1877F2] transition-colors"
+                    title="Facebook"
+                  >
                     <FacebookIcon size={22} />
                   </a>
-                  <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-colors" title="Instagram">
+                  <a
+                    href="https://www.instagram.com/eng_asu_rovers/?hl=en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-[#E4405F] transition-colors"
+                    title="Instagram"
+                  >
                     <InstagramIcon size={22} />
                   </a>
-                  <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF0000] transition-colors" title="YouTube">
+                  <a
+                    href="https://www.youtube.com/@eng_asurovers3282/featured"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-[#FF0000] transition-colors"
+                    title="YouTube"
+                  >
                     <YoutubeIcon size={22} />
                   </a>
-                  <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#ff5500] transition-colors" title="SoundCloud">
+                  <a
+                    href="https://m.soundcloud.com/eng_asu-rovers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-[#ff5500] transition-colors"
+                    title="SoundCloud"
+                  >
                     <CloudIcon size={22} />
                   </a>
                 </div>

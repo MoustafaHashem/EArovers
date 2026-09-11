@@ -52,14 +52,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Scout Shields */}
+      {/* Scout Shields
       <section id="shields" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)] bg-gradient-to-b from-transparent to-black/30">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">الدروع الكشفية ومجالات التنافس</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">تغطي أنشطة الجوالة مجالات متعددة لبناء شخصية متكاملة</p>
         </div>
         <ScoutShields />
-      </section>
+      </section> */}
 
       {/* Media Gallery */}
       <section id="media" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)] bg-black/40 backdrop-blur-sm">
