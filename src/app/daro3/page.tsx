@@ -1,87 +1,122 @@
 "use client";
+
+import { useState, useMemo } from "react";
+import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Identity } from "@/components/Identity";
-import { useState, useMemo } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { BADGES_DATA } from "../../data/badges";
-export default function BadgesPage() {
+import { BADGES_DATA } from "@/data/badges";
+
+export default function Daro3Page() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedBadge, setSelectedBadge] = useState<any | null>(null);
 
   const filteredBadges = useMemo(() => {
     return BADGES_DATA.filter((badge) =>
       badge.title.toLowerCase().includes(searchQuery.trim().toLowerCase()),
     );
   }, [searchQuery]);
+
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[var(--color-scout-navy)]">
+    <div className="min-h-screen flex flex-col justify-between bg-[#070E1B] text-white dir-rtl">
       <Navbar />
 
-      <main className="flex-1 pt-28 pb-16">
-        {/* Header Section */}
-        <header className="max-w-5xl mx-auto text-center mb-10">
-          <h1 className="text-3xl md:text-5xl font-bold text-amber-500 mb-2">
-            عشيرة جوالة هندسة
-          </h1>
-          <p className="text-lg text-slate-300">
-            الدروع الكشفية ومجالات التنافس
-          </p>
-        </header>
-
-        {/* Search Input */}
-        <div className="max-w-xl mx-auto mb-12">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="ابحث عن أي درع..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-3 px-5 pr-12 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:border-amber-500 transition-colors"
-            />
-            <svg
-              className="w-6 h-6 absolute right-4 top-3.5 text-slate-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <main className="flex-1 pt-28 pb-16 px-6 max-w-7xl mx-auto w-full">
+        {selectedBadge ? (
+          /* ================= DETAIL VIEW (WHEN CLICKED) ================= */
+          <div className="space-y-8 animate-fadeIn">
+            <button
+              onClick={() => setSelectedBadge(null)}
+              className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-bold transition-all flex items-center gap-2"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-        </div>
+              ← العودة إلى جميع الدروع
+            </button>
 
-        {/* Badges Grid */}
-        <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-          {filteredBadges.length > 0 ? (
-            filteredBadges.map((badge) => (
-              <Link
-                key={badge.id}
-                href={`/daro3/${badge.id}`}
-                className="group bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col items-center text-center hover:border-amber-500/50 hover:bg-slate-800/60 transition-all duration-300"
-              >
-                <div className="relative w-64 h-64 mb-2 group-hover:scale-110 transition-transform">
+            {/* Selected Badge Header */}
+            <div className="flex flex-col sm:flex-row items-center gap-6 bg-[#0B1528] p-8 rounded-2xl border border-white/10 text-center sm:text-right">
+              {selectedBadge.image && (
+                <div className="relative w-35 h-35 flex-shrink-0">
                   <Image
-                    src={badge.image}
-                    alt={badge.title}
+                    src={selectedBadge.image}
+                    alt={selectedBadge.title}
                     fill
                     className="object-contain"
                   />
                 </div>
-                <h3 className="font-semibold text-lg text-slate-100 group-hover:text-amber-400">
-                  {badge.title}
-                </h3>
-              </Link>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12 text-slate-400">
-              لم يتم العثور على درع بهذا الاسم.
+              )}
+              <div>
+                <h1 className="text-3xl font-black">{selectedBadge.title}</h1>
+                {selectedBadge.description && (
+                  <p className="text-gray-400 text-sm mt-2">
+                    {selectedBadge.description}
+                  </p>
+                )}
+              </div>
             </div>
-          )}
-        </div>
+
+            {/* SECTION 1 */}
+            <section className="bg-[#0B1528] p-6 rounded-2xl border border-white/10 space-y-4">
+              <h2 className="text-xl font-bold text-[var(--color-scout-blue-light)] border-b border-white/10 pb-2">
+                القسم الأول
+              </h2>
+              <div className="text-gray-400 text-sm min-h-[120px] flex items-center justify-center border border-dashed border-white/20 rounded-xl">
+                <span>محتوى القسم الأول - يمكنك إضافة تفاصيل الدرع هنا</span>
+              </div>
+            </section>
+
+            {/* SECTION 2 */}
+            <section className="bg-[#0B1528] p-6 rounded-2xl border border-white/10 space-y-4">
+              <h2 className="text-xl font-bold text-[var(--color-scout-blue-light)] border-b border-white/10 pb-2">
+                القسم الثاني
+              </h2>
+              <div className="text-gray-400 text-sm min-h-[120px] flex items-center justify-center border border-dashed border-white/20 rounded-xl">
+                <span>
+                  محتوى القسم الثاني - يمكنك إضافة المتطلبات أو الشروط هنا
+                </span>
+              </div>
+            </section>
+          </div>
+        ) : (
+          /* ================= GRID MATCHING SCREENSHOT DESIGN ================= */
+          <div className="space-y-8">
+            <div className="text-center space-y-4">
+              <h1 className="text-3xl font-black">الدروع الكشفية</h1>
+              <input
+                type="text"
+                placeholder="بحث عن درع..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full max-w-md px-4 py-2.5 rounded-xl bg-[#0B1528] border border-white/10 focus:outline-none focus:border-blue-500 text-right text-sm"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {filteredBadges.map((badge, index) => (
+                <div
+                  key={badge.id || index}
+                  onClick={() => setSelectedBadge(badge)}
+                  className="bg-[#0B1528] border border-white/10 hover:border-blue-500/50 rounded-2xl p-8 cursor-pointer transition-all hover:-translate-y-1.5 shadow-xl flex flex-col items-center justify-between min-h-[300px] group"
+                >
+                  <div className="relative w-62 h-62 my-auto flex items-center justify-center transition-transform group-hover:scale-105">
+                    {badge.image ? (
+                      <Image
+                        src={badge.image}
+                        alt={badge.title}
+                        fill
+                        className="object-contain"
+                      />
+                    ) : badge.icon ? (
+                      <span className="text-5xl">{badge.icon}</span>
+                    ) : null}
+                  </div>
+
+                  <h3 className="font-bold text-lg text-white pt-4 text-center">
+                    {badge.title}
+                  </h3>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
 
       <Identity />
