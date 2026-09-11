@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { ClanTree } from "@/components/ClanTree";
-import { ScoutShields } from "@/components/ScoutShields";
+// import { ScoutShields } from "@/components/ScoutShields";
 import { HallOfFame } from "@/components/HallOfFame";
 import { MediaGallery } from "@/components/MediaGallery";
 import { Sessions } from "@/components/Sessions";
