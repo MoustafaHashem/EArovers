@@ -58,9 +58,9 @@ export const BADGES_DATA: Badge[] = [
   },
   {
     id: "bavarians",
-    title: "الباڤيين",
+    title: "درع بحري",
     category: "خاص",
-    image: "/images/badges/bavarians.png",
-    description: "درع الباڤيين",
+    image: "/images/badges/sea.png",
+    description: "الكشافة البحرية",
   },
 ];
