@@ -63,4 +63,12 @@ export const BADGES_DATA: Badge[] = [
     image: "/images/badges/sea.png",
     description: "الكشافة البحرية",
   },
+
+  {
+    id: "environmental",
+    title: "درع بيئي",
+    category: "خاص",
+    image: "/images/badges/environmental.png",
+    description: "الكشافة البيئية",
+  },
 ];
