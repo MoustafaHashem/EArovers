@@ -62,7 +62,7 @@ export default function BadgesPage() {
               href={`/daro3/${badge.id}`}
               className="group bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col items-center text-center hover:border-amber-500/50 hover:bg-slate-800/60 transition-all duration-300"
             >
-              <div className="relative w-28 h-28 mb-4 group-hover:scale-105 transition-transform">
+              <div className="relative w-64 h-64 mb-2 group-hover:scale-110 transition-transform">
                 <Image
                   src={badge.image}
                   alt={badge.title}
