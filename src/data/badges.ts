@@ -1,3 +1,11 @@
+export interface Badge {
+  id: string;
+  title: string;
+  category: string;
+  image: string;
+  description: string;
+}
+
 export const BADGES_DATA: Badge[] = [
   {
     id: "religious",
