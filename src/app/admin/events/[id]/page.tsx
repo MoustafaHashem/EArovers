@@ -10,7 +10,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
     include: {
       participants: {
         include: {
-          profile: true,
+          member: true,
         },
       },
     },
@@ -18,9 +18,9 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
 
   if (!event) return notFound();
 
-  const allProfiles = await prisma.profile.findMany({
+  const allMembers = await prisma.member.findMany({
     orderBy: { fullName: "asc" },
   });
 
-  return <EventDetailsClient event={event} allProfiles={allProfiles} />;
+  return <EventDetailsClient event={event} allMembers={allMembers} />;
 }

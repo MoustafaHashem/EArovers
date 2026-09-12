@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 type ShieldType = { id: string; name: string };
 
-type Profile = {
+type Member = {
   id: string;
   fullName: string;
   academicYear: string | null;
@@ -17,7 +17,7 @@ type Profile = {
   createdAt: Date;
 };
 
-export default function MembersClient({ initialMembers, initialShields = [] }: { initialMembers: Profile[], initialShields?: ShieldType[] }) {
+export default function MembersClient({ initialMembers, initialShields = [] }: { initialMembers: Member[], initialShields?: ShieldType[] }) {
   const [members, setMembers] = useState(initialMembers);
   const [search, setSearch] = useState("");
   const [loadingId, setLoadingId] = useState<string | null>(null);

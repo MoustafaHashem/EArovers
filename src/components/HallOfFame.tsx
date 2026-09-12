@@ -6,8 +6,8 @@ import { Trophy, Medal, Star } from "lucide-react";
 export function HallOfFame() {
   return (
     <div className="w-full max-w-5xl mx-auto flex flex-col items-center">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-black text-white flex items-center justify-center gap-4 mb-4">
+      <div className="text-center mb-16 px-4">
+        <h2 className="text-3xl md:text-4xl font-black text-white flex items-center justify-center gap-2 md:gap-4 mb-4 text-balance">
           <Trophy className="text-[var(--color-glow-gold)]" size={40} />
           لوحة الشرف والبطولات
         </h2>

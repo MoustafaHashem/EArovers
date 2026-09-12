@@ -17,7 +17,7 @@ function NodeWithSubordinates({
   clickedId: string | null;
   isFadingOut: boolean;
 }) {
-  const isClicked = clickedId === node.person.id;
+  const isClicked = clickedId === node.member.id;
   const hasSubordinates = node.subordinates && node.subordinates.length > 0;
 
   return (
@@ -34,7 +34,7 @@ function NodeWithSubordinates({
         <PersonCard
           node={node}
           isClicked={isClicked}
-          onClick={() => node.promotesTo && onPromote(node.promotesTo, node.person.id)}
+          onClick={() => node.promotesTo && onPromote(node.promotesTo, node.member.id)}
         />
       </motion.div>
 
@@ -57,19 +57,19 @@ function NodeWithSubordinates({
             )}
 
             {node.subordinates!.map((sub) => (
-              <div key={sub.person.id} className="relative flex flex-col items-center">
+              <div key={sub.member.id} className="relative flex flex-col items-center">
                 {/* Vertical line for subordinate */}
                 <div className="absolute -top-4 w-px h-4 bg-[var(--color-scout-blue)] opacity-50" />
                 <motion.div
                   layout
                   animate={{
-                    opacity: isFadingOut && clickedId !== sub.person.id ? 0 : 1,
+                    opacity: isFadingOut && clickedId !== sub.member.id ? 0 : 1,
                   }}
                 >
                   <PersonCard
                     node={sub}
-                    isClicked={clickedId === sub.person.id}
-                    onClick={() => sub.promotesTo && onPromote(sub.promotesTo, sub.person.id)}
+                    isClicked={clickedId === sub.member.id}
+                    onClick={() => sub.promotesTo && onPromote(sub.promotesTo, sub.member.id)}
                   />
                 </motion.div>
               </div>
@@ -111,7 +111,7 @@ function TierSection({
       <div className="flex justify-center gap-4 sm:gap-6 relative z-10 w-full flex-wrap max-w-6xl px-2 sm:px-4">
         {tier.members.map((node) => (
           <NodeWithSubordinates
-            key={node.person.id}
+            key={node.member.id}
             node={node}
             onPromote={onPromote}
             clickedId={clickedId}
@@ -186,7 +186,7 @@ function formatTreeData(dbData: any[]) {
     
     // Add any missing
     hc.forEach(m => {
-      if (!orderedHc.find(om => om.person.id === m.person.id)) {
+      if (!orderedHc.find(om => om.member.id === m.member.id)) {
         orderedHc.push(m);
       }
     });
@@ -213,10 +213,10 @@ export function ClanTree({ dbData = [], defaultYear, hideTabs = false }: { dbDat
 
   if (!activeData) return <div className="text-center text-white py-10">لا يوجد بيانات لعرض الهيكل.</div>;
 
-  const handlePromote = (targetYear: number, personId: string) => {
+  const handlePromote = (targetYear: number, memberId: string) => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setClickedId(personId);
+    setClickedId(memberId);
 
     setTimeout(() => {
       setCurrentYear(targetYear);

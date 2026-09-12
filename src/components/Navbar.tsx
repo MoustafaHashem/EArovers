@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 
 // Standard brand SVGs
 const FacebookIcon = ({ size = 20 }: { size?: number }) => (
@@ -316,133 +317,117 @@ export function Navbar() {
             </AnimatePresence>
 
             {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors ml-2"
-              aria-label={isMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger 
+                render={
+                  <button
+                    className="lg:hidden w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors ml-2"
+                    aria-label="فتح القائمة"
+                  />
+                }
+              >
+                <Menu size={24} />
+              </SheetTrigger>
+              
+              <SheetContent side="right" className="bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] p-0 flex flex-col w-[300px] sm:w-[400px]">
+                <SheetTitle className="sr-only">القائمة الرئيسية</SheetTitle>
+                
+                {/* Drawer Header */}
+                <div className="flex items-center justify-between p-6 border-b border-[var(--color-dark-border)]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                      ج
+                    </div>
+                    <span className="text-white font-bold">القائمة</span>
+                  </div>
+                  <button
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors lg:hidden"
+                    aria-label="إغلاق القائمة"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                {/* Navigation Links */}
+                <div className="flex-1 py-6 px-4 flex flex-col gap-2 overflow-y-auto">
+                  {navLinks.map((link, index) => {
+                    const isHashLink = link.href.includes("#");
+                    const hashPart = isHashLink ? link.href.split("#")[1] : "";
+                    const routePart = link.href.split("#")[0] || "/";
+
+                    let isActive = false;
+                    if (isHashLink) {
+                      isActive = pathname === routePart && activeHash === `#${hashPart}`;
+                    } else {
+                      isActive = pathname === link.href && activeHash === "";
+                    }
+
+                    return (
+                      <motion.div
+                        key={link.href}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
+                        <Link
+                          href={link.href}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            if (isHashLink) setActiveHash(`#${hashPart}`);
+                          }}
+                          className={cn(
+                            "block w-full text-right px-4 py-3 rounded-xl font-bold transition-colors",
+                            isActive
+                              ? "bg-[var(--color-scout-blue)]/20 text-[var(--color-scout-blue-light)] border border-[var(--color-scout-blue)]/30"
+                              : "text-gray-300 hover:bg-white/5 hover:text-white"
+                          )}
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                {/* Drawer Footer */}
+                <div className="p-4 border-t border-[var(--color-dark-border)] space-y-4">
+                  {/* Social Icons - Mobile */}
+                  <div className="flex items-center justify-center gap-6 py-2">
+                    <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
+                      <FacebookIcon size={22} />
+                    </a>
+                    <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-colors" title="Instagram">
+                      <InstagramIcon size={22} />
+                    </a>
+                    <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF0000] transition-colors" title="YouTube">
+                      <YoutubeIcon size={22} />
+                    </a>
+                    <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#ff5500] transition-colors" title="SoundCloud">
+                      <CloudIcon size={22} />
+                    </a>
+                  </div>
+
+                  <Link
+                    href="/join"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block text-center w-full bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] py-3 rounded-xl font-bold hover:bg-[var(--color-scout-blue-light)] transition-colors"
+                  >
+                    انضم إلينا
+                  </Link>
+                  <a
+                    href="/login"
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <LogIn size={16} />
+                    <span>تسجيل الدخول</span>
+                  </a>
+                </div>
+              </SheetContent>
+            </Sheet>
           </motion.div>
         </div>
       </motion.nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-              onClick={() => setIsMenuOpen(false)}
-            />
-
-            {/* Drawer */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-72 bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] shadow-2xl z-50 lg:hidden flex flex-col"
-            >
-              {/* Drawer Header */}
-              <div className="flex items-center justify-between p-6 border-b border-[var(--color-dark-border)]">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    ج
-                  </div>
-                  <span className="text-white font-bold">القائمة</span>
-                </div>
-                <button
-                  onClick={() => setIsMenuOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors"
-                  aria-label="إغلاق القائمة"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              {/* Navigation Links */}
-              <div className="flex-1 py-6 px-4 flex flex-col gap-2 overflow-y-auto">
-                {navLinks.map((link, index) => {
-                  const isHashLink = link.href.includes("#");
-                  const hashPart = isHashLink ? link.href.split("#")[1] : "";
-                  const routePart = link.href.split("#")[0] || "/";
-
-                  let isActive = false;
-                  if (isHashLink) {
-                    isActive = pathname === routePart && activeHash === `#${hashPart}`;
-                  } else {
-                    isActive = pathname === link.href && activeHash === "";
-                  }
-
-                  return (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={() => {
-                          setIsMenuOpen(false);
-                          if (isHashLink) setActiveHash(`#${hashPart}`);
-                        }}
-                        className={cn(
-                          "block w-full text-right px-4 py-3 rounded-xl font-bold transition-colors",
-                          isActive
-                            ? "bg-[var(--color-scout-blue)]/20 text-[var(--color-scout-blue-light)] border border-[var(--color-scout-blue)]/30"
-                            : "text-gray-300 hover:bg-white/5 hover:text-white"
-                        )}
-                      >
-                        {link.label}
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Drawer Footer */}
-              <div className="p-4 border-t border-[var(--color-dark-border)] space-y-4">
-                {/* Social Icons - Mobile */}
-                <div className="flex items-center justify-center gap-6 py-2">
-                  <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
-                    <FacebookIcon size={22} />
-                  </a>
-                  <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-colors" title="Instagram">
-                    <InstagramIcon size={22} />
-                  </a>
-                  <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF0000] transition-colors" title="YouTube">
-                    <YoutubeIcon size={22} />
-                  </a>
-                  <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#ff5500] transition-colors" title="SoundCloud">
-                    <CloudIcon size={22} />
-                  </a>
-                </div>
-
-                <Link
-                  href="/join"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block text-center w-full bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] py-3 rounded-xl font-bold hover:bg-[var(--color-scout-blue-light)] transition-colors"
-                >
-                  انضم إلينا
-                </Link>
-                <a
-                  href="/login"
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
-                >
-                  <LogIn size={16} />
-                  <span>تسجيل الدخول</span>
-                </a>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

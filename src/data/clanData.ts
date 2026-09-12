@@ -1,4 +1,4 @@
-export type Person = {
+export type Member = {
   id: string;
   name: string;
   initials: string;
@@ -7,7 +7,7 @@ export type Person = {
 
 // --- TREE DATA STRUCTURE ---
 export type RoleNode = {
-  person: Person;
+  member: Member;
   role: string;
   promotesTo?: number; // Year this person becomes clan leader (for testing animations)
   subordinates?: RoleNode[]; // Assistants or Deputies that branch directly below this person
@@ -63,26 +63,26 @@ export const clanTreeData: ComplexYearData[] = [
         // Ordered to put Leader and Guide Leader in the center. 
         // We will force flex-nowrap in UI so they stay on one line.
         members: [
-          { person: p.assistantLeader, role: "مساعد قائد العشيرة" },
-          { person: p.seniorRover, role: "الرائد الأكبر", promotesTo: 2025 },
-          { person: p.leader, role: "قائد العشيرة" },
-          { person: p.guideLeader, role: "قائدة الجوالات" },
-          { person: p.seniorGuide, role: "الرائدة الكبرى" },
+          { member: p.assistantLeader, role: "مساعد قائد العشيرة" },
+          { member: p.seniorRover, role: "الرائد الأكبر", promotesTo: 2025 },
+          { member: p.leader, role: "قائد العشيرة" },
+          { member: p.guideLeader, role: "قائدة الجوالات" },
+          { member: p.seniorGuide, role: "الرائدة الكبرى" },
         ],
       },
       auxiliary: {
         title: "الهيكل المعاون",
         members: [
           { 
-            person: p.media, role: "قائد الميديا",
-            subordinates: [{ person: p.mediaAssist, role: "مساعد الميديا" }]
+            member: p.media, role: "قائد الميديا",
+            subordinates: [{ member: p.mediaAssist, role: "مساعد الميديا" }]
           },
           { 
-            person: p.sec, role: "قائد السكرتارية",
-            subordinates: [{ person: p.secAssist, role: "مساعد السكرتارية" }]
+            member: p.sec, role: "قائد السكرتارية",
+            subordinates: [{ member: p.secAssist, role: "مساعد السكرتارية" }]
           },
           { 
-            person: p.quartermaster, role: "أمين العهدة" 
+            member: p.quartermaster, role: "أمين العهدة" 
             // No assistant
           },
         ],
@@ -91,22 +91,22 @@ export const clanTreeData: ComplexYearData[] = [
         title: "مجلس الإدارة",
         members: [
           { 
-            person: p.rahtLeader1, role: "رائد رهط الفايكنج", promotesTo: 2026,
-            subordinates: [{ person: p.rahtDeputy1, role: "وكيل الرهط" }]
+            member: p.rahtLeader1, role: "رائد رهط الفايكنج", promotesTo: 2026,
+            subordinates: [{ member: p.rahtDeputy1, role: "وكيل الرهط" }]
           },
           { 
-            person: p.rahtLeader2, role: "رائد رهط الفرسان",
-            subordinates: [{ person: p.rahtDeputy2, role: "وكيل الرهط" }]
+            member: p.rahtLeader2, role: "رائد رهط الفرسان",
+            subordinates: [{ member: p.rahtDeputy2, role: "وكيل الرهط" }]
           },
         ]
       },
       base: {
         title: "قاعدة العشيرة",
         members: [
-          { person: p.rover1, role: "جوال (فايكنج)" },
-          { person: p.candidate1, role: "مرشح (فايكنج)" },
-          { person: p.rover2, role: "جوال (فرسان)" },
-          { person: p.candidate2, role: "مرشح (فرسان)" },
+          { member: p.rover1, role: "جوال (فايكنج)" },
+          { member: p.candidate1, role: "مرشح (فايكنج)" },
+          { member: p.rover2, role: "جوال (فرسان)" },
+          { member: p.candidate2, role: "مرشح (فرسان)" },
         ]
       },
     },
@@ -117,37 +117,37 @@ export const clanTreeData: ComplexYearData[] = [
       highCouncil: {
         title: "مجلس القيادة",
         members: [
-          { person: p.guideLeader, role: "مساعد قائد العشيرة" },
-          { person: p.rahtLeader1, role: "الرائد الأكبر", promotesTo: 2026 },
-          { person: p.seniorRover, role: "قائد العشيرة" },
-          { person: p.seniorGuide, role: "قائدة الجوالات" },
-          { person: p.sec, role: "الرائدة الكبرى" },
+          { member: p.guideLeader, role: "مساعد قائد العشيرة" },
+          { member: p.rahtLeader1, role: "الرائد الأكبر", promotesTo: 2026 },
+          { member: p.seniorRover, role: "قائد العشيرة" },
+          { member: p.seniorGuide, role: "قائدة الجوالات" },
+          { member: p.sec, role: "الرائدة الكبرى" },
         ],
       },
       auxiliary: {
         title: "الهيكل المعاون",
         members: [
-          { person: p.quartermaster, role: "قائد الميديا" },
-          { person: p.media, role: "أمين العهدة" },
+          { member: p.quartermaster, role: "قائد الميديا" },
+          { member: p.media, role: "أمين العهدة" },
         ],
       },
       management: {
         title: "مجلس الإدارة",
         members: [
           { 
-            person: p.rahtDeputy1, role: "رائد الرهط (فايكنج)",
-            subordinates: [{ person: p.rover1, role: "وكيل الرهط" }]
+            member: p.rahtDeputy1, role: "رائد الرهط (فايكنج)",
+            subordinates: [{ member: p.rover1, role: "وكيل الرهط" }]
           },
           { 
-            person: p.rahtLeader2, role: "رائد الرهط (فرسان)",
-            subordinates: [{ person: p.candidate2, role: "وكيل الرهط" }]
+            member: p.rahtLeader2, role: "رائد الرهط (فرسان)",
+            subordinates: [{ member: p.candidate2, role: "وكيل الرهط" }]
           },
         ]
       },
       base: {
         title: "قاعدة العشيرة",
         members: [
-          { person: p.candidate1, role: "جوال" }
+          { member: p.candidate1, role: "جوال" }
         ]
       }
     },
@@ -158,26 +158,26 @@ export const clanTreeData: ComplexYearData[] = [
       highCouncil: {
         title: "مجلس القيادة",
         members: [
-          { person: p.media, role: "مساعد قائد العشيرة" },
-          { person: p.rahtDeputy1, role: "الرائد الأكبر" },
-          { person: p.rahtLeader1, role: "قائد العشيرة" },
-          { person: p.secAssist, role: "قائدة الجوالات" },
-          { person: p.rover1, role: "الرائدة الكبرى" },
+          { member: p.media, role: "مساعد قائد العشيرة" },
+          { member: p.rahtDeputy1, role: "الرائد الأكبر" },
+          { member: p.rahtLeader1, role: "قائد العشيرة" },
+          { member: p.secAssist, role: "قائدة الجوالات" },
+          { member: p.rover1, role: "الرائدة الكبرى" },
         ],
       },
       auxiliary: {
         title: "الهيكل المعاون",
         members: [
           { 
-            person: p.rover2, role: "قائد الميديا",
-            subordinates: [{ person: p.candidate1, role: "مساعد الميديا" }]
+            member: p.rover2, role: "قائد الميديا",
+            subordinates: [{ member: p.candidate1, role: "مساعد الميديا" }]
           },
           { 
-            person: p.candidate2, role: "قائد السكرتارية",
-            subordinates: [{ person: p.mediaAssist, role: "مساعد السكرتارية" }]
+            member: p.candidate2, role: "قائد السكرتارية",
+            subordinates: [{ member: p.mediaAssist, role: "مساعد السكرتارية" }]
           },
           { 
-            person: p.sec, role: "أمين العهدة" 
+            member: p.sec, role: "أمين العهدة" 
           },
         ],
       },
@@ -185,21 +185,21 @@ export const clanTreeData: ComplexYearData[] = [
         title: "مجلس الإدارة",
         members: [
           { 
-            person: p.rahtDeputy2, role: "رائد رهط الفايكنج",
-            subordinates: [{ person: p.assistantLeader, role: "وكيل الرهط" }]
+            member: p.rahtDeputy2, role: "رائد رهط الفايكنج",
+            subordinates: [{ member: p.assistantLeader, role: "وكيل الرهط" }]
           },
           { 
-            person: p.quartermaster, role: "رائد رهط الفرسان",
-            subordinates: [{ person: p.seniorGuide, role: "وكيل الرهط" }]
+            member: p.quartermaster, role: "رائد رهط الفرسان",
+            subordinates: [{ member: p.seniorGuide, role: "وكيل الرهط" }]
           },
         ]
       },
       base: {
         title: "قاعدة العشيرة",
         members: [
-          { person: p.leader, role: "جوال (فايكنج)" },
-          { person: p.guideLeader, role: "مرشح (فايكنج)" },
-          { person: p.seniorRover, role: "جوال (فرسان)" },
+          { member: p.leader, role: "جوال (فايكنج)" },
+          { member: p.guideLeader, role: "مرشح (فايكنج)" },
+          { member: p.seniorRover, role: "جوال (فرسان)" },
         ]
       }
     },

@@ -25,7 +25,7 @@ export default async function AdminLayout({
       {/* Mobile Header (Hidden on Desktop) */}
       <header className="md:hidden flex items-center justify-between p-4 bg-[var(--color-scout-navy)] border-b border-[var(--color-dark-border)]">
         <div className="font-bold">لوحة التحكم</div>
-        <div className="text-sm text-gray-400">{user.profile?.fullName || user.email}</div>
+        <div className="text-sm text-gray-400">{user.member?.fullName || user.email}</div>
       </header>
 
       {/* Sidebar Navigation */}

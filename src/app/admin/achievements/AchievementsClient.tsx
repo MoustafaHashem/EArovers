@@ -7,11 +7,11 @@ import { toast } from "sonner";
 
 type Achievement = {
   id: string;
-  title: string;
-  year: number;
-  placement: string | null;
-  competitionName: string | null;
-  awards: string[];
+  title: string | null;
+  createdAt: Date;
+  placement: string;
+  eventId: string;
+  shieldId: string | null;
 };
 
 export default function AchievementsClient({ initialAchievements }: { initialAchievements: Achievement[] }) {
@@ -21,9 +21,8 @@ export default function AchievementsClient({ initialAchievements }: { initialAch
   const [loading, setLoading] = useState(false);
 
   const filtered = achievements.filter(a => 
-    a.title.toLowerCase().includes(search.toLowerCase()) ||
-    (a.competitionName && a.competitionName.includes(search)) ||
-    a.year.toString().includes(search)
+    a.title?.toLowerCase().includes(search.toLowerCase()) ||
+    a.placement.includes(search)
   );
 
   const handleDelete = async (id: string) => {
@@ -157,7 +156,7 @@ export default function AchievementsClient({ initialAchievements }: { initialAch
               
               <div className="flex gap-2 mb-4">
                 <span className="text-xs font-bold bg-[var(--color-scout-blue)]/20 text-[var(--color-scout-blue-light)] px-2.5 py-1 rounded-full border border-[var(--color-scout-blue)]/20">
-                  {item.year}
+                  {new Date(item.createdAt).getFullYear()}
                 </span>
                 {item.placement && (
                   <span className="text-xs font-bold bg-yellow-400/10 text-yellow-400 px-2.5 py-1 rounded-full border border-yellow-400/20">
@@ -165,23 +164,6 @@ export default function AchievementsClient({ initialAchievements }: { initialAch
                   </span>
                 )}
               </div>
-              
-              {item.competitionName && (
-                <p className="text-sm text-gray-400 mb-4 pb-4 border-b border-[var(--color-dark-border)]">
-                  {item.competitionName}
-                </p>
-              )}
-              
-              {item.awards && item.awards.length > 0 && (
-                <div className="mt-auto">
-                  <h4 className="text-xs font-bold text-gray-500 mb-2">تفاصيل الجوائز:</h4>
-                  <ul className="text-sm text-gray-300 space-y-1 pl-4 list-disc marker:text-[var(--color-scout-blue)]" dir="rtl">
-                    {item.awards.map((award, i) => (
-                      <li key={i}>{award}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
           ))
         )}

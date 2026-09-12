@@ -157,11 +157,11 @@ function SidebarContent({
       <div className="p-4 border-t border-[var(--color-dark-border)] flex flex-col gap-2">
         <div className="flex items-center gap-3 px-4 py-3 mb-2">
           <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-sm font-bold text-white shadow-inner">
-            {user.profile?.fullName?.substring(0, 2) || "أد"}
+            {user.member?.fullName?.substring(0, 2) || "أد"}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-white truncate">
-              {user.profile?.fullName || "مدير النظام"}
+              {user.member?.fullName || "مدير النظام"}
             </p>
             <p className="text-xs text-gray-400 truncate">{user.email}</p>
           </div>

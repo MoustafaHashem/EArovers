@@ -3,12 +3,12 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function addParticipant(eventId: string, profileId: string, status: string = "registered") {
+export async function addParticipant(eventId: string, memberId: string, status: string = "registered") {
   try {
     await prisma.eventParticipant.create({
       data: {
         eventId,
-        profileId,
+        memberId,
         status,
       },
     });

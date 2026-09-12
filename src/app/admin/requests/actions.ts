@@ -27,7 +27,7 @@ export async function updateRequestStatus(requestId: string, status: "approved" 
 
       if (authData?.user) {
         // 2. Create Profile
-        await prisma.profile.create({
+        await prisma.member.create({
           data: {
             id: authData.user.id,
             fullName: request.fullName,

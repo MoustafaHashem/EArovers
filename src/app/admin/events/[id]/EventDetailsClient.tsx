@@ -6,7 +6,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { addParticipant, updateParticipantStatus, removeParticipant } from "./actions";
 
-type Profile = {
+type Member = {
   id: string;
   fullName: string;
   role: string;
@@ -15,9 +15,9 @@ type Profile = {
 
 type Participant = {
   id: string;
-  profileId: string;
+  memberId: string;
   status: string;
-  profile: Profile;
+  member: Member;
 };
 
 type EventType = {
@@ -29,14 +29,14 @@ type EventType = {
 
 export default function EventDetailsClient({ 
   event, 
-  allProfiles 
+  allMembers 
 }: { 
   event: EventType, 
-  allProfiles: Profile[] 
+  allMembers: Member[] 
 }) {
   const [participants, setParticipants] = useState(event.participants);
   const [isAdding, setIsAdding] = useState(false);
-  const [selectedProfileId, setSelectedProfileId] = useState("");
+  const [selectedMemberId, setSelectedMemberId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleStatusChange = async (participantId: string, newStatus: string) => {
@@ -79,22 +79,22 @@ export default function EventDetailsClient({
 
   const handleAddParticipant = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedProfileId) return;
+    if (!selectedMemberId) return;
 
     // Check if already in event
-    if (participants.some(p => p.profileId === selectedProfileId)) {
+    if (participants.some(p => p.memberId === selectedMemberId)) {
       toast.error("هذا العضو مسجل بالفعل في الفعالية");
       return;
     }
 
-    const promise = addParticipant(event.id, selectedProfileId);
+    const promise = addParticipant(event.id, selectedMemberId);
     
     toast.promise(promise, {
       loading: "جاري الإضافة...",
       success: (res) => {
         if (!res.success) throw new Error("فشل الإضافة");
         setIsAdding(false);
-        setSelectedProfileId("");
+        setSelectedMemberId("");
         // Reload page to get new data (or we could optimistically update with the profile data)
         window.location.reload();
         return "تم إضافة المشترك بنجاح";
@@ -103,9 +103,9 @@ export default function EventDetailsClient({
     });
   };
 
-  const filteredProfiles = allProfiles.filter(p => 
+  const filteredProfiles = allMembers.filter(p => 
     p.fullName.toLowerCase().includes(searchQuery.toLowerCase()) && 
-    !participants.some(part => part.profileId === p.id)
+    !participants.some(part => part.memberId === p.id)
   );
 
   return (
@@ -155,8 +155,8 @@ export default function EventDetailsClient({
               <select 
                 size={5}
                 required 
-                value={selectedProfileId}
-                onChange={(e) => setSelectedProfileId(e.target.value)}
+                value={selectedMemberId}
+                onChange={(e) => setSelectedMemberId(e.target.value)}
                 className="w-full bg-[var(--color-dark-bg)] border border-[var(--color-dark-border)] rounded-xl px-2 py-2 text-white"
               >
                 {filteredProfiles.map(p => (
@@ -171,7 +171,7 @@ export default function EventDetailsClient({
               <button type="button" onClick={() => setIsAdding(false)} className="px-4 py-2 rounded-xl text-gray-400 hover:bg-white/5 transition-colors">
                 إلغاء
               </button>
-              <button disabled={!selectedProfileId} type="submit" className="px-4 py-2 rounded-xl bg-[var(--color-scout-blue)] text-white font-bold hover:bg-blue-600 transition-colors disabled:opacity-50">
+              <button disabled={!selectedMemberId} type="submit" className="px-4 py-2 rounded-xl bg-[var(--color-scout-blue)] text-white font-bold hover:bg-blue-600 transition-colors disabled:opacity-50">
                 إضافة
               </button>
             </div>
@@ -201,10 +201,10 @@ export default function EventDetailsClient({
                 participants.map((participant) => (
                   <tr key={participant.id} className="hover:bg-white/5 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="font-bold text-white">{participant.profile.fullName}</div>
+                      <div className="font-bold text-white">{participant.member.fullName}</div>
                     </td>
                     <td className="px-6 py-4 text-gray-300">
-                      {participant.profile.academicYear || "—"}
+                      {participant.member.academicYear || "—"}
                     </td>
                     <td className="px-6 py-4">
                       <select 

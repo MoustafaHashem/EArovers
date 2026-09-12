@@ -3,7 +3,7 @@ import AchievementsClient from "./AchievementsClient";
 
 export default async function AchievementsPage() {
   const achievements = await prisma.achievement.findMany({
-    orderBy: { year: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 
   return <AchievementsClient initialAchievements={achievements} />;

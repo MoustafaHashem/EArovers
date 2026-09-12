@@ -128,17 +128,32 @@ export default function AdminDashboardClient({ stats, initialVisits, demographic
               </div>
             ) : chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="var(--color-scout-blue)" stopOpacity={0.8}/>
                       <stop offset="95%" stopColor="var(--color-scout-blue)" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <XAxis dataKey="date" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
+                  <XAxis 
+                    dataKey="date" 
+                    stroke="#6b7280" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    tickMargin={10}
+                    minTickGap={30}
+                  />
+                  <YAxis 
+                    stroke="#6b7280" 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    width={35}
+                    tickFormatter={(value) => value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value}
+                  />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#1a1f2e', border: '1px solid #2d3748', borderRadius: '0.75rem', color: '#fff' }}
+                    contentStyle={{ backgroundColor: '#1a1f2e', border: '1px solid #2d3748', borderRadius: '0.75rem', color: '#fff', fontSize: '12px' }}
                     itemStyle={{ color: '#fff' }}
                   />
                   <Area type="monotone" dataKey="views" name="الزيارات" stroke="var(--color-scout-blue)" fillOpacity={1} fill="url(#colorViews)" />
@@ -198,8 +213,8 @@ export default function AdminDashboardClient({ stats, initialVisits, demographic
                     data={demographics}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
+                    innerRadius="50%"
+                    outerRadius="70%"
                     paddingAngle={5}
                     dataKey="value"
                   >

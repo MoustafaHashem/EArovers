@@ -11,13 +11,13 @@ export async function getCurrentUser() {
 
   if (!user) return null;
 
-  const profile = await prisma.profile.findUnique({
+  const member = await prisma.member.findUnique({
     where: { id: user.id }
   });
 
   return {
     ...user,
-    profile,
+    member,
   };
 }
 
@@ -29,12 +29,12 @@ export async function getUserRole(): Promise<UserRole | null> {
 
   if (!user) return null;
 
-  const profile = await prisma.profile.findUnique({
+  const member = await prisma.member.findUnique({
     where: { id: user.id },
     select: { role: true }
   });
 
-  return (profile?.role as UserRole) || "scout";
+  return (member?.role as UserRole) || "scout";
 }
 
 export async function isAdmin(): Promise<boolean> {
@@ -55,7 +55,7 @@ export async function requireAdmin() {
   if (!user) {
     throw new Error("غير مصرح - يرجى تسجيل الدخول");
   }
-  if (user.profile?.role !== "admin") {
+  if (user.member?.role !== "admin") {
     throw new Error("غير مصرح - صلاحيات المدير مطلوبة");
   }
   return user;

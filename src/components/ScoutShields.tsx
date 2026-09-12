@@ -14,13 +14,16 @@ export function ScoutShields() {
     <div className="w-full max-w-6xl mx-auto flex flex-col items-center">
       
       {/* Tabs Header */}
-      <div className="flex flex-wrap justify-center gap-2 mb-12">
+      <div 
+        className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-2 mb-12 w-full max-w-[95vw] md:max-w-full px-4"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
         {shieldsData.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "relative px-6 py-3 rounded-full text-lg font-bold transition-colors z-10 overflow-hidden",
+              "whitespace-nowrap flex-shrink-0 relative px-6 py-3 rounded-full text-sm md:text-lg font-bold transition-colors z-10 overflow-hidden",
               activeTab === tab.id ? "text-[var(--color-scout-navy)]" : "text-gray-300 hover:text-white bg-white/5"
             )}
           >

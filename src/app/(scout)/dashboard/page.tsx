@@ -14,7 +14,7 @@ export default async function ScoutDashboardPage() {
   const upcomingEvents = await prisma.event.findMany({
     where: {
       participants: {
-        some: { profileId: user.id }
+        some: { memberId: user.id }
       },
       startDate: { gte: new Date() }
     },
@@ -27,7 +27,7 @@ export default async function ScoutDashboardPage() {
   });
 
   const userShields = await prisma.userShield.findMany({
-    where: { profileId: user.id },
+    where: { memberId: user.id },
     include: { shield: true }
   });
 
@@ -39,17 +39,17 @@ export default async function ScoutDashboardPage() {
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[var(--color-dark-border)]">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] flex items-center justify-center text-2xl font-bold border-2 border-[var(--color-dark-border)]">
-              {user.profile?.fullName?.substring(0, 1) || "ج"}
+              {user.member?.fullName?.substring(0, 1) || "ج"}
             </div>
             <div>
               <h1 className="text-2xl font-black text-white mb-1">
-                مرحباً بك، {user.profile?.fullName?.split(' ')[0] || "يا جوال"}
+                مرحباً بك، {user.member?.fullName?.split(' ')[0] || "يا جوال"}
               </h1>
-              <p className="text-gray-400 text-sm">{user.profile?.academicYear || "عضو في العشيرة"}</p>
+              <p className="text-gray-400 text-sm">{user.member?.academicYear || "عضو في العشيرة"}</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            {user.profile?.role === "admin" && (
+            {user.member?.role === "admin" && (
               <Link href="/admin" className="px-5 py-2 rounded-xl bg-purple-500/20 text-purple-400 font-bold border border-purple-500/30 hover:bg-purple-500/30 transition-colors shadow-[0_0_15px_rgba(168,85,247,0.15)]">
                 لوحة الإدارة
               </Link>
@@ -156,11 +156,11 @@ export default async function ScoutDashboardPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between py-2 border-b border-[var(--color-dark-border)]">
                   <span className="text-gray-400">الاسم</span>
-                  <span className="font-medium">{user.profile?.fullName}</span>
+                  <span className="font-medium">{user.member?.fullName}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-[var(--color-dark-border)]">
                   <span className="text-gray-400">الفرقة</span>
-                  <span className="font-medium">{user.profile?.academicYear || "—"}</span>
+                  <span className="font-medium">{user.member?.academicYear || "—"}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-[var(--color-dark-border)]">
                   <span className="text-gray-400">البريد</span>
@@ -168,7 +168,7 @@ export default async function ScoutDashboardPage() {
                 </div>
                 <div className="flex justify-between py-2 border-b border-[var(--color-dark-border)]">
                   <span className="text-gray-400">رقم الهاتف</span>
-                  <span className="font-medium text-gray-300" dir="ltr">{user.profile?.phone || "—"}</span>
+                  <span className="font-medium text-gray-300" dir="ltr">{user.member?.phone || "—"}</span>
                 </div>
               </div>
               <Link href="/dashboard/edit" className="flex items-center justify-center gap-2 mt-6 w-full px-6 py-3 rounded-xl bg-[var(--color-scout-blue)]/20 border border-[var(--color-scout-blue)]/30 text-[var(--color-scout-blue-light)] font-bold hover:bg-[var(--color-scout-blue)]/30 transition-all shadow-[0_0_15px_rgba(40,160,255,0.2)]">

@@ -6,8 +6,8 @@ import { BookOpen, Calendar, UserCheck } from "lucide-react";
 export function Sessions() {
   return (
     <div className="w-full max-w-6xl mx-auto">
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-black text-white flex items-center justify-center gap-3 mb-4">
+      <div className="text-center mb-16 px-4">
+        <h2 className="text-3xl md:text-4xl font-black text-white flex items-center justify-center gap-2 md:gap-3 mb-4 text-balance">
           <BookOpen className="text-[var(--color-scout-blue-light)]" size={36} />
           الدراسات والتأهيل
         </h2>

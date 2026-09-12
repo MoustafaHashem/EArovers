@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 export async function addAchievement(formData: FormData) {
   try {
-    const title = formData.get("title") as string;
+    const title = (formData.get("title") as string) || null;
     const yearStr = formData.get("year") as string;
     const placement = formData.get("placement") as string || null;
     const competitionName = formData.get("competitionName") as string || null;
@@ -17,10 +17,11 @@ export async function addAchievement(formData: FormData) {
     await prisma.achievement.create({
       data: {
         title,
-        year: parseInt(yearStr),
-        placement,
-        competitionName,
-        awards,
+        
+        placement: placement || "",
+        eventId: "dummy-event-id", // TODO: Update UI to pass eventId
+        
+        
       },
     });
 

@@ -11,8 +11,8 @@ export default async function HierarchyPage({
   const { year: yearParam } = await searchParams;
   const year = yearParam ? parseInt(yearParam) : currentYear;
 
-  const [people, roles] = await Promise.all([
-    prisma.person.findMany({
+  const [members, roles] = await Promise.all([
+    prisma.member.findMany({
       orderBy: { fullName: "asc" }
     }),
     prisma.roleHistory.findMany({
@@ -39,7 +39,7 @@ export default async function HierarchyPage({
       </div>
       
       <HierarchyClient 
-        people={people} 
+        members={members} 
         initialRoles={roles} 
         year={year} 
       />

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/roles";
 import { revalidatePath } from "next/cache";
 
-export async function updateHierarchyRole(personId: string, year: number, tier: string, roleTitle: string, isSecondary: boolean = false) {
+export async function updateHierarchyRole(memberId: string, year: number, tier: string, roleTitle: string, isSecondary: boolean = false) {
   await requireAdmin();
   
   try {
@@ -23,7 +23,7 @@ export async function updateHierarchyRole(personId: string, year: number, tier: 
     // Assign the role to the new person
     await prisma.roleHistory.create({
       data: {
-        personId,
+        memberId,
         year,
         tier,
         roleTitle,
@@ -40,13 +40,13 @@ export async function updateHierarchyRole(personId: string, year: number, tier: 
   }
 }
 
-export async function removeRole(personId: string, year: number, roleTitle: string) {
+export async function removeRole(memberId: string, year: number, roleTitle: string) {
   await requireAdmin();
   
   try {
     await prisma.roleHistory.deleteMany({
       where: {
-        personId,
+        memberId,
         year,
         roleTitle,
       }

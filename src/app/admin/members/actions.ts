@@ -8,7 +8,7 @@ export async function updateUserRole(userId: string, newRole: "admin" | "scout")
   await requireAdmin();
   
   try {
-    await prisma.profile.update({
+    await prisma.member.update({
       where: { id: userId },
       data: { role: newRole },
     });
@@ -21,15 +21,15 @@ export async function updateUserRole(userId: string, newRole: "admin" | "scout")
   }
 }
 
-export async function awardShield(profileId: string, shieldId: string) {
+export async function awardShield(memberId: string, shieldId: string) {
   await requireAdmin();
   
   try {
     // Check if already awarded
     const existing = await prisma.userShield.findUnique({
       where: {
-        profileId_shieldId: {
-          profileId,
+        memberId_shieldId: {
+          memberId,
           shieldId,
         }
       }
@@ -41,7 +41,7 @@ export async function awardShield(profileId: string, shieldId: string) {
 
     await prisma.userShield.create({
       data: {
-        profileId,
+        memberId,
         shieldId,
         // awardedBy will be null for now unless we get the current user's profile ID
       }

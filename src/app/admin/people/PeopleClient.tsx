@@ -5,18 +5,18 @@ import { Search, Plus, Trash2, Edit, X } from "lucide-react";
 import { addPerson, deletePerson, updatePerson } from "./actions";
 import { toast } from "sonner";
 
-type Person = {
+type Member = {
   id: string;
   fullName: string;
   avatarUrl: string | null;
   bio: string | null;
 };
 
-export default function PeopleClient({ initialPeople }: { initialPeople: Person[] }) {
-  const [people, setPeople] = useState(initialPeople);
+export default function PeopleClient({ initialMembers }: { initialMembers: Member[] }) {
+  const [people, setPeople] = useState(initialMembers);
   const [search, setSearch] = useState("");
   const [isAdding, setIsAdding] = useState(false);
-  const [editingPerson, setEditingPerson] = useState<Person | null>(null);
+  const [editingMember, setEditingMember] = useState<Member | null>(null);
   const [loading, setLoading] = useState(false);
 
   const filteredPeople = people.filter(p => 
@@ -65,7 +65,7 @@ export default function PeopleClient({ initialPeople }: { initialPeople: Person[
           </div>
           
           <button 
-            onClick={() => { setIsAdding(true); setEditingPerson(null); }}
+            onClick={() => { setIsAdding(true); setEditingMember(null); }}
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-scout-blue)] text-white font-medium hover:bg-blue-600 transition-colors"
           >
             <Plus size={18} />
@@ -74,34 +74,34 @@ export default function PeopleClient({ initialPeople }: { initialPeople: Person[
         </div>
       </div>
 
-      {(isAdding || editingPerson) && (
+      {(isAdding || editingMember) && (
         <form 
           action={async (formData) => {
             setLoading(true);
-            const promise = editingPerson 
-              ? updatePerson(editingPerson.id, formData)
+            const promise = editingMember 
+              ? updatePerson(editingMember.id, formData)
               : addPerson(formData);
               
             toast.promise(promise, {
-              loading: editingPerson ? "جاري التعديل..." : "جاري الإضافة...",
+              loading: editingMember ? "جاري التعديل..." : "جاري الإضافة...",
               success: (res) => {
                 if (!res.success) throw new Error("فشل العملية");
                 setIsAdding(false);
-                setEditingPerson(null);
+                setEditingMember(null);
                 window.location.reload();
-                return editingPerson ? "تم التعديل بنجاح" : "تمت الإضافة بنجاح";
+                return editingMember ? "تم التعديل بنجاح" : "تمت الإضافة بنجاح";
               },
               error: () => {
                 setLoading(false);
-                return editingPerson ? "فشل التعديل" : "فشل الإضافة";
+                return editingMember ? "فشل التعديل" : "فشل الإضافة";
               }
             });
           }}
           className="glass-card p-6 rounded-2xl border border-[var(--color-dark-border)] grid grid-cols-1 md:grid-cols-2 gap-4 relative"
         >
           <div className="absolute top-4 right-4 md:col-span-2 flex justify-between items-center w-full px-6 pointer-events-none">
-            <h3 className="text-lg font-bold text-white pointer-events-auto">{editingPerson ? "تعديل بيانات" : "إضافة كادر جديد"}</h3>
-            <button type="button" onClick={() => { setIsAdding(false); setEditingPerson(null); }} className="text-gray-400 hover:text-white pointer-events-auto">
+            <h3 className="text-lg font-bold text-white pointer-events-auto">{editingMember ? "تعديل بيانات" : "إضافة كادر جديد"}</h3>
+            <button type="button" onClick={() => { setIsAdding(false); setEditingMember(null); }} className="text-gray-400 hover:text-white pointer-events-auto">
               <X size={20} />
             </button>
           </div>
@@ -109,19 +109,19 @@ export default function PeopleClient({ initialPeople }: { initialPeople: Person[
           
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">الاسم الكامل *</label>
-            <input required name="fullName" type="text" defaultValue={editingPerson?.fullName || ""} className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-xl px-4 py-2 text-white" />
+            <input required name="fullName" type="text" defaultValue={editingMember?.fullName || ""} className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-xl px-4 py-2 text-white" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">رابط الصورة (مؤقتاً)</label>
-            <input name="avatarUrl" type="url" defaultValue={editingPerson?.avatarUrl || ""} className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-xl px-4 py-2 text-white" />
+            <input name="avatarUrl" type="url" defaultValue={editingMember?.avatarUrl || ""} className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-xl px-4 py-2 text-white" />
           </div>
 
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-300 mb-1">نبذة قصيرة</label>
-            <textarea name="bio" rows={3} defaultValue={editingPerson?.bio || ""} className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-xl px-4 py-2 text-white"></textarea>
+            <textarea name="bio" rows={3} defaultValue={editingMember?.bio || ""} className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-xl px-4 py-2 text-white"></textarea>
           </div>
           <div className="md:col-span-2 flex justify-end gap-3 mt-2">
-            <button type="button" onClick={() => { setIsAdding(false); setEditingPerson(null); }} className="px-6 py-2 rounded-xl text-gray-400 hover:bg-white/5 transition-colors">
+            <button type="button" onClick={() => { setIsAdding(false); setEditingMember(null); }} className="px-6 py-2 rounded-xl text-gray-400 hover:bg-white/5 transition-colors">
               إلغاء
             </button>
             <button disabled={loading} type="submit" className="px-6 py-2 rounded-xl bg-[var(--color-scout-blue)] text-white font-bold hover:bg-blue-600 transition-colors disabled:opacity-50">
@@ -169,7 +169,7 @@ export default function PeopleClient({ initialPeople }: { initialPeople: Person[
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button 
-                          onClick={() => { setEditingPerson(person); setIsAdding(false); }}
+                          onClick={() => { setEditingMember(person); setIsAdding(false); }}
                           className="p-2 text-gray-400 hover:text-[var(--color-scout-blue)] hover:bg-white/5 rounded-lg transition-colors"
                         >
                           <Edit size={16} />

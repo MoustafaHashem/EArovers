@@ -51,12 +51,15 @@ export function MediaGallery() {
         <p className="text-gray-400 text-lg">أبرز اللحظات والذكريات السعيدة</p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-3 mb-10">
+      <div 
+        className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-3 mb-10 w-full max-w-[95vw] md:max-w-full px-4"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
         {categories.map((cat) => (
           <button 
             key={cat} 
             onClick={() => { setLoading(true); setActiveCategory(cat); }}
-            className={`px-5 py-2 rounded-full text-sm font-bold border transition-colors ${activeCategory === cat ? 'bg-[var(--color-scout-blue-light)] text-[var(--color-scout-navy)] border-transparent' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
+            className={`whitespace-nowrap flex-shrink-0 px-5 py-2 rounded-full text-sm font-bold border transition-colors ${activeCategory === cat ? 'bg-[var(--color-scout-blue-light)] text-[var(--color-scout-navy)] border-transparent' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
           >
             {cat}
           </button>
@@ -94,7 +97,7 @@ export function MediaGallery() {
                   loading="lazy"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 z-10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-end p-4 z-10">
                   <span className="text-white font-bold text-sm">ذكرى جديدة</span>
                 </div>
               </div>

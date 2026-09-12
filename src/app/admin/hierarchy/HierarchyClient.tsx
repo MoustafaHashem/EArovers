@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { updateHierarchyRole, removeRole } from "./actions";
 import { toast } from "sonner";
 
-type Person = {
+type Member = {
   id: string;
   fullName: string;
   avatarUrl: string | null;
@@ -13,7 +13,7 @@ type Person = {
 
 type RoleHistory = {
   id: string;
-  personId: string;
+  memberId: string;
   roleTitle: string;
   tier: string;
   isSecondary: boolean;
@@ -38,11 +38,11 @@ const TIERS = [
 ];
 
 export default function HierarchyClient({ 
-  people, 
+  members, 
   initialRoles, 
   year 
 }: { 
-  people: Person[], 
+  members: Member[], 
   initialRoles: RoleHistory[], 
   year: number 
 }) {
@@ -50,8 +50,8 @@ export default function HierarchyClient({
   const [loading, setLoading] = useState(false);
 
   // Unassigned people are those who don't have any role in this year
-  const assignedPersonIds = new Set(roles.map(r => r.personId));
-  const unassignedPeople = people.filter(p => !assignedPersonIds.has(p.id));
+  const assignedPersonIds = new Set(roles.map(r => r.memberId));
+  const unassignedPeople = members.filter(p => !assignedPersonIds.has(p.id));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onDragEnd = async (result: any) => {
@@ -65,19 +65,19 @@ export default function HierarchyClient({
 
     setLoading(true);
 
-    const personId = draggableId;
+    const memberId = draggableId;
     const destDroppable = destination.droppableId; // format: "tierId|roleTitle" or "unassigned"
 
     if (destDroppable === "unassigned") {
       // Removing a role
       const sourceParts = source.droppableId.split("|");
       if (sourceParts.length === 2) {
-        const promise = removeRole(personId, year, sourceParts[1]);
+        const promise = removeRole(memberId, year, sourceParts[1]);
         
         toast.promise(promise, {
           loading: "جاري إزالة المنصب...",
           success: () => {
-            setRoles(prev => prev.filter(r => !(r.personId === personId && r.roleTitle === sourceParts[1])));
+            setRoles(prev => prev.filter(r => !(r.memberId === memberId && r.roleTitle === sourceParts[1])));
             return "تمت الإزالة بنجاح";
           },
           error: "فشل إزالة المنصب"
@@ -90,7 +90,7 @@ export default function HierarchyClient({
       const [tier, roleTitle] = destDroppable.split("|");
       const isSecondary = tier === "auxiliary";
 
-      const promise = updateHierarchyRole(personId, year, tier, roleTitle, isSecondary);
+      const promise = updateHierarchyRole(memberId, year, tier, roleTitle, isSecondary);
       
       toast.promise(promise, {
         loading: "جاري تحديث المنصب...",
@@ -98,10 +98,10 @@ export default function HierarchyClient({
           if (!res.success) throw new Error("فشل التحديث");
           
           setRoles(prev => {
-            const filtered = prev.filter(r => r.personId !== personId && r.roleTitle !== roleTitle);
+            const filtered = prev.filter(r => r.memberId !== memberId && r.roleTitle !== roleTitle);
             return [...filtered, {
               id: Math.random().toString(),
-              personId,
+              memberId,
               tier,
               roleTitle,
               isSecondary
@@ -194,7 +194,7 @@ export default function HierarchyClient({
                   {tier.roles.map(roleTitle => {
                     const droppableId = `${tier.id}|${roleTitle}`;
                     const assignedRole = roles.find(r => r.roleTitle === roleTitle && r.tier === tier.id);
-                    const assignedPerson = assignedRole ? people.find(p => p.id === assignedRole.personId) : null;
+                    const assignedPerson = assignedRole ? members.find(p => p.id === assignedRole.memberId) : null;
 
                     return (
                       <div key={roleTitle} className="bg-white/5 border border-[var(--color-dark-border)] rounded-xl p-4 flex flex-col">

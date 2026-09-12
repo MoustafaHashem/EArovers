@@ -51,12 +51,15 @@ export function FullGallery() {
         <p className="text-gray-400 text-lg max-w-2xl mx-auto">تصفح كافة ذكريات جوالة هندسة عين شمس، من مسابقات ومعسكرات إلى كواليس و دروع.</p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-3 mb-10 sticky top-20 z-30 bg-[var(--color-dark-bg)]/80 backdrop-blur-md p-4 rounded-3xl border border-[var(--color-dark-border)] shadow-xl">
+      <div 
+        className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-3 mb-10 sticky top-20 z-30 bg-[var(--color-dark-bg)]/80 backdrop-blur-md p-4 rounded-3xl border border-[var(--color-dark-border)] shadow-xl w-full max-w-[95vw] md:max-w-full"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
         {categories.map((cat) => (
           <button 
             key={cat} 
             onClick={() => { setLoading(true); setActiveCategory(cat); }}
-            className={`px-6 py-2 rounded-full text-sm font-bold border transition-all duration-300 ${activeCategory === cat ? 'bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] border-transparent scale-105 shadow-[0_0_15px_rgba(40,160,255,0.4)]' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
+            className={`whitespace-nowrap flex-shrink-0 px-6 py-2 rounded-full text-sm font-bold border transition-all duration-300 ${activeCategory === cat ? 'bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] border-transparent scale-105 shadow-[0_0_15px_rgba(40,160,255,0.4)]' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
           >
             {cat}
           </button>
@@ -94,8 +97,8 @@ export function FullGallery() {
                   loading="lazy"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6 z-10">
-                  <span className="text-white font-bold text-lg">{img.title}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-end p-4 md:p-6 z-10">
+                  <span className="text-white font-bold text-sm md:text-lg">{img.title}</span>
                 </div>
               </div>
             ))}

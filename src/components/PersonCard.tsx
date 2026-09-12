@@ -14,13 +14,13 @@ type PersonCardProps = {
 };
 
 export function PersonCard({ node, onClick, isClicked }: PersonCardProps) {
-  const { person, role, promotesTo } = node;
+  const { member, role, promotesTo } = node;
   const isPromotable = !!promotesTo;
 
   return (
-    <Link href={`/people/${person.id}`}>
+    <Link href={`/people/${member.id}`}>
       <motion.div
-        layoutId={person.id}
+        layoutId={member.id}
         className={cn(
           "relative flex flex-col items-center p-4 rounded-2xl w-36 sm:w-40 md:w-48 transition-all duration-300",
           "glass-card cursor-pointer glass-card-hover z-10",
@@ -58,23 +58,23 @@ export function PersonCard({ node, onClick, isClicked }: PersonCardProps) {
               : "bg-[var(--color-anchor)] text-gray-200 border border-[var(--color-dark-border)]"
           )}
         >
-          {person.avatar ? (
+          {member.avatar ? (
             <Image
-              src={person.avatar}
-              alt={person.name}
+              src={member.avatar}
+              alt={member.name}
               width={64}
               height={64}
               className="w-full h-full object-cover"
             />
           ) : (
-            person.initials
+            member.initials
           )}
         </div>
 
         {/* Info */}
         <div className="text-center">
           <h3 className="font-bold text-xs sm:text-sm truncate w-full text-white">
-            {person.name}
+            {member.name}
           </h3>
           <p className="text-xs text-[var(--color-scout-blue-light)] mt-1 font-semibold">
             {role}

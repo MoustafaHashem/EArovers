@@ -12,7 +12,7 @@ export default async function PersonBiographyPage({
 }: {
   params: { id: string };
 }) {
-  const person = await prisma.person.findUnique({
+  const person = await prisma.member.findUnique({
     where: { id: params.id },
     include: {
       roles: {

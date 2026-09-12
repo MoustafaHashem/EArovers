@@ -14,8 +14,9 @@ export async function addPerson(formData: FormData) {
     // In a real app we'd handle Cloudinary upload for avatarUrl here
     const avatarUrl = formData.get("avatarUrl") as string || null;
 
-    await prisma.person.create({
+    await prisma.member.create({
       data: {
+        id: crypto.randomUUID(),
         fullName,
         bio,
         avatarUrl,
@@ -34,7 +35,7 @@ export async function deletePerson(id: string) {
   await requireAdmin();
   
   try {
-    await prisma.person.delete({
+    await prisma.member.delete({
       where: { id },
     });
     
@@ -54,9 +55,10 @@ export async function updatePerson(id: string, formData: FormData) {
     const bio = formData.get("bio") as string;
     const avatarUrl = formData.get("avatarUrl") as string || null;
 
-    await prisma.person.update({
+    await prisma.member.update({
       where: { id },
       data: {
+        id: crypto.randomUUID(),
         fullName,
         bio,
         avatarUrl,

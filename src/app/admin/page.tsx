@@ -27,11 +27,11 @@ export default async function AdminDashboardPage() {
       pendingReqs,
       visits
     ] = await Promise.all([
-      prisma.profile.count(),
+      prisma.member.count(),
       prisma.event.count({ where: { startDate: { gte: now } } }),
       prisma.joinRequest.count({ where: { status: "pending" } }),
       prisma.achievement.count(),
-      prisma.profile.groupBy({
+      prisma.member.groupBy({
         by: ['academicYear'],
         _count: { id: true }
       }),

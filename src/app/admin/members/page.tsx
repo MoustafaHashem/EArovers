@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import MembersClient from "./MembersClient";
 
 export default async function MembersPage() {
-  const members = await prisma.profile.findMany({
+  const members = await prisma.member.findMany({
     orderBy: { createdAt: "desc" },
   });
   

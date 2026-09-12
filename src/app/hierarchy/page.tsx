@@ -10,7 +10,7 @@ export const revalidate = 60;
 export default async function HierarchyPage() {
   const allRoles = await prisma.roleHistory.findMany({
     include: {
-      person: true
+      member: true
     }
   });
 
@@ -33,10 +33,10 @@ export default async function HierarchyPage() {
     
     // Convert to Person format expected by ClanTree
     const personObj = {
-      id: role.person.id,
-      name: role.person.fullName,
-      initials: role.person.fullName.substring(0, 2),
-      avatar: role.person.avatarUrl || undefined
+      id: role.member.id,
+      name: role.member.fullName,
+      initials: role.member.fullName.substring(0, 2),
+      avatar: role.member.avatarUrl || undefined
     };
 
     // Note: To perfectly recreate the subordination (who is subordinate to who) 

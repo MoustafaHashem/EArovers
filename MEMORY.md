@@ -7,6 +7,7 @@
 - **Authentication**: Supabase Auth integrated with Next.js Server Actions and `proxy.ts` (middleware).
 - **Media Hosting**: Cloudinary for direct image/video uploads, but Prisma `Media` model stores the URLs and metadata for fast querying and custom sorting.
 - **Styling**: Tailwind CSS with custom CSS variables (`var(--color-scout-blue)`, `var(--color-scout-navy)`, etc.) defined in `src/app/globals.css`.
+- **UI Components**: `shadcn/ui` is integrated (e.g. `Drawer`, `Sheet`) for rapid, accessible, and highly-customizable components.
 
 ## 🎨 Design Philosophy
 - **Aesthetic**: Premium, sleek, and modern. Dark mode by default.
@@ -14,12 +15,14 @@
 - **Layout Direction**: Arabic (RTL - Right to Left). Ensure flex directions, margins (`ml`/`mr`), borders (`border-l`/`border-r`), and gradients (`bg-gradient-to-l`) are mapped correctly for RTL.
 
 ## 🧩 Key Components
+- **Unified Member Model**: The database previously separated `Profile` (for auth users) and `Person` (for historical tree data). These have been merged into a single `Member` model using a `hasAccount` boolean.
 - **Traffic Tracking**: `<TrafficTracker>` in `src/components/TrafficTracker.tsx` runs silently on every page view and calls the `logPageView` Server Action to log metrics to the `PageVisit` Prisma model.
 - **Admin Dashboard**: `src/app/admin/components/AdminDashboardClient.tsx`. Heavily relies on Recharts for visual analytics. Data is fetched on the server in `src/app/admin/page.tsx` and passed as initial props.
 - **Sidebar**: `src/app/admin/components/AdminSidebar.tsx`. Contains custom logic to highlight the active tab using an edge-to-edge gradient and right-border.
 - **Media Galleries**: 
   - `src/components/FullGallery.tsx`: Used on `/gallery`. Has categories, loads everything, and uses `yet-another-react-lightbox`.
   - `src/components/MediaGallery.tsx`: Used on the homepage. Drops the "All" filter and limits the return to max 12 items.
+- **Health Check Infrastructure**: A direct internal API route (`GET /api/health/ping`) performs a `prisma.$queryRaw` to keep the Supabase connection warm, triggered by a GitHub Actions workflow (`keep-alive.yml`).
 
 ## 🚨 Known Gotchas
 1. **Next.js 16.3 proxy.ts**: Do not recreate a `middleware.ts` file; it is now `proxy.ts` with the exported function named `proxy`.
