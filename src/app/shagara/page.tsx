@@ -13,6 +13,7 @@ const SHAGARA_DATA: Record<
       row1: { title: string; name: string; imageSrc: string }[];
       row2: { title: string; name: string; imageSrc: string }[];
       row3: { title: string; name: string; imageSrc: string }[];
+      row4?: { title: string; name: string; imageSrc: string }[];
     };
     board: { title: string; name: string; imageSrc: string }[];
   }
@@ -21,15 +22,19 @@ const SHAGARA_DATA: Record<
     leadership: {
       row1: [
         { title: "قائد العشيرة", name: "مصعب سمير", imageSrc: "/leadershippl/mosab.png" },
-        { title: "قائدة الجوالات", name: "اسم القائدة 2026", imageSrc: "/gold-circle.png" },
+        { title: "قائدة الجوالات", name: "اروى زين", imageSrc: "/leadershippl/arwa.png" },
       ],
       row2: [
-        { title: "مساعد قائد العشيرة", name: "اسم المساعد 1", imageSrc: "/gold-circle.png" },
-        { title: "مساعد قائد العشيرة", name: "اسم المساعد 2", imageSrc: "/gold-circle.png" },
+        { title: "مساعد قائد العشيرة", name: "مايكل جورج", imageSrc: "/leadershippl/michael.png" },
+        { title: "مساعد قائد العشيرة", name: "أحمد مشعل", imageSrc: "/leadershippl/mashal.png" },
       ],
       row3: [
-        { title: "الرائد الأكبر", name: "اسم الرائد", imageSrc: "/gold-circle.png" },
-        { title: "الرائدة الكبرى", name: "اسم الرائدة", imageSrc: "/gold-circle.png" },
+        { title: "الرائد الأكبر", name: "يوسف علاء", imageSrc: "/leadershippl/alaaa.png" },
+        { title: "الرائدة الكبرى", name:"همسة أحمد", imageSrc: "/leadershippl/hamsa.png" },
+      ],
+      row4: [
+        { title: "الرائد الأكبر", name: "يوسف علاء", imageSrc: "/leadershippl/alaaa.png" },
+        { title: "الرائدة الكبرى", name:"همسة أحمد", imageSrc: "/leadershippl/hamsa.png" },
       ],
     },
     board: [
@@ -78,10 +83,9 @@ const SHAGARA_DATA: Record<
     },
     board: [],
   },
- 
 };
 
-const YEARS = ["2026", "2025", "2024", ];
+const YEARS = ["2026", "2025", "2024"];
 
 export default function ShagaraPage() {
   const [selectedYear, setSelectedYear] = useState("2026");
@@ -98,26 +102,27 @@ export default function ShagaraPage() {
             الهيكل التنظيمي والقيادي
           </h1>
           <p className="text-[#A7A9AC] text-sm sm:text-base font-medium">
-            مجلس القيادة والهياكل المعاونة
+            مجلس القيادة و مجلس الإدراة لأخر ثلاث سنوات
           </p>
         </div>
 
         {/* Year Selector Pills */}
-<div className="flex items-center justify-center gap-4 py-2">
-  {YEARS.map((year) => (
-    <button
-      key={year}
-      onClick={() => setSelectedYear(year)}
-      className={`px-8 py-3 rounded-3xl text-lg font-black transition-all duration-200 ${
-        selectedYear === year
-          ? "bg-[#E0B84B] text-[#102A43] shadow-md"
-          : "bg-[#18385C] text-[#8C9BAE] hover:bg-[#1D4470] hover:text-white"
-      }`}
-    >
-      {year}
-    </button>
-  ))}
-</div>
+        <div className="flex items-center justify-center gap-4 py-2">
+          {YEARS.map((year) => (
+            <button
+              key={year}
+              onClick={() => setSelectedYear(year)}
+              className={`px-8 py-3 rounded-3xl text-lg font-black transition-all duration-200 ${
+                selectedYear === year
+                  ? "bg-[#E0B84B] text-[#102A43] shadow-md"
+                  : "bg-[#18385C] text-[#8C9BAE] hover:bg-[#1D4470] hover:text-white"
+              }`}
+            >
+              {year}
+            </button>
+          ))}
+        </div>
+
         {/* Tree Container */}
         <div className="bg-[#1D4E89]/20 border border-white/10 rounded-3xl p-8 sm:p-12 space-y-16 shadow-2xl">
           {/* SECTION: مجلس القيادة */}
@@ -160,6 +165,15 @@ export default function ShagaraPage() {
                   مجلس الإدارة
                 </h2>
               </div>
+
+              {/* Row 4: Exact spacing matching Row 3 */}
+              {currentData?.leadership.row4 && currentData.leadership.row4.length > 0 && (
+                <div className="grid grid-cols-2 gap-12 sm:gap-24 max-w-2xl mx-auto w-full justify-items-center mb-8">
+                  {currentData.leadership.row4.map((item, idx) => (
+                    <LeaderCard key={idx} title={item.title} name={item.name} imageSrc={item.imageSrc} />
+                  ))}
+                </div>
+              )}
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
                 {currentData.board.map((item, idx) => (
