@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { Users, Calendar, ShieldAlert, Award, CalendarDays, CheckCircle } from "lucide-react";
-import { fetchVisitsAction, approveRequestAction } from "../actions";
+import { fetchVisitsAction, approveRequestAction } from "@/app/admin/actions";
 import { toast } from "sonner";
 import Link from "next/link";
 

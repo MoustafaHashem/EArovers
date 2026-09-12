@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ImageIcon, PlayCircle, Loader2 } from "lucide-react";
-import { fetchMediaAction } from "@/app/actions/media";
+import { fetchMediaAction } from "@/actions/media";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";

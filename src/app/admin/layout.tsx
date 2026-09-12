@@ -1,6 +1,6 @@
 import { Cairo } from "next/font/google";
 import { requireAdmin } from "@/lib/auth/roles";
-import { AdminSidebar } from "./components/AdminSidebar";
+import { AdminSidebar } from '@/components/admin/AdminSidebar';
 
 const cairo = Cairo({
   variable: "--font-cairo",

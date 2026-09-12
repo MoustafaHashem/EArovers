@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/layout/Navbar";
 import { ArrowRight, Calendar, User, Award, History } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";

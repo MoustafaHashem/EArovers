@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { logPageView } from "@/app/actions/tracking";
+import { logPageView } from "@/actions/tracking";
 
 export function TrafficTracker() {
   const pathname = usePathname();

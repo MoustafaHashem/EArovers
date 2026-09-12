@@ -1,11 +1,11 @@
-import { Navbar } from "@/components/Navbar";
-import { ClanTree } from "@/components/ClanTree";
-import { ScoutShields } from "@/components/ScoutShields";
-import { HallOfFame } from "@/components/HallOfFame";
-import { MediaGallery } from "@/components/MediaGallery";
-import { Sessions } from "@/components/Sessions";
-import { JoinForm } from "@/components/JoinForm";
-import { Identity } from "@/components/Identity";
+import { Navbar } from "@/components/layout/Navbar";
+import { ClanTree } from "@/components/clan/ClanTree";
+import { ScoutShields } from "@/components/home/ScoutShields";
+import { HallOfFame } from "@/components/home/HallOfFame";
+import { MediaGallery } from "@/components/gallery/MediaGallery";
+import { Sessions } from "@/components/home/Sessions";
+import { JoinForm } from "@/components/home/JoinForm";
+import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 
 export default function Home() {

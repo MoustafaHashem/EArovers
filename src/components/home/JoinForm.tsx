@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Send, Loader2 } from "lucide-react";
-import { submitJoinRequest } from "@/app/actions/join";
+import { submitJoinRequest } from "@/actions/join";
 
 export function JoinForm() {
   const [state, formAction, pending] = useActionState(submitJoinRequest, { success: false, error: null });

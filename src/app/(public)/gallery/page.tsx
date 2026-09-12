@@ -1,4 +1,4 @@
-import { FullGallery } from "@/components/FullGallery";
+import { FullGallery } from "@/components/gallery/FullGallery";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 

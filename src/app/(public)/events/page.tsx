@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Calendar, MapPin, Users } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/layout/Navbar";
 
 export const revalidate = 60; // Revalidate every minute
 

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import AdminDashboardClient from "./components/AdminDashboardClient";
+import AdminDashboardClient from '@/components/admin/AdminDashboardClient';
 
 export default async function AdminDashboardPage() {
   let activeMembersCount = 0;

@@ -1,6 +1,6 @@
-import { JoinForm } from "@/components/JoinForm";
-import { Navbar } from "@/components/Navbar";
-import { Identity } from "@/components/Identity";
+import { JoinForm } from "@/components/home/JoinForm";
+import { Navbar } from "@/components/layout/Navbar";
+import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 

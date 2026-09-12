@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Cairo, Geist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner';
-import { TrafficTracker } from '@/components/TrafficTracker';
+import { TrafficTracker } from '@/components/analytics/TrafficTracker';
 import { cn } from "@/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});

@@ -1,6 +1,6 @@
-import { ClanTree } from "@/components/ClanTree";
-import { Navbar } from "@/components/Navbar";
-import { Identity } from "@/components/Identity";
+import { ClanTree } from "@/components/clan/ClanTree";
+import { Navbar } from "@/components/layout/Navbar";
+import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
