@@ -77,7 +77,7 @@ const navLinks = [
   { href: "/#media", label: "الميديا" },
   { href: "/#fame", label: "الشرف" },
   { href: "/#sessions", label: "التأهيل" },
-  { href: "/#hierarchy-preview", label: "الشجرة" },
+  { href: "/shagara", label: "الشجرة" },
 ];
 
 export function Navbar() {
