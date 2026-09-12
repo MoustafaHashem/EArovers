@@ -1,17 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HallOfFamePage() {
+  const [isHovering, setIsHovering] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
   return (
-    <div
-      className="relative min-h-screen w-full px-4 py-16 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(180deg, #060B14 0%, #0A192F 35%, #112240 60%, #060B14 100%)",
-      }}
-    >
+    <div className="relative min-h-screen w-full px-4 py-16">
       {/* Starfield */}
       <div
         className="pointer-events-none absolute inset-0 opacity-50"
@@ -22,7 +21,7 @@ export default function HallOfFamePage() {
         }}
       />
 
-      {/* Warm gold glow, top center — echoes the emblem glow in the reference */}
+      {/* Warm gold glow, top center */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -31,7 +30,7 @@ export default function HallOfFamePage() {
         }}
       />
 
-      {/* Cool blue/cyan ambient glow, mid-page — echoes the crystal trophies' glow */}
+      {/* Cool blue/cyan ambient glow */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -57,6 +56,52 @@ export default function HallOfFamePage() {
         <ArrowRight size={18} />
         العودة
       </Link>
+
+      {/* Island, icon-sized image with cursor-following tooltip */}
+      <div className="flex flex-col items-center mt-32">
+        <div
+          className="relative flex items-center justify-center"
+          style={{ width: 280, height: 280 }}
+        >
+          <Image
+            src="/images/island1.png"
+            alt=""
+            width={280}
+            height={280}
+            className="object-contain cursor-pointer"
+          />
+
+          {/* Smaller invisible hover zone, centered on top of the image */}
+          <div
+            className="absolute"
+            style={{
+              width: 150,
+              height: 290,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+            }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            {isHovering && (
+              <div
+                className="absolute whitespace-nowrap bg-[var(--color-scout-navy-light)] text-white text-sm px-3 py-1.5 rounded-lg pointer-events-none border border-[var(--color-dark-border)] z-10"
+                style={{
+                  left: position.x + 16,
+                  top: position.y + 16,
+                }}
+              >
+                اكتب النص هنا
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
