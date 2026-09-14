@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { ParticipantStatus } from "@prisma/client";
 
 export async function addParticipant(eventId: string, memberId: string, status: string = "registered") {
   try {
@@ -9,7 +10,7 @@ export async function addParticipant(eventId: string, memberId: string, status: 
       data: {
         eventId,
         memberId,
-        status,
+        status: status as ParticipantStatus,
       },
     });
     revalidatePath(`/admin/events/${eventId}`);
@@ -24,7 +25,7 @@ export async function updateParticipantStatus(participantId: string, eventId: st
   try {
     await prisma.eventParticipant.update({
       where: { id: participantId },
-      data: { status },
+      data: { status: status as ParticipantStatus },
     });
     revalidatePath(`/admin/events/${eventId}`);
     return { success: true };

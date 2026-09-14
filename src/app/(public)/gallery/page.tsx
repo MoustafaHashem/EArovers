@@ -7,6 +7,8 @@ export const metadata = {
   description: "استعرض جميع الصور والذكريات الكشفية الخاصة بجوالة هندسة عين شمس عبر السنوات المختلفة.",
 };
 
+export const revalidate = 60;
+
 export default function GalleryPage() {
   return (
     <div className="min-h-screen bg-[var(--color-dark-bg)] text-white font-sans relative overflow-hidden">

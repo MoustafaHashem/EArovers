@@ -37,14 +37,16 @@
 - Two test accounts were manually re-created (`admin@rovers.com` and `scouts@rovers.com`) and inserted into the `members` table.
 - **Middleware Security**: `src/proxy.ts` performs Edge authentication checks, but relies on Server Components (like `admin/layout.tsx` via Prisma) for authorization and role checks using `redirect()`. This avoids slow edge DB queries.
 
-**Code State (Completed in `redesign/mobile-ui`):**
+**Code State (Completed in this session):**
 - Split Mobile and Desktop home page experiences in `src/app/page.tsx` using responsive hiding.
-- Implemented `MobileHome.tsx` and `MobileShieldsGallery.tsx` using `motion/react` for scroll animations.
-- Overhauled the `Navbar.tsx` with a responsive, animated "pill" layout using Framer Motion and Magic UI concepts, replacing fragile DOM measurements.
-- Created `MobileAdminDashboard.tsx` for a responsive mobile admin view.
-- Added `ProfileForm.tsx` in `/dashboard/profile` which securely integrates with Cloudinary (`CldUploadWidget`) for avatar uploads and Prisma for data persistence.
-- Refactored Radix UI primitives to Base UI (`@base-ui/react`), replacing `asChild` with `render={...}`.
+- Integrated Upstash Redis for Edge rate limiting in `src/proxy.ts`.
+- Implemented `ParticipantStatus` Prisma enum and removed the deprecated `tier` column from `RoleHistory`, relying on heuristic tier mapping via `roleTitle`.
+- Overhauled the `Navbar.tsx` and `AdminSidebar.tsx` with responsive, accessible Shadcn `Sheet` drawers, replacing fragile custom Framer Motion variants for mobile menus.
+- Cleaned and refactored `DashboardActions.tsx` utilizing Shadcn `Button` components.
+- Configured Edge Incremental Static Regeneration (ISR) (`revalidate = 60`) on data-heavy public routes (`/events`, `/fame`, `/gallery`, `/hierarchy`).
+- Created `/api/health/ping` directly pinging Prisma for the keep-alive workflow.
 
 **Immediate Next Step (Your Task):**
-- Monitor the app for any lingering bugs or missing features that were deferred (e.g., further global UI refinements or complex backend integrations).
+- Monitor the app for any lingering bugs or missing features that were deferred.
+- The repository is now fully built, type-checked, and successfully audited for mobile UI improvements and caching.
 - Proceed with new user requests on the `master` branch.

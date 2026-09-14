@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/roles";
 import { revalidatePath } from "next/cache";
 
-export async function updateHierarchyRole(memberId: string, year: number, tier: string, roleTitle: string, isSecondary: boolean = false) {
+export async function updateHierarchyRole(memberId: string, year: number, roleTitle: string, isSecondary: boolean = false) {
   await requireAdmin();
   
   try {
@@ -16,7 +16,6 @@ export async function updateHierarchyRole(memberId: string, year: number, tier: 
       where: {
         year,
         roleTitle,
-        tier,
       },
     });
 
@@ -25,7 +24,6 @@ export async function updateHierarchyRole(memberId: string, year: number, tier: 
       data: {
         memberId,
         year,
-        tier,
         roleTitle,
         isSecondary,
       },

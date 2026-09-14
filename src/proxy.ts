@@ -1,7 +1,37 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+// Initialize Redis and Rate Limiter
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || "",
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || "",
+});
+
+const ratelimit = new Ratelimit({
+  redis,
+  // 10 requests per 10 seconds per IP
+  limiter: Ratelimit.slidingWindow(10, "10 s"),
+  analytics: true,
+});
 
 export async function proxy(request: NextRequest) {
+  // Rate Limiting
+  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  
+  if (process.env.UPSTASH_REDIS_REST_URL) {
+    try {
+      const { success } = await ratelimit.limit(`ratelimit_${ip}`);
+      if (!success) {
+        return new NextResponse("Too Many Requests", { status: 429 });
+      }
+    } catch (error) {
+      console.error("Rate limiting error:", error);
+      // Fallback to allow request if Redis fails
+    }
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });

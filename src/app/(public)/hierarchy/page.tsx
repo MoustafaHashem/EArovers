@@ -42,19 +42,30 @@ export default async function HierarchyPage() {
     // Note: To perfectly recreate the subordination (who is subordinate to who) 
     // without a self-referential schema, we use heuristics based on roleTitle in the frontend component.
     // For now, just group them by tier.
+    // Infer tier from roleTitle
+    let inferredTier = "base";
+    const title = role.roleTitle || "";
+    
+    if (title.includes("قائد العشيرة") || title.includes("قائدة") || title.includes("الرائد الأكبر") || title.includes("الرائدة الكبرى") || title === "مساعد قائد العشيرة" || title === "مجلس قيادة") {
+      inferredTier = "highCouncil";
+    } else if (title.includes("رائد رهط") || title.includes("وكيل رهط") || title.includes("رائدة رهط") || title.includes("وكيلة رهط")) {
+      inferredTier = "management";
+    } else if (title.includes("مساعد") || title.includes("أمين") || title.includes("مسئول") || title.includes("هيكل معاون")) {
+      inferredTier = "auxiliary";
+    }
     
     const node = {
       person: personObj,
-      role: role.roleTitle,
-      tier: role.tier,
+      role: title,
+      tier: inferredTier,
       isSecondary: role.isSecondary,
       promotesTo: undefined // Could calculate based on next year's roles, skipped for simplicity
     };
     
-    if (role.tier === "highCouncil") yearGroups[role.year].tiers.highCouncil.members.push(node);
-    else if (role.tier === "auxiliary") yearGroups[role.year].tiers.auxiliary.members.push(node);
-    else if (role.tier === "management") yearGroups[role.year].tiers.management.members.push(node);
-    else if (role.tier === "base") yearGroups[role.year].tiers.base.members.push(node);
+    if (inferredTier === "highCouncil") yearGroups[role.year].tiers.highCouncil.members.push(node);
+    else if (inferredTier === "auxiliary") yearGroups[role.year].tiers.auxiliary.members.push(node);
+    else if (inferredTier === "management") yearGroups[role.year].tiers.management.members.push(node);
+    else if (inferredTier === "base") yearGroups[role.year].tiers.base.members.push(node);
   }
 
   // Convert to array and sort descending

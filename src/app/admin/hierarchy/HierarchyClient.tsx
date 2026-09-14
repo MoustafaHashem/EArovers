@@ -15,7 +15,6 @@ type RoleHistory = {
   id: string;
   memberId: string;
   roleTitle: string;
-  tier: string;
   isSecondary: boolean;
 };
 
@@ -90,7 +89,7 @@ export default function HierarchyClient({
       const [tier, roleTitle] = destDroppable.split("|");
       const isSecondary = tier === "auxiliary";
 
-      const promise = updateHierarchyRole(memberId, year, tier, roleTitle, isSecondary);
+      const promise = updateHierarchyRole(memberId, year, roleTitle, isSecondary);
       
       toast.promise(promise, {
         loading: "جاري تحديث المنصب...",
@@ -102,7 +101,6 @@ export default function HierarchyClient({
             return [...filtered, {
               id: Math.random().toString(),
               memberId,
-              tier,
               roleTitle,
               isSecondary
             }];
@@ -193,7 +191,7 @@ export default function HierarchyClient({
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {tier.roles.map(roleTitle => {
                     const droppableId = `${tier.id}|${roleTitle}`;
-                    const assignedRole = roles.find(r => r.roleTitle === roleTitle && r.tier === tier.id);
+                    const assignedRole = roles.find(r => r.roleTitle === roleTitle);
                     const assignedPerson = assignedRole ? members.find(p => p.id === assignedRole.memberId) : null;
 
                     return (

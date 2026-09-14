@@ -25,6 +25,12 @@ enum MemberStatus {
   inactive
 }
 
+enum ParticipantStatus {
+  registered
+  attended
+  cancelled
+}
+
 // ============================================================
 // Member Profiles (Unified)
 // ============================================================
@@ -66,7 +72,6 @@ model RoleHistory {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   memberId    String   @map("member_id") @db.Uuid
   year        Int
-  tier        String // "highCouncil", "auxiliary", "management", "base"
   roleTitle   String   @map("role_title") // e.g., "قائد العشيرة", "قائد الميديا"
   isSecondary Boolean  @default(false) @map("is_secondary") // e.g., true for auxiliary roles
   createdAt   DateTime @default(now()) @map("created_at")
@@ -110,11 +115,11 @@ model Event {
 // Event Participation
 // ============================================================
 model EventParticipant {
-  id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  eventId  String   @map("event_id") @db.Uuid
-  memberId String   @map("member_id") @db.Uuid
-  status   String   @default("registered") // "registered", "attended", "cancelled"
-  joinedAt DateTime @default(now()) @map("joined_at")
+  id       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId  String            @map("event_id") @db.Uuid
+  memberId String            @map("member_id") @db.Uuid
+  status   ParticipantStatus @default(registered)
+  joinedAt DateTime          @default(now()) @map("joined_at")
 
   // Relations
   event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)

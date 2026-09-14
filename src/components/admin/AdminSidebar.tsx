@@ -20,6 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const navigation: any[] = [
@@ -103,33 +104,16 @@ export function AdminSidebar({ user }: { user: any }) {
       </aside>
 
       {/* Mobile Drawer for More Items */}
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 z-50 md:hidden backdrop-blur-sm"
-            />
-            <motion.aside
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-64 bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] shadow-2xl z-[60] md:hidden flex flex-col"
-            >
-              <SidebarContent 
-                pathname={pathname} 
-                user={user} 
-                onLogout={handleLogout}
-                onClose={() => setIsOpen(false)}
-              />
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetContent side="right" className="bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] p-0 w-64 md:hidden">
+          <SidebarContent 
+            pathname={pathname} 
+            user={user} 
+            onLogout={handleLogout}
+            onClose={() => setIsOpen(false)}
+          />
+        </SheetContent>
+      </Sheet>
     </>
   );
 }
