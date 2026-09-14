@@ -96,7 +96,8 @@ export default function MembersClient({ initialMembers, initialShields = [] }: {
         </div>
       </div>
 
-      <div className="glass-card rounded-2xl border border-[var(--color-dark-border)] overflow-hidden">
+      {/* Desktop Table View */}
+      <div className="hidden md:block glass-card rounded-2xl border border-[var(--color-dark-border)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-right">
             <thead className="bg-white/5 border-b border-[var(--color-dark-border)]">
@@ -195,6 +196,98 @@ export default function MembersClient({ initialMembers, initialShields = [] }: {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile List View Cards */}
+      <div className="md:hidden grid grid-cols-1 gap-4">
+        {filteredMembers.length === 0 ? (
+          <div className="py-8 text-center text-gray-500 glass-card rounded-2xl border border-[var(--color-dark-border)]">
+            لا يوجد أعضاء يطابقون بحثك
+          </div>
+        ) : (
+          filteredMembers.map((member) => (
+            <div key={member.id} className="glass-card rounded-2xl border border-[var(--color-dark-border)] p-5 flex flex-col gap-4 relative">
+              <div className="absolute top-5 left-5">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                  member.role === "admin" 
+                    ? "bg-purple-400/10 text-purple-400 border border-purple-400/20" 
+                    : "bg-blue-400/10 text-blue-400 border border-blue-400/20"
+                }`}>
+                  {member.role === "admin" ? <Shield size={12} /> : <UserCog size={12} />}
+                  {member.role === "admin" ? "أدمن" : "جوال"}
+                </span>
+              </div>
+              
+              <div>
+                <h3 className="font-bold text-white text-lg pr-14 mb-1">{member.fullName}</h3>
+                <p className="text-[var(--color-scout-blue)] text-sm">{member.academicYear || "—"}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-y-3 text-sm pt-3 border-t border-[var(--color-dark-border)]">
+                <div>
+                  <span className="block text-gray-500 mb-1 text-xs">رقم الهاتف</span>
+                  <a href={`tel:${member.phone}`} className="text-gray-300 hover:text-[var(--color-scout-blue)]" dir="ltr">{member.phone || "—"}</a>
+                </div>
+                <div>
+                  <span className="block text-gray-500 mb-1 text-xs">تاريخ الانضمام</span>
+                  <span className="text-gray-300" dir="ltr">{new Date(member.createdAt).toLocaleDateString("ar-EG")}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[var(--color-dark-border)] mt-1">
+                <button
+                  onClick={() => handleRoleChange(member.id, member.role)}
+                  disabled={loadingId === member.id}
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  {loadingId === member.id ? (
+                    <div className="w-4 h-4 border-2 border-t-[var(--color-scout-blue)] border-white/20 rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <ShieldAlert size={16} />
+                      تغيير الصلاحية
+                    </>
+                  )}
+                </button>
+                
+                {initialShields.length > 0 && (
+                  <div className="relative">
+                    <button
+                      onClick={() => setAwardingTo(awardingTo === member.id ? null : member.id)}
+                      className="flex items-center gap-2 px-3 py-2 text-sm text-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20 rounded-lg transition-colors"
+                    >
+                      <Star size={16} />
+                      منح درع
+                    </button>
+                    
+                    {awardingTo === member.id && (
+                      <div className="absolute bottom-12 left-0 z-50 w-[260px] bg-[#0a1122] border border-[var(--color-scout-blue)] rounded-xl p-4 shadow-xl">
+                        <h4 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                          <Star size={16} className="text-yellow-400" />
+                          اختر الدرع لمنحه
+                        </h4>
+                        <select 
+                          className="w-full bg-black/40 border border-white/10 rounded-lg text-sm text-white p-3 mb-3 focus:outline-none focus:border-[var(--color-scout-blue)] appearance-none"
+                          value={selectedShield}
+                          onChange={(e) => setSelectedShield(e.target.value)}
+                        >
+                          <option value="" className="bg-[#0a1122]">-- اختر درع --</option>
+                          {initialShields.map(s => (
+                            <option key={s.id} value={s.id} className="bg-[#0a1122]">{s.name}</option>
+                          ))}
+                        </select>
+                        <div className="flex gap-2">
+                          <button onClick={() => handleAwardShield(member.id)} disabled={!selectedShield || loadingId === member.id} className="flex-1 bg-[var(--color-scout-blue)] text-white text-sm font-bold py-2 rounded-lg hover:bg-blue-600 disabled:opacity-50 transition-colors">منح الدرع</button>
+                          <button onClick={() => setAwardingTo(null)} className="flex-1 bg-white/10 text-gray-300 text-sm py-2 rounded-lg hover:bg-white/20 transition-colors">إلغاء</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

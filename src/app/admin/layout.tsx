@@ -32,7 +32,7 @@ export default async function AdminLayout({
       <AdminSidebar user={user} />
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-8 lg:p-10 overflow-x-hidden">
+      <main className="flex-1 p-6 pb-24 md:p-8 lg:p-10 overflow-x-hidden">
         {children}
       </main>
     </div>

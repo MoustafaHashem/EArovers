@@ -7,7 +7,7 @@
 - **Authentication**: Supabase Auth integrated with Next.js Server Actions and `proxy.ts` (middleware).
 - **Media Hosting**: Cloudinary for direct image/video uploads, but Prisma `Media` model stores the URLs and metadata for fast querying and custom sorting.
 - **Styling**: Tailwind CSS with custom CSS variables (`var(--color-scout-blue)`, `var(--color-scout-navy)`, etc.) defined in `src/app/globals.css`.
-- **UI Components**: `shadcn/ui` is integrated (e.g. `Drawer`, `Sheet`) for rapid, accessible, and highly-customizable components.
+- **UI Components**: `shadcn/ui` is integrated. Migrated to `@base-ui/react` (which requires the `render` prop instead of `asChild`) for accessible unstyled components (like Tabs, buttons). Magic UI concepts (`framer-motion` layout animations) are used for animated navigation pills.
 
 ## 🎨 Design Philosophy
 - **Aesthetic**: Premium, sleek, and modern. Dark mode by default.
@@ -29,3 +29,22 @@
 2. **Cloudinary Images**: Do not query the Cloudinary API directly to render images on the frontend. We fetch the `Media` model from Prisma because it supports `sortOrder` for drag-and-drop.
 3. **Tailwind JIT**: Be careful with string interpolation for Tailwind classes (e.g., `bg-[${color}]/20`). Tailwind scans files for *static* class strings. Always explicitly define the full class string (like `bg-blue-400/20`) in an object or array to ensure it compiles.
 4. **Icons**: Using `lucide-react` for iconography. When passing icons to client components, pass their string name (e.g. `iconName: "users"`) instead of the raw React Component to avoid Server/Client boundary serialization errors.
+
+## 🚀 Current Session Context & Next Steps (Read First for New Agents!)
+**Current Branch:** `master` (recently merged `redesign/mobile-ui`)
+**Database State:** 
+- The Supabase database was successfully synced with the new `schema.prisma`. The old `profiles` table was dropped, and the new `members` table is active.
+- Two test accounts were manually re-created (`admin@rovers.com` and `scouts@rovers.com`) and inserted into the `members` table.
+- **Middleware Security**: `src/proxy.ts` performs Edge authentication checks, but relies on Server Components (like `admin/layout.tsx` via Prisma) for authorization and role checks using `redirect()`. This avoids slow edge DB queries.
+
+**Code State (Completed in `redesign/mobile-ui`):**
+- Split Mobile and Desktop home page experiences in `src/app/page.tsx` using responsive hiding.
+- Implemented `MobileHome.tsx` and `MobileShieldsGallery.tsx` using `motion/react` for scroll animations.
+- Overhauled the `Navbar.tsx` with a responsive, animated "pill" layout using Framer Motion and Magic UI concepts, replacing fragile DOM measurements.
+- Created `MobileAdminDashboard.tsx` for a responsive mobile admin view.
+- Added `ProfileForm.tsx` in `/dashboard/profile` which securely integrates with Cloudinary (`CldUploadWidget`) for avatar uploads and Prisma for data persistence.
+- Refactored Radix UI primitives to Base UI (`@base-ui/react`), replacing `asChild` with `render={...}`.
+
+**Immediate Next Step (Your Task):**
+- Monitor the app for any lingering bugs or missing features that were deferred (e.g., further global UI refinements or complex backend integrations).
+- Proceed with new user requests on the `master` branch.

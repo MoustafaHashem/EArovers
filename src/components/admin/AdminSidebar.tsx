@@ -16,7 +16,7 @@ import {
   Network,
   Shield
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -37,23 +37,61 @@ const navigation: any[] = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function AdminSidebar({ user }: { user: any }) {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const pathname = usePathname();
 
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    window.location.assign("/");
+    router.push("/");
   };
 
   return (
     <>
-      {/* Mobile menu toggle */}
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 md:hidden z-50 w-14 h-14 bg-[var(--color-scout-blue)] text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(40,160,255,0.4)] hover:scale-105 transition-transform"
-      >
-        <Menu size={24} />
-      </button>
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0a1122]/90 backdrop-blur-xl border-t border-white/10 z-40 pb-safe">
+        <div className="flex items-center justify-around p-2">
+          {navigation.slice(0, 4).map((item: { label: string; href: string; icon: React.ElementType }) => {
+            const Icon = item.icon;
+            const isActive = item.href === "/admin" 
+              ? pathname === "/admin" 
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex flex-col items-center p-2 rounded-xl transition-all min-w-[64px]",
+                  isActive ? "text-[var(--color-scout-blue-light)]" : "text-gray-500 hover:text-gray-300"
+                )}
+              >
+                <div className={cn(
+                  "p-1.5 rounded-full mb-1 transition-all",
+                  isActive ? "bg-[var(--color-scout-blue)]/20 shadow-[0_0_10px_rgba(92,124,182,0.3)]" : "bg-transparent"
+                )}>
+                  <Icon size={20} />
+                </div>
+                <span className="text-[10px] font-bold text-center leading-tight">
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
+          
+          {/* More Menu Toggle */}
+          <button
+            onClick={() => setIsOpen(true)}
+            className="flex flex-col items-center p-2 rounded-xl transition-all min-w-[64px] text-gray-500 hover:text-gray-300"
+          >
+            <div className="p-1.5 rounded-full mb-1 bg-transparent transition-all">
+              <Menu size={20} />
+            </div>
+            <span className="text-[10px] font-bold text-center leading-tight">
+              المزيد
+            </span>
+          </button>
+        </div>
+      </nav>
 
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] h-screen sticky top-0 shrink-0">
@@ -64,7 +102,7 @@ export function AdminSidebar({ user }: { user: any }) {
         />
       </aside>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer for More Items */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -73,14 +111,14 @@ export function AdminSidebar({ user }: { user: any }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm"
+              className="fixed inset-0 bg-black/60 z-50 md:hidden backdrop-blur-sm"
             />
             <motion.aside
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-64 bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] shadow-2xl z-50 md:hidden flex flex-col"
+              className="fixed top-0 right-0 h-full w-64 bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] shadow-2xl z-[60] md:hidden flex flex-col"
             >
               <SidebarContent 
                 pathname={pathname} 
@@ -139,6 +177,7 @@ function SidebarContent({
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={onClose}
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-l-xl transition-all font-bold text-sm",
                   isActive
@@ -167,7 +206,7 @@ function SidebarContent({
           </div>
         </div>
         
-        <Link href="/" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors font-bold text-base">
+        <Link href="/" onClick={onClose} className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors font-bold text-base">
           <Home size={20} />
           <span>العودة للموقع</span>
         </Link>

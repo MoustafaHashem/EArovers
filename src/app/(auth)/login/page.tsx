@@ -66,9 +66,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="glass-card rounded-3xl p-8 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-[var(--color-scout-blue)] rounded-full blur-[80px] opacity-20" />
+    <div className="w-full max-w-md mx-auto glass-card p-6 md:p-8 rounded-[32px] relative overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-white/10 bg-[#0a1122]/80 backdrop-blur-2xl">
+      <div className="absolute -top-20 -right-20 w-64 h-64 bg-[var(--color-scout-blue)] rounded-full blur-[100px] opacity-20 pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-cyan-500 rounded-full blur-[100px] opacity-10 pointer-events-none" />
 
       {/* Back to home */}
       <Link
@@ -111,7 +111,7 @@ export default function LoginPage() {
             dir="ltr"
             value={formData.email}
             onChange={(e) => handleChange("email", e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--color-scout-blue-light)] transition-colors text-left"
+            className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3.5 text-white focus:outline-none focus:border-[var(--color-scout-blue-light)] focus:ring-1 focus:ring-[var(--color-scout-blue-light)] transition-all text-left placeholder:text-gray-600"
             placeholder="example@eng.asu.edu.eg"
           />
           {errors.email && (
@@ -131,7 +131,7 @@ export default function LoginPage() {
               dir="ltr"
               value={formData.password}
               onChange={(e) => handleChange("password", e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--color-scout-blue-light)] transition-colors text-left pl-12"
+              className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3.5 text-white focus:outline-none focus:border-[var(--color-scout-blue-light)] focus:ring-1 focus:ring-[var(--color-scout-blue-light)] transition-all text-left pl-12 placeholder:text-gray-600"
               placeholder="••••••••"
             />
             <button
@@ -151,7 +151,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={formState === "submitting"}
-          className="mt-4 bg-[var(--color-scout-blue)] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-[var(--color-scout-blue-light)] hover:text-[var(--color-scout-navy)] transition-colors shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+          className="mt-4 bg-[var(--color-scout-blue)] text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-[var(--color-scout-blue-light)] hover:text-[var(--color-scout-navy)] transition-colors shadow-[0_0_15px_rgba(92,124,182,0.3)] disabled:opacity-60 disabled:cursor-not-allowed active:scale-95"
         >
           {formState === "submitting" ? (
             <>

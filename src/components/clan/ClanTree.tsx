@@ -86,13 +86,11 @@ function TierSection({
   onPromote,
   clickedId,
   isFadingOut,
-  forceSingleRow = false,
 }: {
   tier: ClanTier;
   onPromote: (year: number, id: string) => void;
   clickedId: string | null;
   isFadingOut: boolean;
-  forceSingleRow?: boolean;
 }) {
   if (tier.members.length === 0) return null;
 
@@ -265,7 +263,6 @@ export function ClanTree({ dbData = [], defaultYear, hideTabs = false }: { dbDat
               onPromote={handlePromote}
               clickedId={clickedId}
               isFadingOut={!!clickedId}
-              forceSingleRow={true}
             />
 
             <TierSection

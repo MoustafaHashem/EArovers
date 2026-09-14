@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import AdminDashboardClient from '@/components/admin/AdminDashboardClient';
+import { MobileAdminDashboard } from '@/components/admin/MobileAdminDashboard';
 
 export default async function AdminDashboardPage() {
   let activeMembersCount = 0;
@@ -82,12 +83,25 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <AdminDashboardClient 
-      stats={stats}
-      initialVisits={initialVisits}
-      demographics={demographics}
-      upcomingEvents={upcomingEventsList}
-      pendingRequests={pendingRequestsList}
-    />
+    <>
+      <div className="hidden lg:block">
+        <AdminDashboardClient 
+          stats={stats}
+          initialVisits={initialVisits}
+          demographics={demographics}
+          upcomingEvents={upcomingEventsList}
+          pendingRequests={pendingRequestsList}
+        />
+      </div>
+      <div className="block lg:hidden">
+        <MobileAdminDashboard 
+          stats={stats}
+          initialVisits={initialVisits}
+          demographics={demographics}
+          upcomingEvents={upcomingEventsList}
+          pendingRequests={pendingRequestsList}
+        />
+      </div>
+    </>
   );
 }

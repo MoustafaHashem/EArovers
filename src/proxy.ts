@@ -59,19 +59,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Admin route protection - check user role
+  // Admin route protection - just check if user is logged in
+  // Actual role authorization is handled securely in src/app/admin/layout.tsx via Prisma
   if (user && adminPaths.some((p) => pathname.startsWith(p))) {
-    const { data: member } = await supabase
-      .from("members")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    if (!member || member.role !== "admin") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/dashboard";
-      return NextResponse.redirect(url);
-    }
+    // If we wanted to check role here, we would need the role in the JWT
+    // For now, layout.tsx will throw if they aren't admin.
   }
 
   return supabaseResponse;

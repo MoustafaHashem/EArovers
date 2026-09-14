@@ -40,17 +40,16 @@ const navLinks = [
   { href: "/", label: "الرئيسية" },
   { href: "/#shields", label: "الدروع" },
   { href: "/#media", label: "الميديا" },
-  { href: "/#fame", label: "الشرف" },
-  { href: "/#sessions", label: "التأهيل" },
+  { href: "/#fame", label: "المسابقات" },
+  { href: "/#sessions", label: "الدراسات" },
   { href: "/#hierarchy-preview", label: "الشجرة" },
 ];
 
 export function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeHash, setActiveHash] = useState("");
   const [isScrollingToHash, setIsScrollingToHash] = useState(false);
-  const [pillStyle, setPillStyle] = useState({ left: 0, width: 0, opacity: 0 });
   const navRef = useRef<HTMLDivElement>(null);
 
   const pathname = usePathname();
@@ -123,86 +122,67 @@ export function Navbar() {
     };
   }, [isScrollingToHash]);
 
-  // Update pill position whenever activeHash or pathname changes
-  useEffect(() => {
-    if (!navRef.current) return;
-    
-    // We added data-active="true" to the currently active Link
-    const activeEl = navRef.current.querySelector('[data-active="true"]') as HTMLElement;
-    
-    if (activeEl) {
-      setPillStyle({
-        left: activeEl.offsetLeft,
-        width: activeEl.offsetWidth,
-        opacity: 1
-      });
-    } else {
-      setPillStyle(prev => ({ ...prev, opacity: 0 }));
+  // Determine active item to power Magic UI style animated background
+  const getActiveTab = () => {
+    for (const link of navLinks) {
+      const isHashLink = link.href.includes("#");
+      const hashPart = isHashLink ? link.href.split("#")[1] : "";
+      
+      if (isHashLink) {
+        if (pathname === link.href.split("#")[0] && activeHash === `#${hashPart}`) return link.href;
+      } else {
+        if (pathname === link.href && activeHash === "") return link.href;
+      }
     }
-  }, [activeHash, pathname, isScrolled]);
+    return null;
+  };
+  
+  const activeTabId = getActiveTab();
 
   return (
-    <div className="fixed top-4 inset-x-0 z-50 flex justify-center px-4 pointer-events-none">
+    <div className="absolute lg:fixed top-0 lg:top-4 inset-x-0 z-50 flex justify-center px-0 lg:px-4 pointer-events-none">
       <motion.nav
         layout
         className={cn(
-          "pointer-events-auto transition-colors duration-500 rounded-full",
+          "pointer-events-auto transition-colors duration-500 lg:rounded-full",
           isScrolled
-            ? "bg-[var(--color-scout-navy)]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] border border-white/10 px-6 py-3"
-            : "bg-transparent px-6 py-3 w-full max-w-7xl"
+            ? "bg-[var(--color-scout-navy)]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] border-b lg:border border-white/10 px-4 lg:px-6 py-3 lg:py-3"
+            : "bg-transparent px-4 lg:px-6 py-3 lg:py-3 w-full max-w-7xl"
         )}
       >
-        <div className={cn("flex items-center", isScrolled ? "justify-center gap-8" : "w-full")}>
+        <motion.div layout className={cn("flex items-center", isScrolled ? "justify-center gap-8" : "w-full")}>
           
           {/* Left Side (Logo) */}
-          <motion.div layout className={cn("flex items-center", isScrolled ? "" : "flex-1 justify-start")}>
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(92,124,182,0.4)] group-hover:shadow-[0_0_25px_rgba(92,124,182,0.7)] text-white font-black text-lg transition-all duration-300 shrink-0">
-                ج
-              </div>
-              <AnimatePresence>
-                {!isScrolled && (
-                  <motion.span 
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: "auto" }}
-                    exit={{ opacity: 0, width: 0 }}
-                    className="text-lg font-bold text-white tracking-wide whitespace-nowrap overflow-hidden"
-                  >
-                    جوالة هندسة عين شمس
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </Link>
-          </motion.div>
+          <AnimatePresence>
+            {!isScrolled && (
+              <motion.div 
+                layout 
+                initial={{ opacity: 0, width: 0 }}
+                animate={{ opacity: 1, width: "auto" }}
+                exit={{ opacity: 0, width: 0 }}
+                className="flex items-center flex-1 justify-start"
+              >
+                <Link href="/" className="flex items-center gap-3 group pt-2 lg:pt-0">
+                  <div className="w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center shrink-0 -ml-2 -mb-2 lg:-ml-4 lg:-my-4 transition-all duration-300">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/Logo.png" alt="شعار عشيرة جوالة هندسة" className="w-24 h-24 lg:w-28 lg:h-28 object-contain drop-shadow-[0_0_15px_rgba(92,124,182,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(92,124,182,0.7)] transition-all duration-300" />
+                  </div>
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Center (Desktop Navigation) */}
           <motion.div layout ref={navRef} className="hidden lg:flex relative items-center gap-2 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md">
-            {/* The pure CSS sliding pill */}
-            <div 
-              className="absolute top-1 bottom-1 bg-[var(--color-glow-cyan)] rounded-full shadow-[0_0_15px_var(--color-glow-cyan)] pointer-events-none transition-all duration-300 ease-out z-0"
-              style={{
-                left: `${pillStyle.left}px`,
-                width: `${pillStyle.width}px`,
-                opacity: pillStyle.opacity
-              }}
-            />
             {navLinks.map((link) => {
               const isHashLink = link.href.includes("#");
               const hashPart = isHashLink ? link.href.split("#")[1] : "";
-              const routePart = link.href.split("#")[0] || "/";
-
-              let isActive = false;
-              if (isHashLink) {
-                isActive = pathname === routePart && activeHash === `#${hashPart}`;
-              } else {
-                isActive = pathname === link.href && activeHash === "";
-              }
+              const isActive = activeTabId === link.href;
 
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  data-active={isActive}
                   onClick={(e) => {
                     const isSamePageHome = link.href === "/" && pathname === "/";
                     
@@ -255,10 +235,18 @@ export function Navbar() {
                   }}
                   className={cn(
                     "relative px-4 py-2 rounded-full text-sm font-bold transition-colors duration-300 z-10",
-                    isActive ? "text-[var(--color-scout-navy)]" : "text-gray-300 hover:text-white hover:bg-white/10"
+                    isActive ? "text-[var(--color-scout-navy)]" : "text-gray-400 hover:text-white"
                   )}
                 >
-                  <span className="relative z-10">{link.label}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="navbar-active-pill"
+                      className="absolute inset-0 bg-[var(--color-glow-cyan)] rounded-full shadow-[0_0_15px_var(--color-glow-cyan)]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      style={{ zIndex: -1 }}
+                    />
+                  )}
+                  {link.label}
                 </Link>
               );
             })}
@@ -318,25 +306,19 @@ export function Navbar() {
 
             {/* Mobile Menu Button */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <SheetTrigger 
-                render={
-                  <button
-                    className="lg:hidden w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors ml-2"
-                    aria-label="فتح القائمة"
-                  />
-                }
-              >
+              <SheetTrigger render={<button className="lg:hidden w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors ml-2" aria-label="فتح القائمة" />}>
                 <Menu size={24} />
               </SheetTrigger>
               
-              <SheetContent side="right" className="bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] p-0 flex flex-col w-[300px] sm:w-[400px]">
+              <SheetContent side="right" showCloseButton={false} className="bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] p-0 flex flex-col w-[300px] sm:w-[400px]">
                 <SheetTitle className="sr-only">القائمة الرئيسية</SheetTitle>
                 
                 {/* Drawer Header */}
                 <div className="flex items-center justify-between p-6 border-b border-[var(--color-dark-border)]">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-scout-blue)] to-[var(--color-anchor)] rounded-full flex items-center justify-center text-white font-bold text-sm">
-                      ج
+                    <div className="w-20 h-20 flex items-center justify-center shrink-0 -my-2">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/Logo.png" alt="شعار عشيرة جوالة هندسة" className="w-20 h-20 object-contain" />
                     </div>
                     <span className="text-white font-bold">القائمة</span>
                   </div>
@@ -426,7 +408,7 @@ export function Navbar() {
               </SheetContent>
             </Sheet>
           </motion.div>
-        </div>
+        </motion.div>
       </motion.nav>
     </div>
   );

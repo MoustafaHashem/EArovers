@@ -1,18 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export type UserRole = "scout" | "admin";
 
 export async function getCurrentUser() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) return null;
 
   const member = await prisma.member.findUnique({
-    where: { id: user.id }
+    where: { id: user.id },
   });
 
   return {
@@ -45,7 +44,7 @@ export async function isAdmin(): Promise<boolean> {
 export async function requireAuth() {
   const user = await getCurrentUser();
   if (!user) {
-    throw new Error("غير مصرح - يرجى تسجيل الدخول");
+    redirect("/login");
   }
   return user;
 }
@@ -53,10 +52,10 @@ export async function requireAuth() {
 export async function requireAdmin() {
   const user = await getCurrentUser();
   if (!user) {
-    throw new Error("غير مصرح - يرجى تسجيل الدخول");
+    redirect("/login");
   }
   if (user.member?.role !== "admin") {
-    throw new Error("غير مصرح - صلاحيات المدير مطلوبة");
+    redirect("/dashboard");
   }
   return user;
 }
