@@ -212,6 +212,13 @@ If you need to add a new image (for example, a photo of a new Scout Shield) to t
 
 That's it! Your new image is safely hosted on Cloudinary, perfectly linked in our Database, and ready to be displayed on the website!
 
+### ⏳ A Quick Note on Caching (Why your changes might not show up immediately)
+Because we use **Next.js ISR (Incremental Static Regeneration)** to make the site lightning fast, the server caches (saves) pages for **60 seconds**. 
+
+If you make a change in Prisma Studio or Cloudinary and then immediately refresh the website, **you might not see your change right away.** 
+- **Do you need to do anything?** No! 
+- **The Solution:** Just wait 60 seconds and refresh the page. The server will automatically rebuild the page in the background and pull your new data from the database.
+
 ---
 
 For practical coding examples on how to write Next.js code to fetch and display this data, read the [`docs/DEVELOPER_GUIDE.md`](./DEVELOPER_GUIDE.md) file!
