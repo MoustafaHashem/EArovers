@@ -158,7 +158,36 @@ Our main `page.tsx` simply looks at the screen size and renders the correct comp
 
 ---
 
-## 7. How to Safely Edit Data (Without Breaking Things)
+## 7. UI Styling: Tailwind, shadcn/ui, and Magic UI
+
+If you look at our HTML code, you will see a lot of strange class names like `className="flex flex-col text-sm border-b"`. This is because we don't write traditional CSS files. 
+
+Instead, we use three powerful tools to build our UI rapidly:
+1. **Tailwind CSS:** A utility-first CSS framework. Instead of writing a CSS rule to make text bold, you just type `font-bold` directly into the component. It makes styling incredibly fast once you learn the class names.
+2. **shadcn/ui:** Building accessible buttons, dropdowns, and modals from scratch is hard. `shadcn/ui` gives us beautifully designed, pre-built components. They live in `src/components/ui/` (e.g., `<Button>`, `<Card>`). If you need a standard UI element, look in that folder first before building it yourself!
+3. **Magic UI:** For highly interactive, animated, and "wow-factor" components (like our Desktop Navbar), we use Magic UI. It provides modern, beautifully animated components that make the site feel premium.
+
+## 8. Authentication & The Admin Dashboard
+
+Not everyone is allowed to edit data on the website. We have a secure, private dashboard located at the `/admin` URL.
+
+- **Supabase Auth:** We use Supabase's built-in authentication system to manage passwords and logins securely.
+- **The Bouncer (Middleware):** If you try to visit `/admin` without being logged in, Next.js will instantly redirect you to the home page. This is handled by a file called `src/proxy.ts`, which runs on the edge network and acts as a strict bouncer for our secure pages.
+- **Admin Privileges:** Only authorized scout leaders with an admin account can access the dashboard to process Join Requests, add new Members to the Clan Tree, or manage Events and Shields. *Note: We distinguish between "Users with Accounts" (Admins) and "Historical Members" (people stored in our database for the tree) using a `hasAccount` boolean flag in the database.*
+
+## 9. Infrastructure Magic: GitHub Actions (Keep-Alive)
+
+Our database host (Supabase) is amazing, but because we are on their free tier, they will automatically "pause" our database if no one uses it for a full week. If the database pauses, the website crashes.
+
+To prevent this, we wrote a small robot script using **GitHub Actions**.
+- We created a hidden route on our website at `src/app/api/health/ping/route.ts`. 
+- Every single day, GitHub automatically runs a workflow (located in `.github/workflows/`) that visits this ping route. 
+- The ping route does a fake, tiny database query.
+- This tricks Supabase into thinking the database is constantly being used, ensuring it stays awake and our website never goes down!
+
+---
+
+## 10. How to Safely Edit Data (Without Breaking Things)
 
 If you are writing code for this project, here is the golden rule: **Don't hardcode data.** All data must live in the database.
 
@@ -184,7 +213,7 @@ If you are building a feature that requires a brand-new database table, you must
 
 ---
 
-## 8. A Deep Dive into Images (Cloudinary + Database)
+## 11. A Deep Dive into Images (Cloudinary + Database)
 
 Images are the heaviest part of any website. Because we want EArovers to load blazingly fast, we **never** store actual image files (like `.jpg` or `.png`) directly inside the Supabase database. Instead, the database only stores *directions* on where to find the image.
 
