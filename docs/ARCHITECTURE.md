@@ -52,3 +52,7 @@ The schema centers around the `Member` model, unifying user authentication profi
 - The application prioritizes mobile users.
 - Component layouts utilize Tailwind CSS breakpoints (`sm:`, `md:`, `lg:`).
 - Heavy reliance on touch-friendly targets, horizontal scrollable tabs (with hidden scrollbars), and off-canvas menus (shadcn `Sheet`).
+
+### Performance & Caching
+- **Rate Limiting**: Integrated Upstash Redis within the Edge middleware (`src/proxy.ts`) to prevent abuse and DDoS attacks.
+- **Incremental Static Regeneration (ISR)**: Next.js ISR is configured (`revalidate = 60`) on data-heavy public routes (`/events`, `/fame`, `/gallery`, `/hierarchy`, `/shields`) to ensure fast page loads while keeping database queries to a minimum.
