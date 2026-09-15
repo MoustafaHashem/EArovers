@@ -21,16 +21,16 @@ Let's break down each one.
 
 ```mermaid
 graph TD
-    User((User's Browser)) -->|1. Visits Website| NextJS[Next.js Application]
+    User(("User Browser")) -->|1. Visits Website| NextJS["Next.js Application"]
     
-    subgraph "Next.js Server (Vercel)"
-    NextJS -->|2. Rate Limiting| Redis[(Upstash Redis)]
-    NextJS -->|3. Data Request| Prisma{Prisma ORM}
+    subgraph Server["Next.js Server (Vercel)"]
+    NextJS -->|2. Rate Limiting| Redis[("Upstash Redis")]
+    NextJS -->|3. Data Request| Prisma{"Prisma ORM"}
     end
     
-    subgraph "Remote Databases & Storage"
-    Prisma <-->|4. SQL Queries| Supabase[(Supabase PostgreSQL)]
-    User -.->|5. Downloads Images| Cloudinary[(Cloudinary)]
+    subgraph Remote["Remote Databases and Storage"]
+    Prisma <-->|4. SQL Queries| Supabase[("Supabase PostgreSQL")]
+    User -.->|5. Downloads Images| Cloudinary[("Cloudinary")]
     end
     
     classDef browser fill:#f9f,stroke:#333,stroke-width:2px;
