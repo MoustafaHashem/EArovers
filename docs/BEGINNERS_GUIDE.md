@@ -251,3 +251,29 @@ If you make a change in Prisma Studio or Cloudinary and then immediately refresh
 ---
 
 For practical coding examples on how to write Next.js code to fetch and display this data, read the [`docs/DEVELOPER_GUIDE.md`](./DEVELOPER_GUIDE.md) file!
+
+---
+
+## 12. 5 Common "Gotchas" (Things that confuse every beginner)
+
+If you are writing code and get stuck, it is almost certainly because of one of these 5 things:
+
+### 1. My component crashed when I added an `onClick` button!
+By default, Next.js runs all our code on the server (for maximum speed). Servers don't have mice, so they don't understand "clicks" or "state" (`useState`). 
+**The Fix:** If you need an interactive button or form, you must type `"use client";` at the very top of your file to tell Next.js to run it in the user's browser.
+
+### 2. Where are the API files? How do we save data?
+In older React apps, you had to write a separate API route (like `/api/save`) and use `fetch()` to save data. We don't do that here! 
+**The Fix:** We use **Server Actions**. You can write a normal function in your component, put `"use server";` at the top of the function, and pass it directly to a form like `<form action={myFunction}>`. Next.js handles the API magic invisibly.
+
+### 3. The App crashes the second I run `npm run dev`!
+You probably just cloned the code from GitHub. Secret keys (like our database password) are *never* uploaded to GitHub for security reasons.
+**The Fix:** You need a `.env` file! Ask a lead developer for the `.env` keys (Supabase, Cloudinary, Redis) and paste them into a file named `.env` in your root folder.
+
+### 4. An Admin edited data, but the live site didn't update!
+We learned earlier that the site caches data for 60 seconds. However, we don't want an Admin to wait 60 seconds after they fix a typo.
+**The Fix:** In our Server Actions (the code that saves the data), we run a command called `revalidatePath('/page-name')`. This instantly clears the 60-second cache for that specific page, making the update live instantly!
+
+### 5. Why is the code complaining that `user.fstName` doesn't exist?
+We write our code in **TypeScript** (files ending in `.tsx` instead of `.jsx`). 
+**The Fix:** Think of TypeScript as an extremely aggressive spell-checker. It reads our database schema and knows that the field is called `firstName`, not `fstName`. It highlights the error *before* you even run the code, saving you from bugs!
