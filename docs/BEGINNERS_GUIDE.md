@@ -17,6 +17,31 @@ When a user visits our website, a few different services work together behind th
 
 Let's break down each one.
 
+### Visual Architecture Diagram
+
+```mermaid
+graph TD
+    User((User's Browser)) -->|1. Visits Website| NextJS[Next.js Application]
+    
+    subgraph "Next.js Server (Vercel)"
+    NextJS -->|2. Rate Limiting| Redis[(Upstash Redis)]
+    NextJS -->|3. Data Request| Prisma{Prisma ORM}
+    end
+    
+    subgraph "Remote Databases & Storage"
+    Prisma <-->|4. SQL Queries| Supabase[(Supabase PostgreSQL)]
+    User -.->|5. Downloads Images| Cloudinary[(Cloudinary)]
+    end
+    
+    classDef browser fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef server fill:#bbf,stroke:#333,stroke-width:2px;
+    classDef db fill:#bfb,stroke:#333,stroke-width:2px;
+    
+    class User browser;
+    class NextJS,Redis server;
+    class Supabase,Cloudinary,Prisma db;
+```
+
 ---
 
 ## 2. The Database: Supabase + Prisma
