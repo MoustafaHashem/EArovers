@@ -401,19 +401,19 @@ Animations play regardless of user motion preferences.
 |---|---|---|
 | **Tech Stack** | KEEP | Modern, appropriate, well-configured |
 | **Data Architecture** | KEEP | Clean types, centralized data |
-| **ClanTree concept** | IMPROVE | Great concept but broken on mobile, empty states |
+| **ClanTree concept** | ~~IMPROVE~~ **[RESOLVED]** | Great concept, now fully dynamic and mobile-responsive on `/hierarchy` |
 | **PersonCard** | IMPROVE | Use `<Image />`, responsive sizing |
 | **HallOfFame** | KEEP | Works well, may add more entries |
-| **ScoutShields** | KEEP | Solid implementation |
-| **MediaGallery** | REPLACE | Entirely placeholder, non-functional |
+| **ScoutShields** | ~~KEEP~~ **[RESOLVED]** | Solid implementation, now converted to dynamic `/shields` page utilizing Prisma `Shield` model |
+| **MediaGallery** | ~~REPLACE~~ **[RESOLVED]** | Connected to Prisma `Media` model, no longer placeholder |
 | **Sessions** | KEEP | Minor improvements only |
 | **JoinForm** | IMPROVE | Add validation, states, fix text bug |
-| **Identity (footer)** | IMPROVE | Add real links, contact info, proper social icons |
-| **Navbar** | IMPROVE | Add mobile hamburger menu |
-| **Hero** | IMPROVE | Add organization context, adjust sizing |
+| **Identity (footer)** | ~~IMPROVE~~ **[RESOLVED]** | Links updated to point to real dynamic routes. |
+| **Navbar** | ~~IMPROVE~~ **[RESOLVED]** | Mobile hamburger menu (`Sheet`) implemented |
+| **Hero** | ~~IMPROVE~~ **[RESOLVED]** | Decoupled Desktop and Mobile Hero components created |
 | **Color system** | IMPROVE | Add visual variety between sections |
 | **Globals CSS** | KEEP | Good foundation |
-| **Public assets** | REPLACE | Remove defaults, add organization assets |
+| **Public assets** | ~~REPLACE~~ **[RESOLVED]** | Integrated badge and leadership images from PRs |
 
 ---
 
@@ -423,11 +423,11 @@ Animations play regardless of user motion preferences.
 *(None currently — site builds and runs)*
 
 ### P1 — High
-1. Mobile navigation (hamburger menu)
-2. Org tree mobile responsiveness
+1. ~~Mobile navigation (hamburger menu)~~ **[RESOLVED - Replaced with Shadcn Sheet drawer]**
+2. ~~Org tree mobile responsiveness~~ **[RESOLVED - Now powered dynamically on `/hierarchy` route]**
 3. Form validation + feedback states
 4. Fix Hebrew character bug in JoinForm
-5. Replace or redesign placeholder media gallery
+5. ~~Replace or redesign placeholder media gallery~~ **[RESOLVED - Connected to Prisma Media model]**
 
 ### P2 — Medium
 1. Add "About/عن الجوالة" section

@@ -21,15 +21,17 @@ The schema centers around the `Member` model, unifying user authentication profi
 - **`Achievement`**: Tracks milestones, courses, and honors tied to a `Member`.
 - **`Media`**: Stores metadata and URLs of photos/videos hosted on Cloudinary, categorized by type.
 - **`JoinRequest`**: Handles new user applications before they are approved and converted into a `Member`.
+- **`Shield`**: Details scout shields, badges, requirements, and categories (Cultural, Artistic, Scout, etc.).
 - **`Event`**: Stores details about upcoming and past scouting events.
 
 ## 3. Directory Structure
 
 - `/prisma`: Contains `schema.prisma` and generated types.
-- `/public`: Static assets (fonts, icons).
+- `/public`: Static assets (fonts, icons, PR images like badges and leadership photos).
 - `/src/app`: The Next.js App Router root.
   - `/api`: API routes (including the `/health/ping` cron target).
   - `/admin`: The secure admin dashboard (protected by `proxy.ts`).
+  - `/(public)`: Dynamic client-facing routes (`/hierarchy`, `/shields`, `/events`, `/fame`, `/gallery`).
   - `/components`: Server/Client components used across the application.
   - `/lib`: Utility functions, Prisma client initialization, and shadcn utils.
 - `/docs`: Project documentation and architecture details.
