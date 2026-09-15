@@ -11,5 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Application Health Route
+        env:
+          SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
         run: |
-          curl -s -o /dev/null -w "%{http_code}" "${{ secrets.NEXT_PUBLIC_SITE_URL }}/api/health/ping"
+          curl -s -o /dev/null -w "%{http_code}" "${SITE_URL}/api/health/ping"
