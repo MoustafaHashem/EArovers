@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth/roles";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function addMedia(formData: FormData) {
   const admin = await requireAdmin();
@@ -22,6 +22,7 @@ export async function addMedia(formData: FormData) {
     });
     
     revalidatePath("/admin/media");
+    revalidateTag("media", "max");
     return { success: true };
   } catch (error) {
     console.error("Failed to add media:", error);
@@ -41,6 +42,7 @@ export async function addMediaFromWidget(data: { url: string, title: string, cat
       }
     });
     revalidatePath("/admin/media");
+    revalidateTag("media", "max");
     return { success: true };
   } catch (error) {
     console.error("Failed to add media:", error);
@@ -57,6 +59,7 @@ export async function deleteMedia(id: string) {
     });
     
     revalidatePath("/admin/media");
+    revalidateTag("media", "max");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete media:", error);
@@ -84,6 +87,7 @@ export async function updateMedia(id: string, formData: FormData) {
 
     revalidatePath("/admin/media");
     revalidatePath("/");
+    revalidateTag("media", "max");
     return { success: true };
   } catch (error) {
     console.error("Failed to update media:", error);
@@ -100,6 +104,7 @@ export async function toggleFeatured(id: string, isFeatured: boolean) {
     });
     revalidatePath("/admin/media");
     revalidatePath("/");
+    revalidateTag("media", "max");
     return { success: true };
   } catch (error) {
     console.error("Failed to toggle featured:", error);
@@ -120,6 +125,7 @@ export async function updateMediaSortOrder(updates: { id: string; sortOrder: num
     );
     revalidatePath("/admin/media");
     revalidatePath("/");
+    revalidateTag("media", "max");
     return { success: true };
   } catch (error) {
     console.error("Failed to update sort order:", error);

@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import { shieldsData } from "@/data/clanData";
-import { fetchMediaAction } from "@/actions/media";
-import { ImageIcon, Loader2, PlayCircle, ChevronLeft } from "lucide-react";
+import { ImageIcon, PlayCircle, ChevronLeft } from "lucide-react";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
@@ -20,37 +19,14 @@ type Shield = typeof shieldsData[0];
 
 function ShieldSection({ 
   shield, 
+  initialImages,
   onOpenLightbox 
 }: { 
   shield: Shield; 
+  initialImages: GalleryImage[];
   onOpenLightbox: (images: GalleryImage[], index: number) => void;
 }) {
-  const [images, setImages] = useState<GalleryImage[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-    
-
-    fetchMediaAction(shield.title, 6) // Fetch up to 6 images for the carousel
-      .then((data) => {
-        if (mounted) {
-          setImages(data);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.error(`Failed to fetch photos for ${shield.title}:`, err);
-        if (mounted) {
-          setImages([]);
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, [shield.title]);
+  const images = initialImages || [];
 
   return (
     <motion.div 
@@ -66,12 +42,7 @@ function ShieldSection({
         <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-black/50 to-transparent z-10 pointer-events-none" />
 
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 px-4 py-4 h-full items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {loading ? (
-            <div className="w-full flex-shrink-0 flex flex-col items-center justify-center text-[var(--color-scout-blue-light)] opacity-70">
-              <Loader2 className="animate-spin mb-3" size={32} />
-              <p className="text-xs font-bold text-gray-400">جاري تحميل الصور...</p>
-            </div>
-          ) : images.length === 0 ? (
+          {images.length === 0 ? (
             <div className="w-full h-full flex-shrink-0 snap-center rounded-2xl bg-gradient-to-br from-[#0f172a] to-[var(--color-scout-blue)]/20 flex flex-col items-center justify-center text-white/30 border border-white/5 relative overflow-hidden">
               <ImageIcon size={48} className="mb-3 opacity-20" />
               <p className="text-sm font-bold tracking-wider">لا توجد صور حالياً</p>
@@ -154,7 +125,7 @@ function ShieldSection({
   );
 }
 
-export function MobileShieldsGallery() {
+export function MobileShieldsGallery({ initialMedia }: { initialMedia: Record<string, GalleryImage[]> }) {
   const [lightboxData, setLightboxData] = useState<{
     isOpen: boolean;
     images: GalleryImage[];
@@ -179,6 +150,7 @@ export function MobileShieldsGallery() {
         <ShieldSection 
           key={shield.id} 
           shield={shield} 
+          initialImages={initialMedia[shield.id] || []}
           onOpenLightbox={handleOpenLightbox} 
         />
       ))}

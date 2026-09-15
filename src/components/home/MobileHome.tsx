@@ -3,8 +3,19 @@ import { MobileShieldsGallery } from "@/components/home/MobileShieldsGallery";
 import { Identity } from "@/components/layout/Identity";
 import { Trophy, BookOpen, ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { fetchMediaAction } from "@/actions/media";
+import { shieldsData } from "@/data/clanData";
 
-export function MobileHome() {
+export async function MobileHome() {
+  const shieldsMediaPromises = shieldsData.map(shield => fetchMediaAction(shield.title, 6));
+  const shieldsMediaArray = await Promise.all(shieldsMediaPromises);
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialMedia = shieldsData.reduce((acc, shield, index) => {
+    acc[shield.id] = shieldsMediaArray[index];
+    return acc;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }, {} as Record<string, any[]>);
   return (
     <div className="flex flex-col items-center overflow-x-hidden pb-20">
       {/* Cinematic Full-Bleed Hero Section */}
@@ -48,7 +59,7 @@ export function MobileHome() {
           <h2 className="text-3xl font-black text-white mb-2">الدروع الكشفية وأنشطتنا</h2>
           <p className="text-gray-400 text-sm max-w-2xl mx-auto px-4">تغطي أنشطة الجوالة مجالات متعددة لبناء شخصية متكاملة</p>
         </div>
-        <MobileShieldsGallery />
+        <MobileShieldsGallery initialMedia={initialMedia} />
       </section>
 
       {/* Hall of Fame Teaser */}

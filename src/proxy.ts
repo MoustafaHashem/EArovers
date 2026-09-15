@@ -16,7 +16,7 @@ const ratelimit = new Ratelimit({
   analytics: true,
 });
 
-export async function proxy(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   // Rate Limiting
   const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
   

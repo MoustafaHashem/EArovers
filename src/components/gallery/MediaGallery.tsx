@@ -17,15 +17,21 @@ type GalleryImage = {
   format: string;
 };
 
-export function MediaGallery() {
+export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] }) {
   const categories = ["مسابقات", "دروع", "معسكرات", "كواليس"];
   const [activeCategory, setActiveCategory] = useState(categories[0]);
-  const [images, setImages] = useState<GalleryImage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<GalleryImage[]>(initialImages || []);
+  const [loading, setLoading] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(-1);
 
   useEffect(() => {
+    // Skip fetching if it's the first category and we already have the initial images
+    if (activeCategory === categories[0] && images === initialImages) {
+      return;
+    }
+
     let mounted = true;
+    setLoading(true);
     
     fetchMediaAction(activeCategory, 12)
       .then((data) => {
@@ -42,6 +48,7 @@ export function MediaGallery() {
     return () => {
       mounted = false;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory]);
   
   return (

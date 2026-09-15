@@ -6,8 +6,11 @@ import { MediaGallery } from "@/components/gallery/MediaGallery";
 import { Sessions } from "@/components/home/Sessions";
 import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
+import { fetchMediaAction } from "@/actions/media";
 
-export function DesktopHome() {
+export async function DesktopHome() {
+  // Fetch initial media for the default category "مسابقات"
+  const initialImages = await fetchMediaAction("مسابقات", 12);
   return (
     <div className="flex flex-col items-center overflow-x-hidden">
 
@@ -59,7 +62,7 @@ export function DesktopHome() {
 
       {/* Media Gallery */}
       <section id="media" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)] bg-black/40 backdrop-blur-sm">
-        <MediaGallery />
+        <MediaGallery initialImages={initialImages} />
       </section>
 
       {/* Hall of Fame */}
