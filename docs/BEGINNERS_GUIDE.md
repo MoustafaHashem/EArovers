@@ -19,27 +19,34 @@ Let's break down each one.
 
 ### Visual Architecture Diagram
 
-```mermaid
-graph TD
-    User(("User Browser")) -->|1. Visits Website| NextJS["Next.js Application"]
-    
-    subgraph Server["Next.js Server (Vercel)"]
-    NextJS -->|2. Rate Limiting| Redis[("Upstash Redis")]
-    NextJS -->|3. Data Request| Prisma{"Prisma ORM"}
-    end
-    
-    subgraph Remote["Remote Databases and Storage"]
-    Prisma <-->|4. SQL Queries| Supabase[("Supabase PostgreSQL")]
-    User -.->|5. Downloads Images| Cloudinary[("Cloudinary")]
-    end
-    
-    classDef browser fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef server fill:#bbf,stroke:#333,stroke-width:2px;
-    classDef db fill:#bfb,stroke:#333,stroke-width:2px;
-    
-    class User browser;
-    class NextJS,Redis server;
-    class Supabase,Cloudinary,Prisma db;
+```text
++---------------------+
+| User's Web Browser  |
++---------------------+
+         | 1. Visits Website
+         v
++-------------------------------------------------+
+| Next.js Server (Vercel)                         |
+|                                                 |
+|  2. Rate Limit Check       3. Data Request      |
+|  +---------------+         +--------------+     |
+|  | Upstash Redis |         |  Prisma ORM  |     |
+|  +---------------+         +--------------+     |
++-------------------------------------------------+
+                                     |
+                                     | 4. SQL Queries
+                                     v
++-------------------------------------------------+
+| Remote Databases & Storage                      |
+|                                                 |
+|  +----------------------+  +-----------------+  |
+|  | Supabase (Postgres)  |  |   Cloudinary    |  |
+|  +----------------------+  +-----------------+  |
++-------------------------------------------------+
+         ^                            ^
+         |                            |
+         +----------------------------+
+            5. Downloads Images directly
 ```
 
 ---
