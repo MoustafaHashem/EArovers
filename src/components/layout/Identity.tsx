@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 // Standard brand SVGs
 const FacebookIcon = ({ size = 20 }: { size?: number }) => (
@@ -59,8 +60,8 @@ export function Identity() {
         {/* Quick Links */}
         <div className="flex flex-col items-center md:items-start gap-4">
           <h4 className="text-white font-bold text-lg mb-2">روابط سريعة</h4>
-          <a href="#hierarchy" className="text-gray-400 hover:text-[var(--color-scout-blue-light)] transition-colors">الهيكل التنظيمي</a>
-          <a href="#shields" className="text-gray-400 hover:text-[var(--color-scout-blue-light)] transition-colors">الدروع الكشفية</a>
+          <Link href="/hierarchy" className="text-gray-400 hover:text-[var(--color-scout-blue-light)] transition-colors">الهيكل التنظيمي</Link>
+          <Link href="/shields" className="text-gray-400 hover:text-[var(--color-scout-blue-light)] transition-colors">الدروع الكشفية</Link>
           <a href="#fame" className="text-gray-400 hover:text-[var(--color-scout-blue-light)] transition-colors">لوحة الشرف</a>
           <a href="#media" className="text-gray-400 hover:text-[var(--color-scout-blue-light)] transition-colors">معرض الميديا</a>
           <a href="#join" className="text-gray-400 hover:text-[var(--color-scout-blue-light)] transition-colors">انضم إلينا</a>

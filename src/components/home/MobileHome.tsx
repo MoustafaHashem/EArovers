@@ -60,6 +60,13 @@ export async function MobileHome() {
           <p className="text-gray-400 text-sm max-w-2xl mx-auto px-4">تغطي أنشطة الجوالة مجالات متعددة لبناء شخصية متكاملة</p>
         </div>
         <MobileShieldsGallery initialMedia={initialMedia} />
+        
+        <div className="mt-8 px-4 text-center">
+          <Link href="/shields" className="inline-block w-full bg-[var(--color-scout-navy-light)] hover:bg-[var(--color-anchor)] text-[var(--color-scout-blue-light)] hover:text-white border border-[var(--color-dark-border)] px-6 py-4 rounded-xl font-bold text-lg transition-all shadow-lg active:scale-95">
+            عرض جميع الدروع
+            <span className="block text-xs font-normal text-gray-400 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
+          </Link>
+        </div>
       </section>
 
       {/* Hall of Fame Teaser */}

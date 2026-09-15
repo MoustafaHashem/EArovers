@@ -38,11 +38,11 @@ const CloudIcon = ({ size = 20 }: { size?: number }) => (
 
 const navLinks = [
   { href: "/", label: "الرئيسية" },
-  { href: "/#shields", label: "الدروع" },
+  { href: "/shields", label: "الدروع" },
   { href: "/#media", label: "الميديا" },
   { href: "/#fame", label: "المسابقات" },
   { href: "/#sessions", label: "الدراسات" },
-  { href: "/#hierarchy-preview", label: "الشجرة" },
+  { href: "/hierarchy", label: "الهيكل التنظيمي" },
 ];
 
 export function Navbar() {
