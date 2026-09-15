@@ -182,4 +182,36 @@ If the structure you need already exists (e.g., you just want to add a new Membe
 ### Need a completely new type of data?
 If you are building a feature that requires a brand-new database table, you must request permission first. Once approved, a lead developer will update the `prisma/schema.prisma` file and sync it with Supabase. 
 
+---
+
+## 8. A Deep Dive into Images (Cloudinary + Database)
+
+Images are the heaviest part of any website. Because we want EArovers to load blazingly fast, we **never** store actual image files (like `.jpg` or `.png`) directly inside the Supabase database. Instead, the database only stores *directions* on where to find the image.
+
+### How Images are Connected to the Database
+When you look at our `Media` table (or any table with an image like `Shield.imageUrl`), you will notice the field is just a standard text string. It expects a URL link (e.g., `https://res.cloudinary.com/.../my-image.jpg`). 
+
+When Next.js builds the page, it reads that text URL from the database and inserts it into a standard `<Image src="..." />` component. The user's browser then downloads the image directly from Cloudinary.
+
+### Exactly What to Do When You Want to Add an Image:
+If you need to add a new image (for example, a photo of a new Scout Shield) to the database, you must act as the bridge between Cloudinary and Prisma:
+
+1. **Prepare the Image:** Make sure your image is named properly (e.g., `golden-shield.png`).
+2. **Upload to Cloudinary:**
+   - Log into our EArovers Cloudinary account dashboard.
+   - Go to the **"Media Library"** and click **"Upload"**.
+   - Drag and drop your image file into the dashboard.
+3. **Copy the URL:**
+   - Once uploaded, hover over the image in Cloudinary and click the **"Copy URL"** or **"Copy Link"** icon. 
+   - You should now have a link in your clipboard that looks like: `https://res.cloudinary.com/.../image/upload/v1234/golden-shield.png`
+4. **Paste into the Database (Prisma Studio):**
+   - Open Prisma Studio (`npx prisma studio` in your terminal).
+   - Find the record you want to attach the image to (e.g., creating a new `Shield`).
+   - Paste the Cloudinary URL you just copied straight into the `imageUrl` field (or whichever field asks for the image link).
+   - Click **Save Changes**.
+
+That's it! Your new image is safely hosted on Cloudinary, perfectly linked in our Database, and ready to be displayed on the website!
+
+---
+
 For practical coding examples on how to write Next.js code to fetch and display this data, read the [`docs/DEVELOPER_GUIDE.md`](./DEVELOPER_GUIDE.md) file!
