@@ -158,14 +158,28 @@ Our main `page.tsx` simply looks at the screen size and renders the correct comp
 
 ---
 
-## 7. How You Can Start Contributing
+## 7. How to Safely Edit Data (Without Breaking Things)
 
-If you are writing code for this project, here is the golden rule: **Don't hardcode data.** 
+If you are writing code for this project, here is the golden rule: **Don't hardcode data.** All data must live in the database.
 
-If you need a new list of items, a new page of members, or a new gallery:
-1. **Update the Database:** Add your new data structure to `prisma/schema.prisma` and run `npx prisma db push`.
-2. **Add Data:** Go to your Supabase dashboard online and type in your data, or build an admin form.
-3. **Fetch Data:** In your Next.js page, import `prisma` and use `await prisma.yourModel.findMany()` to get the data.
-4. **Cache It:** Add `export const revalidate = 60;` to the top of your page file.
+However, **you must not modify `prisma/schema.prisma` (the database structure) without explicit permission** from the lead developers. Altering the schema can corrupt the database for everyone if not done carefully.
 
-For more practical coding examples on how to do this in our codebase, read the [`docs/DEVELOPER_GUIDE.md`](./DEVELOPER_GUIDE.md) file!
+If the structure you need already exists (e.g., you just want to add a new Member, Shield, or Event), the safest way to do this is using **Prisma Studio**. It prevents you from saving invalid data.
+
+### Step-by-Step Guide to Adding/Editing Data:
+1. **Start Prisma Studio:** Open your terminal in the project folder and run:
+   ```bash
+   npx prisma studio
+   ```
+2. **Open the Interface:** It will automatically open a browser tab (usually `http://localhost:5555`). This is a safe, spreadsheet-like view of our live database.
+3. **Select your Table:** Click on the table you want to edit (e.g., `Member`, `Shield`, `Event`).
+4. **Add or Edit Data:**
+   - **To Edit:** Double-click any cell and type your changes.
+   - **To Add:** Click the **"Add Record"** button at the top and fill in the required fields.
+   - **Important for Images:** If you are adding a photo, do NOT upload the image file to the database. You must upload the image to **Cloudinary** first, and then paste the URL string into Prisma Studio.
+5. **Save Changes:** Click the green **"Save Changes"** button at the top.
+
+### Need a completely new type of data?
+If you are building a feature that requires a brand-new database table, you must request permission first. Once approved, a lead developer will update the `prisma/schema.prisma` file and sync it with Supabase. 
+
+For practical coding examples on how to write Next.js code to fetch and display this data, read the [`docs/DEVELOPER_GUIDE.md`](./DEVELOPER_GUIDE.md) file!
