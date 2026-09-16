@@ -35,12 +35,26 @@ body {
   background: var(--color-dark-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+
   border: 1px solid var(--color-dark-border);
+
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .glass-card-hover {
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.glass-card-hover:hover {
   background: rgba(27, 58, 107, 0.4);
-  border: 1px solid rgba(92, 124, 182, 0.5);
+
+  border-color: rgba(92, 124, 182, 0.5);
+
   box-shadow: 0 10px 40px rgba(27, 58, 107, 0.4);
+
+  transform: translateY(-4px);
 }
