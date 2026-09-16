@@ -5,12 +5,67 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+const islands = [
+  {
+    id: 1,
+    image: "/images/island_1_.png",
+    text: "عشيرة هندسة عين شمس ضد عشائر الهندسة من جامعات اخرى",
+    href: "/island-1",
+  },
+  {
+    id: 2,
+    image: "/images/island_2_.png",
+    text: "عشيرة الهندسة ضد عشائر عين شمس الاخريات",
+    href: "/island-2",
+  },
+  {
+    id: 3,
+    image: "/images/island_3.png",
+    text: "3",
+    href: "/island-3",
+  },
+  {
+    id: 4,
+    image: "/images/island_4.png",
+    text: "4",
+    href: "/island-4",
+  },
+  {
+    id: 5,
+    image: "/images/island_5.png",
+    text: "5",
+    href: "/island-5",
+  },
+  {
+    id: 6,
+    image: "/images/island_6.png",
+    text: "6",
+    href: "/island-6",
+  },
+  {
+    id: 7,
+    image: "/images/island_7.png",
+    text: "7",
+    href: "/island-7",
+  },
+];
+
 export default function HallOfFamePage() {
-  const [isHovering, setIsHovering] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [hoveredIsland, setHoveredIsland] = useState<number | null>(null);
+
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
   return (
-    <div className="relative min-h-screen w-full px-4 py-16">
+    <div
+      className="relative min-h-screen w-full overflow-hidden px-4 py-16"
+      style={{
+        background:
+          "linear-gradient(to bottom, #17283d 0%, #101d2d 35%, #0b1420 70%, #060b14 100%)",
+      }}
+    >
       {/* Starfield */}
       <div
         className="pointer-events-none absolute inset-0 opacity-50"
@@ -21,7 +76,7 @@ export default function HallOfFamePage() {
         }}
       />
 
-      {/* Warm gold glow, top center */}
+      {/* Warm gold glow */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -39,9 +94,9 @@ export default function HallOfFamePage() {
         }}
       />
 
-      {/* Mountain silhouette at the bottom */}
+      {/* Mountain silhouette */}
       <div
-        className="pointer-events-none absolute bottom-0 left-0 w-full h-40 opacity-60"
+        className="pointer-events-none absolute bottom-0 left-0 h-40 w-full opacity-60"
         style={{
           background: "#060B14",
           clipPath:
@@ -49,58 +104,138 @@ export default function HallOfFamePage() {
         }}
       />
 
+      {/* Back button */}
       <Link
         href="/"
-        className="relative self-start inline-flex items-center gap-2 text-[var(--color-scout-blue-light)] hover:text-white transition"
+        className="relative z-50 inline-flex items-center gap-2 text-[var(--color-scout-blue-light)] transition hover:text-white"
       >
         <ArrowRight size={18} />
         العودة
       </Link>
 
-      {/* Island, icon-sized image with cursor-following tooltip */}
-      <div className="flex flex-col items-center mt-32">
-        <div
-          className="relative flex items-center justify-center"
-          style={{ width: 280, height: 280 }}
-        >
+      {/* Main circular area */}
+      <div className="relative z-10 mx-auto mt-4 h-[900px] w-full max-w-[1200px]">
+        {/* Center image */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
           <Image
-            src="/images/island1.png"
-            alt=""
-            width={280}
-            height={280}
-            className="object-contain cursor-pointer"
+            src="/images/center.png"
+            alt="Center"
+            width={420}
+            height={420}
+            className="h-[420px] w-[420px] object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.35)]"
           />
+        </div>
 
-          {/* Smaller invisible hover zone, centered on top of the image */}
-          <div
-            className="absolute"
-            style={{
-              width: 150,
-              height: 290,
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-            onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-            }}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            {isHovering && (
+        {/* Islands */}
+        {islands.map((island, index) => {
+          const angle = -90 + index * (360 / islands.length);
+
+          return (
+            <div
+              key={island.id}
+              className={`absolute left-1/2 top-1/2 ${
+                hoveredIsland === island.id ? "z-40" : "z-20"
+              }`}
+              style={{
+                transform: `
+                  translate(-50%, -50%)
+                  rotate(${angle}deg)
+                  translateX(clamp(230px, 32vw, 410px))
+                  rotate(${-angle}deg)
+                `,
+              }}
+            >
               <div
-                className="absolute whitespace-nowrap bg-[var(--color-scout-navy-light)] text-white text-sm px-3 py-1.5 rounded-lg pointer-events-none border border-[var(--color-dark-border)] z-10"
-                style={{
-                  left: position.x + 16,
-                  top: position.y + 16,
+                className="
+                  relative
+                  flex
+                  h-[190px]
+                  w-[190px]
+                  items-center
+                  justify-center
+                  sm:h-[220px]
+                  sm:w-[220px]
+                  md:h-[260px]
+                  md:w-[260px]
+                "
+                onMouseEnter={() => setHoveredIsland(island.id)}
+                onMouseLeave={() => setHoveredIsland(null)}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+
+                  setPosition({
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                  });
                 }}
               >
-                اكتب النص هنا
+                {/* Clickable island */}
+                <Link
+                  href={island.href}
+                  aria-label={island.text}
+                  className="
+                    block
+                    h-full
+                    w-full
+                    cursor-pointer
+                    transition-transform
+                    duration-300
+                    ease-out
+                    hover:scale-110
+                    active:scale-95
+                    focus:outline-none
+                    focus-visible:scale-110
+                  "
+                >
+                  <Image
+                    src={island.image}
+                    alt={island.text}
+                    width={320}
+                    height={320}
+                    className="
+                      h-full
+                      w-full
+                      object-contain
+                      drop-shadow-[0_15px_25px_rgba(0,0,0,0.45)]
+                    "
+                  />
+                </Link>
+
+                {/* Hover text */}
+                {hoveredIsland === island.id && (
+                  <div
+                    dir="rtl"
+                    className="
+                      pointer-events-none
+                      absolute
+                      z-50
+                      w-max
+                      max-w-[320px]
+                      rounded-xl
+                      border
+                      border-white/10
+                      bg-[#0b1420]/95
+                      px-4
+                      py-2
+                      text-center
+                      text-sm
+                      leading-6
+                      text-white
+                      shadow-2xl
+                      backdrop-blur-sm
+                    "
+                    style={{
+                      left: position.x + 18,
+                      top: position.y + 18,
+                    }}
+                  >
+                    {island.text}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
