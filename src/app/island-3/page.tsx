@@ -4,26 +4,37 @@ export default function Island3Page() {
   return (
     <IslandPage
       title="الجزيرة الثالثة"
-      subtitle="اكتب وصف الجزيرة الثالثة هنا"
+      subtitle="اكتب وصف هذه الفئة هنا"
       image="/images/island_3.png"
       cards={[
         {
           id: 1,
-          eventName: "اسم المسابقة الأولى",
+          eventName: "اسم المسابقة",
           year: "2026",
-          placement: "المركز الأول",
-          specialAwards: [
-            "جائزة مميزة",
-            "أفضل فريق",
+
+          delegationName: "اسم الوفد",
+          coachName: "اسم المدرب",
+
+          overallPlacement: "المركز الأول",
+
+          awards: [
+            "جائزة 1",
           ],
-        },
-        {
-          id: 2,
-          eventName: "اسم المسابقة الثانية",
-          year: "2025",
-          placement: "المركز الثاني",
-          specialAwards: [
-            "أفضل أداء",
+
+          shieldPlacements: [
+            {
+              shieldName: "اسم الدرع",
+              placement: "المركز الأول",
+            },
+          ],
+
+          members: [
+            "اسم الفرد الأول",
+            "اسم الفرد الثاني",
+          ],
+
+          photos: [
+            "/images/island3/photo1.jpg",
           ],
         },
       ]}

@@ -4,24 +4,38 @@ export default function Island6Page() {
   return (
     <IslandPage
       title="الجزيرة السادسة"
-      subtitle="اكتب وصف الجزيرة السادسة هنا"
+      subtitle="اكتب وصف هذه الفئة هنا"
       image="/images/island_6.png"
       cards={[
         {
           id: 1,
-          eventName: "اسم المسابقة الأولى",
+          eventName: "اسم المسابقة",
           year: "2026",
-          placement: "المركز الأول",
-          specialAwards: [
-            "أفضل مشاركة",
+
+          delegationName: "اسم الوفد",
+          coachName: "اسم المدرب",
+
+          overallPlacement: "المركز الأول",
+
+          awards: [
+            "جائزة 1",
           ],
-        },
-        {
-          id: 2,
-          eventName: "اسم المسابقة الثانية",
-          year: "2024",
-          placement: "المركز الثاني",
-          specialAwards: [],
+
+          shieldPlacements: [
+            {
+              shieldName: "اسم الدرع",
+              placement: "المركز الأول",
+            },
+          ],
+
+          members: [
+            "اسم الفرد الأول",
+            "اسم الفرد الثاني",
+          ],
+
+          photos: [
+            "/images/island6/photo1.jpg",
+          ],
         },
       ]}
     />

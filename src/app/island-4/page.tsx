@@ -1,29 +1,40 @@
 import IslandPage from "@/components/IslandPage";
 
-export default function Island5Page() {
+export default function Island4Page() {
   return (
     <IslandPage
-      title="الجزيرة الخامسة"
-      subtitle="اكتب وصف الجزيرة الخامسة هنا"
-      image="/images/island_5.png"
+      title="الجزيرة الرابعة"
+      subtitle="اكتب وصف هذه الفئة هنا"
+      image="/images/island_4.png"
       cards={[
         {
           id: 1,
-          eventName: "اسم المسابقة الأولى",
+          eventName: "اسم المسابقة",
           year: "2026",
-          placement: "المركز الأول",
-          specialAwards: [
-            "أفضل عرض",
-            "أفضل تصميم",
+
+          delegationName: "اسم الوفد",
+          coachName: "اسم المدرب",
+
+          overallPlacement: "المركز الأول",
+
+          awards: [
+            "جائزة 1",
           ],
-        },
-        {
-          id: 2,
-          eventName: "اسم المسابقة الثانية",
-          year: "2025",
-          placement: "المركز الثاني",
-          specialAwards: [
-            "جائزة التميز",
+
+          shieldPlacements: [
+            {
+              shieldName: "اسم الدرع",
+              placement: "المركز الأول",
+            },
+          ],
+
+          members: [
+            "اسم الفرد الأول",
+            "اسم الفرد الثاني",
+          ],
+
+          photos: [
+            "/images/island4/photo1.jpg",
           ],
         },
       ]}

@@ -1,4 +1,14 @@
-import { ArrowRight, Trophy, Star, Medal } from "lucide-react";
+import {
+  ArrowRight,
+  Trophy,
+  Star,
+  Users,
+  UserRound,
+  Shield,
+  Images,
+  Award,
+} from "lucide-react";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,8 +21,22 @@ type IslandPageProps = {
     id: number;
     eventName: string;
     year: string;
-    placement?: string;
-    specialAwards?: string[];
+
+    delegationName?: string;
+    coachName?: string;
+
+    overallPlacement?: string;
+
+    awards?: string[];
+
+    shieldPlacements?: {
+      shieldName: string;
+      placement: string;
+    }[];
+
+    members?: string[];
+
+    photos?: string[];
   }[];
 };
 
@@ -98,7 +122,6 @@ export default function IslandPage({
               className="text-[var(--color-glow-gold)]"
               size={40}
             />
-
             {title}
           </h1>
 
@@ -111,7 +134,7 @@ export default function IslandPage({
 
         {/* Timeline */}
         <div className="relative w-full space-y-12 border-r-2 border-[var(--color-dark-border)] pr-7">
-          {cards.map((item, index) => (
+          {cards.map((item) => (
             <div key={item.id} className="relative">
               {/* Timeline dot */}
               <div
@@ -129,7 +152,8 @@ export default function IslandPage({
 
               {/* Glass card */}
               <div className="glass-card glass-card-hover mr-4 rounded-2xl p-6 md:p-8">
-                <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
+                {/* Event name + year + overall placement */}
+                <div className="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row">
                   <div>
                     <h2 className="mb-3 text-2xl font-bold text-white">
                       {item.eventName}
@@ -152,69 +176,237 @@ export default function IslandPage({
                     </span>
                   </div>
 
-                  {item.placement && (
+                  {item.overallPlacement && (
                     <div
-                      className={`
+                      className="
                         flex
                         items-center
                         gap-2
                         rounded-lg
                         bg-gradient-to-r
+                        from-amber-500
+                        to-yellow-400
                         px-4
                         py-2
                         font-black
                         text-slate-900
                         shadow-lg
-
-                        ${
-                          index === 1
-                            ? "from-zinc-500 to-slate-200"
-                            : "from-amber-500 to-yellow-400"
-                        }
-                      `}
+                      "
                     >
-                      <Medal size={20} />
-                      {item.placement}
+                      <Trophy size={20} />
+                      المركز العام: {item.overallPlacement}
                     </div>
                   )}
                 </div>
 
-                {item.specialAwards &&
-                  item.specialAwards.length > 0 && (
-                    <div className="mt-6 border-t border-white/10 pt-5">
-                      <h3 className="mb-3 text-sm font-semibold text-gray-300">
-                        شارات التميز الخاصة:
-                      </h3>
+                {/* Delegation + Coach */}
+                {(item.delegationName || item.coachName) && (
+                  <div className="grid gap-4 border-t border-white/10 py-5 md:grid-cols-2">
+                    {item.delegationName && (
+                      <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                        <div className="mb-2 flex items-center gap-2 text-[var(--color-scout-blue-light)]">
+                          <Users size={18} />
+                          <h3 className="font-bold">اسم الوفد</h3>
+                        </div>
 
-                      <div className="flex flex-wrap gap-2">
-                        {item.specialAwards.map((award, i) => (
-                          <span
+                        <p className="text-gray-200">
+                          {item.delegationName}
+                        </p>
+                      </div>
+                    )}
+
+                    {item.coachName && (
+                      <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                        <div className="mb-2 flex items-center gap-2 text-[var(--color-scout-blue-light)]">
+                          <UserRound size={18} />
+                          <h3 className="font-bold">اسم المدرب</h3>
+                        </div>
+
+                        <p className="text-gray-200">
+                          {item.coachName}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Awards */}
+                {item.awards && item.awards.length > 0 && (
+                  <div className="border-t border-white/10 py-5">
+                    <div className="mb-3 flex items-center gap-2">
+                      <Award
+                        size={18}
+                        className="text-[var(--color-glow-gold)]"
+                      />
+
+                      <h3 className="font-bold text-gray-200">
+                        الجوائز
+                      </h3>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {item.awards.map((award, i) => (
+                        <span
+                          key={i}
+                          className="
+                            flex
+                            items-center
+                            gap-1.5
+                            rounded-md
+                            border
+                            border-white/10
+                            bg-white/5
+                            px-3
+                            py-1.5
+                            text-sm
+                            text-gray-200
+                          "
+                        >
+                          <Star
+                            size={14}
+                            className="text-[var(--color-glow-gold)]"
+                          />
+                          {award}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Shield placements */}
+                {item.shieldPlacements &&
+                  item.shieldPlacements.length > 0 && (
+                    <div className="border-t border-white/10 py-5">
+                      <div className="mb-4 flex items-center gap-2">
+                        <Shield
+                          size={18}
+                          className="text-[var(--color-glow-cyan)]"
+                        />
+
+                        <h3 className="font-bold text-gray-200">
+                          مركز كل درع
+                        </h3>
+                      </div>
+
+                      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        {item.shieldPlacements.map((shield, i) => (
+                          <div
                             key={i}
                             className="
                               flex
                               items-center
-                              gap-1.5
-                              rounded-md
+                              justify-between
+                              gap-4
+                              rounded-xl
                               border
                               border-white/10
                               bg-white/5
-                              px-3
-                              py-1.5
-                              text-sm
-                              text-gray-200
+                              p-4
                             "
                           >
-                            <Star
-                              size={14}
-                              className="text-[var(--color-glow-cyan)]"
-                            />
+                            <span className="text-gray-200">
+                              {shield.shieldName}
+                            </span>
 
-                            {award}
-                          </span>
+                            <span
+                              className="
+                                rounded-lg
+                                bg-[var(--color-scout-blue)]/20
+                                px-3
+                                py-1
+                                text-sm
+                                font-bold
+                                text-[var(--color-scout-blue-light)]
+                              "
+                            >
+                              {shield.placement}
+                            </span>
+                          </div>
                         ))}
                       </div>
                     </div>
                   )}
+
+                {/* Members */}
+                {item.members && item.members.length > 0 && (
+                  <div className="border-t border-white/10 py-5">
+                    <div className="mb-4 flex items-center gap-2">
+                      <Users
+                        size={18}
+                        className="text-[var(--color-glow-cyan)]"
+                      />
+
+                      <h3 className="font-bold text-gray-200">
+                        أسماء الأفراد
+                      </h3>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {item.members.map((member, i) => (
+                        <span
+                          key={i}
+                          className="
+                            rounded-lg
+                            border
+                            border-white/10
+                            bg-white/5
+                            px-3
+                            py-2
+                            text-sm
+                            text-gray-200
+                          "
+                        >
+                          {member}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Photos */}
+                {item.photos && item.photos.length > 0 && (
+                  <div className="border-t border-white/10 pt-5">
+                    <div className="mb-4 flex items-center gap-2">
+                      <Images
+                        size={18}
+                        className="text-[var(--color-glow-cyan)]"
+                      />
+
+                      <h3 className="font-bold text-gray-200">
+                        الصور
+                      </h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+                      {item.photos.map((photo, i) => (
+                        <div
+                          key={i}
+                          className="
+                            relative
+                            aspect-[4/3]
+                            overflow-hidden
+                            rounded-xl
+                            border
+                            border-white/10
+                          "
+                        >
+                          <Image
+                            src={photo}
+                            alt={`${item.eventName} - صورة ${i + 1}`}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                            className="
+                              object-cover
+                              transition-transform
+                              duration-300
+                              hover:scale-105
+                            "
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
