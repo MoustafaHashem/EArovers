@@ -29,9 +29,7 @@ export default async function EventsPage() {
             <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-l from-white to-gray-400">
               فعاليات وأنشطة العشيرة
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              تعرف على أحدث أنشطتنا ومعسكراتنا القادمة، وانضم إلينا في رحلتنا الكشفية.
-            </p>
+            
           </div>
 
           {upcomingEvents.length > 0 && (

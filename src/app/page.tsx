@@ -7,6 +7,7 @@ import { Sessions } from "@/components/Sessions";
 import { JoinForm } from "@/components/JoinForm";
 import { Identity } from "@/components/Identity";
 import Link from "next/link";
+ import { EventsSection } from "@/components/EventsSection";
 
 export default function Home() {
   return (
@@ -75,6 +76,7 @@ export default function Home() {
       <section id="sessions" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)]">
         <Sessions />
       </section>
+      <section id="events" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)] bg-[var(--color-scout-navy)]"> <EventsSection /> </section>
 
       {/* Hierarchy Preview Section */}
       <section id="hierarchy-preview" className="w-full flex flex-col items-center pt-24 pb-12 bg-gradient-to-b from-transparent to-black/20 border-t border-[var(--color-dark-border)] z-10 overflow-hidden">
