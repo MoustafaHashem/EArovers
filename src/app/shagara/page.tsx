@@ -30,11 +30,11 @@ const SHAGARA_DATA: Record<
       ],
       row3: [
         { title: "الرائد الأكبر", name: "يوسف علاء", imageSrc: "/leadershippl/alaaa.png" },
-        { title: "الرائدة الكبرى", name:"همسة أحمد", imageSrc: "/leadershippl/hamsa.png" },
+        { title: "الرائدة الكبرى", name: "همسة أحمد", imageSrc: "/leadershippl/hamsa.png" },
       ],
       row4: [
         { title: "الرائد الأكبر", name: "يوسف علاء", imageSrc: "/leadershippl/alaaa.png" },
-        { title: "الرائدة الكبرى", name:"همسة أحمد", imageSrc: "/leadershippl/hamsa.png" },
+        { title: "الرائدة الكبرى", name: "همسة أحمد", imageSrc: "/leadershippl/hamsa.png" },
       ],
     },
     board: [
@@ -124,7 +124,7 @@ export default function ShagaraPage() {
         </div>
 
         {/* Tree Container */}
-        <div className="bg-[#1D4E89]/20 border border-white/10 rounded-3xl p-8 sm:p-12 space-y-16 shadow-2xl">
+        <div className="bg-[#1D4E89]/20 border border-white/10 rounded-3xl p-6 sm:p-12 space-y-16 shadow-2xl">
           {/* SECTION: مجلس القيادة */}
           <div className="space-y-12">
             <div className="inline-block border-b border-white/10 pb-3 px-8">
@@ -133,23 +133,23 @@ export default function ShagaraPage() {
               </h2>
             </div>
 
-            <div className="flex flex-col items-center gap-12 max-w-2xl mx-auto">
+            <div className="flex flex-col items-center gap-8 max-w-2xl mx-auto">
               {/* Row 1: Leaders */}
-              <div className="grid grid-cols-2 gap-12 sm:gap-24 w-full justify-items-center">
+              <div className="grid grid-cols-2 gap-8 sm:gap-16 w-full justify-items-center">
                 {currentData?.leadership.row1.map((item, idx) => (
                   <LeaderCard key={idx} title={item.title} name={item.name} imageSrc={item.imageSrc} />
                 ))}
               </div>
 
               {/* Row 2: Assistants */}
-              <div className="grid grid-cols-2 gap-10 sm:gap-150 w-full justify-items-center">
+              <div className="grid grid-cols-2 gap- sm:gap-90 w-full justify-items-center">
                 {currentData?.leadership.row2.map((item, idx) => (
                   <LeaderCard key={idx} title={item.title} name={item.name} imageSrc={item.imageSrc} />
                 ))}
               </div>
 
               {/* Row 3: Senior Pioneers */}
-              <div className="grid grid-cols-2 gap-12 sm:gap-24 w-full justify-items-center">
+              <div className="grid grid-cols-2 gap-8 sm:gap-16 w-full justify-items-center">
                 {currentData?.leadership.row3.map((item, idx) => (
                   <LeaderCard key={idx} title={item.title} name={item.name} imageSrc={item.imageSrc} />
                 ))}
@@ -166,16 +166,16 @@ export default function ShagaraPage() {
                 </h2>
               </div>
 
-              {/* Row 4: Exact spacing matching Row 3 */}
+              {/* Row 4 */}
               {currentData?.leadership.row4 && currentData.leadership.row4.length > 0 && (
-                <div className="grid grid-cols-2 gap-12 sm:gap-24 max-w-2xl mx-auto w-full justify-items-center mb-8">
+                <div className="grid grid-cols-2 gap-8 sm:gap-16 max-w-2xl mx-auto w-full justify-items-center mb-8">
                   {currentData.leadership.row4.map((item, idx) => (
                     <LeaderCard key={idx} title={item.title} name={item.name} imageSrc={item.imageSrc} />
                   ))}
                 </div>
               )}
 
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center">
                 {currentData.board.map((item, idx) => (
                   <LeaderCard key={idx} title={item.title} name={item.name} imageSrc={item.imageSrc} />
                 ))}
@@ -200,8 +200,9 @@ function LeaderCard({
   imageSrc: string;
 }) {
   return (
-    <div className="flex flex-col items-center space-y-3 group">
-      <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+    <div className="flex flex-col items-center space-y-2.5 group">
+      {/* Reduced sizing: w-32 h-32 -> sm:w-40 sm:h-40 -> md:w-44 md:h-44 */}
+      <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
         <Image
           src={imageSrc}
           alt={title}
@@ -210,7 +211,7 @@ function LeaderCard({
           priority
         />
       </div>
-      <div className="text-center space-y-1">
+      <div className="text-center space-y-0.5">
         <h3 className="font-extrabold text-base sm:text-lg text-white">
           {title}
         </h3>
