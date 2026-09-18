@@ -33,10 +33,10 @@ export async function MobileHome() {
         <div className="mt-8 px-4 text-center">
           <Link 
             href="/shields" 
-            className="inline-block w-full px-6 py-4 rounded-xl font-bold text-lg transition-all shadow-md active:scale-95 bg-white hover:bg-[#fbfbf9] text-[#0b1a30] border border-[#d4a373]/30 dark:bg-[#0d1527] dark:hover:bg-[#112038] dark:text-cyan-300 dark:border-cyan-500/30 dark:shadow-[0_0_20px_rgba(0,240,255,0.12)]"
+            className="inline-block w-full px-6 py-4 rounded-xl font-bold text-lg transition-all shadow-md active:scale-95 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] text-[#0b1a30] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:text-[#080b10] dark:shadow-[0_0_20px_rgba(0,240,255,0.4)] border border-[#d4a373]/40"
           >
             عرض جميع الدروع
-            <span className="block text-xs font-normal text-[#64748b] dark:text-slate-400 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
+            <span className="block text-xs font-medium text-[#0b1a30]/80 dark:text-[#080b10]/80 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
           </Link>
         </div>
       </section>
@@ -59,10 +59,10 @@ export async function MobileHome() {
           </p>
           <Link 
             href="/fame" 
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold transition-all bg-[#d4a373]/10 hover:bg-[#d4a373]/20 text-[#0b1a30] border border-[#d4a373]/30 dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10 dark:text-white"
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold transition-all bg-gradient-to-r from-[#e0a96d] to-[#d4a373] text-[#0b1a30] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:text-[#080b10] shadow-sm active:scale-95"
           >
             <span>تصفح لوحة الشرف</span>
-            <ChevronLeft size={18} className="text-[#d4a373] dark:text-[#ffd700]" />
+            <ChevronLeft size={18} className="text-[#0b1a30] dark:text-[#080b10]" />
           </Link>
         </div>
       </section>
@@ -85,10 +85,10 @@ export async function MobileHome() {
           </p>
           <Link 
             href="/training" 
-            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold transition-all bg-[#161e35]/5 hover:bg-[#161e35]/15 text-[#161e35] border border-[#161e35]/20 dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10 dark:text-white"
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-bold transition-all bg-gradient-to-r from-[#e0a96d] to-[#d4a373] text-[#0b1a30] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:text-[#080b10] shadow-sm active:scale-95"
           >
             <span>عرض الدراسات</span>
-            <ChevronLeft size={18} className="text-[#161e35] dark:text-cyan-400" />
+            <ChevronLeft size={18} className="text-[#0b1a30] dark:text-[#080b10]" />
           </Link>
         </div>
       </section>
@@ -102,7 +102,7 @@ export async function MobileHome() {
           </p>
           <Link 
             href="/join" 
-            className="inline-block w-full px-8 py-4 rounded-full font-bold text-lg shadow-lg bg-gradient-to-r from-[#161e35] to-[#1e2746] text-white border border-[#161e35]/20 shadow-[0_10px_25px_rgba(22,30,53,0.3)] dark:bg-gradient-to-r dark:from-cyan-400 dark:via-teal-400 dark:to-cyan-300 dark:text-[#080b10] dark:shadow-[0_0_30px_rgba(0,240,255,0.6)]"
+            className="inline-block w-full px-8 py-4 rounded-full font-black text-lg shadow-lg bg-gradient-to-r from-[#e0a96d] to-[#d4a373] text-[#0b1a30] border border-[#d4a373]/30 shadow-[0_10px_25px_rgba(212,163,115,0.4)] dark:from-[#00f0ff] dark:via-teal-400 dark:to-cyan-300 dark:text-[#080b10] dark:shadow-[0_0_30px_rgba(0,240,255,0.6)]"
           >
             سجل بياناتك الآن
           </Link>

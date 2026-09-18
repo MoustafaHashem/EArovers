@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { ImageIcon, PlayCircle, Loader2 } from "lucide-react";
 import { fetchMediaAction } from "@/actions/media";
+import { cn } from "@/lib/utils";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
@@ -54,35 +56,50 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col items-center">
       <div className="text-center mb-10">
-        <h2 className="text-4xl font-black text-white mb-4">معرض الميديا الذكي</h2>
-        <p className="text-gray-400 text-lg">أبرز اللحظات والذكريات السعيدة</p>
+        <h2 className="text-4xl md:text-5xl font-black text-[#0b1a30] dark:text-white mb-4">معرض الميديا الذكي</h2>
+        <p className="text-[#475569] dark:text-slate-400 text-lg">أبرز اللحظات والذكريات السعيدة</p>
       </div>
 
       <div 
         className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-3 mb-10 w-full max-w-[95vw] md:max-w-full px-4"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {categories.map((cat) => (
-          <button 
-            key={cat} 
-            onClick={() => { setLoading(true); setActiveCategory(cat); }}
-            className={`whitespace-nowrap flex-shrink-0 px-5 py-2 rounded-full text-sm font-bold border transition-colors ${activeCategory === cat ? 'bg-[var(--color-scout-blue-light)] text-[var(--color-scout-navy)] border-transparent' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
-          >
-            {cat}
-          </button>
-        ))}
+        {categories.map((cat) => {
+          const isActive = activeCategory === cat;
+          return (
+            <button 
+              key={cat} 
+              onClick={() => { setLoading(true); setActiveCategory(cat); }}
+              className={cn(
+                "whitespace-nowrap flex-shrink-0 relative px-6 py-2.5 rounded-full text-sm md:text-base font-bold transition-all z-10 overflow-hidden cursor-pointer",
+                isActive 
+                  ? "text-[#0b1a30] dark:text-[#080b10]" 
+                  : "text-[#475569] hover:text-[#0b1a30] bg-[#f0eee6] hover:bg-[#e8e5dc] dark:text-slate-300 dark:hover:text-white dark:bg-white/5 border border-[#d4a373]/25 dark:border-white/10"
+              )}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="active-media-category"
+                  className="absolute inset-0 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] dark:from-[#00f0ff] dark:to-[#38f4ff] rounded-full -z-10 shadow-[0_2px_12px_rgba(212,163,115,0.35)] dark:shadow-[0_0_20px_#00f0ff]"
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                />
+              )}
+              <span className="relative z-10">{cat}</span>
+            </button>
+          );
+        })}
       </div>
 
       <div className="w-full min-h-[400px]">
         {loading ? (
-          <div className="w-full h-full flex flex-col items-center justify-center text-[var(--color-scout-blue-light)] py-20">
+          <div className="w-full h-full flex flex-col items-center justify-center text-[#d4a373] dark:text-cyan-400 py-20">
             <Loader2 className="animate-spin mb-4" size={48} />
-            <p className="text-gray-400 font-bold">جاري تحميل الذكريات...</p>
+            <p className="text-[#475569] dark:text-slate-400 font-bold">جاري تحميل الذكريات...</p>
           </div>
         ) : images.length === 0 ? (
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 py-20">
-            <ImageIcon size={64} className="mb-4 opacity-50" />
-            <p className="text-lg font-bold">لا توجد صور في هذا القسم حالياً</p>
+            <ImageIcon size={64} className="mb-4 opacity-50 text-[#d4a373]/50 dark:text-slate-500" />
+            <p className="text-lg font-bold text-[#475569] dark:text-slate-400">لا توجد صور في هذا القسم حالياً</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
@@ -114,7 +131,10 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
       </div>
       
       {!loading && images.length > 0 && (
-        <Link href="/gallery" className="mt-12 border border-[var(--color-scout-blue)] text-[var(--color-scout-blue-light)] px-8 py-3 rounded-full font-bold hover:bg-[var(--color-scout-blue)] hover:text-[var(--color-scout-navy)] transition-colors">
+        <Link 
+          href="/gallery" 
+          className="mt-12 inline-flex items-center justify-center px-8 py-3.5 rounded-full font-black text-base transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] shadow-[0_4px_16px_rgba(212,163,115,0.35)] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:hover:from-[#38f4ff] dark:hover:to-[#00d8e6] dark:text-[#080b10] dark:shadow-[0_0_25px_rgba(0,240,255,0.5)] border border-[#d4a373]/30"
+        >
           عرض كل الصور
         </Link>
       )}

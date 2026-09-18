@@ -14,13 +14,17 @@ type PersonCardProps = {
 };
 
 export function PersonCard({ node, onClick, isClicked }: PersonCardProps) {
-  const { member, role, promotesTo } = node;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const member = node.member || (node as any).person || { id: "", name: "عضو", initials: "??" };
+  const role = node.role || "";
+  const promotesTo = node.promotesTo;
   const isPromotable = !!promotesTo;
+  const memberId = member.id || "";
 
   return (
-    <Link href={`/people/${member.id}`}>
+    <Link href={memberId ? `/people/${memberId}` : "#"}>
       <motion.div
-        layoutId={member.id}
+        layoutId={memberId || undefined}
         className={cn(
           "relative flex flex-col items-center p-4 rounded-2xl w-36 sm:w-40 md:w-48 transition-all duration-300",
           "glass-card cursor-pointer glass-card-hover z-10",

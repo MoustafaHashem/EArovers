@@ -163,12 +163,12 @@ export function HeroCarousel() {
 
             {/* CTA Button */}
             <div className="relative inline-block group">
-              <div className="absolute -inset-1 rounded-full blur-md opacity-60 group-hover:opacity-100 transition duration-500 bg-[#161e35]/50 dark:bg-cyan-500/40" />
+              <div className="absolute -inset-1 rounded-full blur-md opacity-60 group-hover:opacity-100 transition duration-500 bg-[#d4a373]/60 dark:bg-cyan-500/40" />
               <Link
                 href={activeSlide.buttonLink}
-                className="relative inline-flex items-center justify-center px-6 py-3 sm:px-10 sm:py-3.5 rounded-full font-bold text-sm sm:text-lg text-white transition-all duration-300 transform group-hover:scale-105 shadow-[0_10px_25px_rgba(0,0,0,0.5)] bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] border border-white/25 overflow-hidden"
+                className="relative inline-flex items-center justify-center px-6 py-3 sm:px-10 sm:py-3.5 rounded-full font-black text-sm sm:text-lg transition-all duration-300 transform group-hover:scale-105 shadow-[0_10px_25px_rgba(212,163,115,0.4)] bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:hover:from-[#38f4ff] dark:hover:to-[#00d8e6] dark:text-[#080b10] dark:shadow-[0_0_30px_rgba(0,240,255,0.6)] border border-[#d4a373]/40 overflow-hidden"
               >
-                <span className="absolute inset-0 w-full h-full opacity-20 bg-gradient-to-b from-white/30 via-transparent to-black/20" />
+                <span className="absolute inset-0 w-full h-full opacity-20 bg-gradient-to-b from-white/40 via-transparent to-black/10" />
                 <span className="relative z-10 pb-0.5">{activeSlide.buttonText}</span>
               </Link>
             </div>

@@ -1,6 +1,5 @@
 
 import { HeroCarousel } from "@/components/home/HeroCarousel";
-import { ClanTree } from "@/components/clan/ClanTree";
 import { ScoutShields } from "@/components/home/ScoutShields";
 import { HallOfFame } from "@/components/home/HallOfFame";
 import { MediaGallery } from "@/components/gallery/MediaGallery";
@@ -29,10 +28,10 @@ export async function DesktopHome() {
         <div className="mt-12 px-6 text-center">
           <Link 
             href="/shields" 
-            className="inline-block px-6 py-3 md:px-10 md:py-4 rounded-2xl font-bold text-lg md:text-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1 bg-white hover:bg-[#fbfbf9] text-[#0b1a30] border border-[#d4a373]/30 dark:bg-[#0d1527] dark:hover:bg-[#112038] dark:text-cyan-300 dark:border-cyan-500/30 dark:shadow-[0_0_20px_rgba(0,240,255,0.12)]"
+            className="inline-block px-6 py-3 md:px-10 md:py-4 rounded-2xl font-bold text-lg md:text-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:hover:from-[#38f4ff] dark:hover:to-[#00d8e6] dark:text-[#080b10] dark:shadow-[0_0_25px_rgba(0,240,255,0.4)] border border-[#d4a373]/40"
           >
             عرض جميع الدروع
-            <span className="block text-xs md:text-sm font-normal text-[#64748b] dark:text-slate-400 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
+            <span className="block text-xs md:text-sm font-medium text-[#0b1a30]/80 dark:text-[#080b10]/80 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
           </Link>
         </div>
       </section>
@@ -47,33 +46,10 @@ export async function DesktopHome() {
         <HallOfFame />
       </section>
 
+
       {/* Sessions & Studies */}
       <section id="sessions" className="w-full py-24 px-6 z-10 border-t border-[#d4a373]/20 dark:border-cyan-500/15">
         <Sessions />
-      </section>
-
-      {/* Hierarchy Preview Section */}
-      <section id="hierarchy-preview" className="w-full flex flex-col items-center pt-24 pb-12 bg-gradient-to-b from-transparent to-[#d4a373]/5 dark:to-black/30 border-t border-[#d4a373]/20 dark:border-cyan-500/15 z-10 overflow-hidden">
-        <div className="text-center mb-6 px-6">
-          <h2 className="text-4xl md:text-5xl font-black text-[#0b1a30] dark:text-white mb-4">الهيكل التنظيمي والقيادي</h2>
-          <p className="text-[#475569] dark:text-slate-400 text-lg max-w-2xl mx-auto">
-            مجلس القيادة والهيكل المعاون للعام الحالي 2026.
-          </p>
-        </div>
-
-        <div className="w-full max-w-7xl mx-auto">
-          <ClanTree defaultYear={2026} hideTabs={true} />
-        </div>
-
-        <div className="mt-4 px-6 text-center">
-          <Link 
-            href="/hierarchy" 
-            className="inline-block px-6 py-3 md:px-10 md:py-4 rounded-2xl font-bold text-lg md:text-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1 bg-white hover:bg-[#fbfbf9] text-[#0b1a30] border border-[#d4a373]/30 dark:bg-[#0d1527] dark:hover:bg-[#112038] dark:text-cyan-300 dark:border-cyan-500/30 dark:shadow-[0_0_20px_rgba(0,240,255,0.12)]"
-          >
-            عرض المزيد
-            <span className="block text-xs md:text-sm font-normal text-[#64748b] dark:text-slate-400 mt-1">تصفح شجرة العشيرة لجميع الأجيال</span>
-          </Link>
-        </div>
       </section>
 
       {/* Join Us CTA Section */}
@@ -85,7 +61,7 @@ export async function DesktopHome() {
           </p>
           <Link 
             href="/join" 
-            className="inline-block px-8 py-4 md:px-12 md:py-5 rounded-full font-bold text-lg md:text-2xl transition-all shadow-lg hover:scale-105 bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] text-white border border-[#161e35]/20 shadow-[0_10px_25px_rgba(22,30,53,0.3)] dark:bg-gradient-to-r dark:from-cyan-400 dark:via-teal-400 dark:to-cyan-300 dark:text-[#080b10] dark:shadow-[0_0_30px_rgba(0,240,255,0.6)]"
+            className="inline-block px-8 py-4 md:px-12 md:py-5 rounded-full font-black text-lg md:text-2xl transition-all shadow-lg hover:scale-105 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] border border-[#d4a373]/30 shadow-[0_10px_25px_rgba(212,163,115,0.4)] dark:from-[#00f0ff] dark:via-teal-400 dark:to-cyan-300 dark:text-[#080b10] dark:shadow-[0_0_30px_rgba(0,240,255,0.6)]"
           >
             سجل بياناتك الآن
           </Link>

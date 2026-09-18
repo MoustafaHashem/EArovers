@@ -30,7 +30,7 @@ export function Sessions() {
               </div>
             </div>
             
-            <button className="w-full mt-8 py-2 rounded-lg text-sm font-bold transition-all bg-[#d4a373]/10 hover:bg-[#d4a373]/25 text-[#0b1a30] border border-[#d4a373]/30 dark:bg-white/5 dark:border-white/10 dark:text-white dark:hover:bg-cyan-400 dark:hover:text-[#080b10]">
+            <button className="w-full mt-8 py-2.5 rounded-xl text-sm font-bold transition-all bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] shadow-sm hover:shadow-md active:scale-98 dark:from-[#00f0ff] dark:to-[#38f4ff] dark:hover:from-[#38f4ff] dark:hover:to-[#00d8e6] dark:text-[#080b10] dark:shadow-[0_0_15px_rgba(0,240,255,0.4)] cursor-pointer">
               التفاصيل
             </button>
           </div>

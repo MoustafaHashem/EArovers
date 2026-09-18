@@ -294,9 +294,9 @@ export function Navbar() {
                   <div className="p-2">
                     <Link
                       href="/join"
-                      className="relative group block px-5 py-2 overflow-hidden rounded-full font-bold text-white transition-all duration-300 hover:scale-105 shadow-md bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] border border-[#161e35]/20 dark:from-cyan-500 dark:via-teal-400 dark:to-cyan-400 dark:text-[#080b10] dark:shadow-[0_0_18px_rgba(0,240,255,0.5)]"
+                      className="relative group block px-5 py-2 overflow-hidden rounded-full font-black text-[#0b1a30] transition-all duration-300 hover:scale-105 shadow-[0_2px_12px_rgba(212,163,115,0.35)] bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] border border-[#d4a373]/40 dark:from-cyan-500 dark:via-teal-400 dark:to-cyan-400 dark:text-[#080b10] dark:shadow-[0_0_18px_rgba(0,240,255,0.5)]"
                     >
-                      <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                      <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-white/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                       <span className="relative z-10">انضم إلينا</span>
                     </Link>
                   </div>
@@ -402,7 +402,7 @@ export function Navbar() {
                   <Link
                     href="/join"
                     onClick={() => setIsMenuOpen(false)}
-                    className="block text-center w-full bg-gradient-to-r from-[#161e35] to-[#1e2746] text-white dark:from-cyan-500 dark:to-teal-400 dark:text-[#080b10] py-3 rounded-xl font-bold shadow-md hover:opacity-95 transition-all"
+                    className="block text-center w-full bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] dark:from-cyan-500 dark:to-teal-400 dark:text-[#080b10] py-3 rounded-xl font-black shadow-[0_2px_12px_rgba(212,163,115,0.3)] border border-[#d4a373]/30 transition-all active:scale-98"
                   >
                     انضم إلينا
                   </Link>

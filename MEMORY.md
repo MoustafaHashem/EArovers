@@ -48,3 +48,10 @@
   - `member-scarf.png` (أعضاء العشيرة)
 - Formatted in RTL layout: Board on the right, Clan Leader in the center with featured gold badge, and Members on the left.
 - Fully verified via browser subagent tests and screenshots in both light and dark themes.
+- **Unified Button Styling**: Standardized all primary action and filter buttons across the page (`Navbar` join button & mobile drawer join button, `HeroCarousel`, `MediaGallery` filter pills & view all button, `ScoutShields` & `MobileShieldsGallery`, `Sessions`, `ClanTree` year tabs, and `Join Us` CTA) to use the signature warm orange gradient (`from-[#e0a96d] to-[#d4a373]`) with dark text (`#0b1a30`), matching the active navbar pill and responsive to dark mode.
+- **Hierarchy ClanTree TypeError Fix**: Resolved `TypeError: Cannot read properties of undefined (reading 'id')` in `ClanTree.tsx`:
+  - Fixed node formatting in `src/app/(public)/hierarchy/page.tsx` to map DB `role.member` into both `member` and `person` object keys.
+  - Added defensive member/person normalization and safe id/name/avatar property extraction in `src/components/clan/ClanTree.tsx` and `src/components/clan/PersonCard.tsx`.
+  - Added fallback in `ClanTree` to `clanTreeData` when `dbData` is empty/omitted (e.g. on homepage preview).
+  - Configured `images.remotePatterns` in `next.config.ts` to support external member avatar URLs (e.g. `cdn.jsdelivr.net`, Cloudinary, Unsplash).
+

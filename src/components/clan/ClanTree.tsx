@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { type ClanTier, type RoleNode } from "@/data/clanData";
+import { clanTreeData, type ClanTier, type RoleNode } from "@/data/clanData";
 import { PersonCard } from "./PersonCard";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,10 @@ function NodeWithSubordinates({
   clickedId: string | null;
   isFadingOut: boolean;
 }) {
-  const isClicked = clickedId === node.member.id;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const member = node.member || (node as any).person;
+  const memberId = member?.id || "";
+  const isClicked = clickedId === memberId;
   const hasSubordinates = node.subordinates && node.subordinates.length > 0;
 
   return (
@@ -34,7 +37,7 @@ function NodeWithSubordinates({
         <PersonCard
           node={node}
           isClicked={isClicked}
-          onClick={() => node.promotesTo && onPromote(node.promotesTo, node.member.id)}
+          onClick={() => node.promotesTo && onPromote(node.promotesTo, memberId)}
         />
       </motion.div>
 
@@ -56,24 +59,29 @@ function NodeWithSubordinates({
               />
             )}
 
-            {node.subordinates!.map((sub) => (
-              <div key={sub.member.id} className="relative flex flex-col items-center">
-                {/* Vertical line for subordinate */}
-                <div className="absolute -top-4 w-px h-4 bg-[#161e35]/30 dark:bg-cyan-400/40" />
-                <motion.div
-                  layout
-                  animate={{
-                    opacity: isFadingOut && clickedId !== sub.member.id ? 0 : 1,
-                  }}
-                >
-                  <PersonCard
-                    node={sub}
-                    isClicked={clickedId === sub.member.id}
-                    onClick={() => sub.promotesTo && onPromote(sub.promotesTo, sub.member.id)}
-                  />
-                </motion.div>
-              </div>
-            ))}
+            {node.subordinates!.map((sub, idx) => {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const subMember = sub.member || (sub as any).person;
+              const subId = subMember?.id || `sub-${idx}`;
+              return (
+                <div key={subId} className="relative flex flex-col items-center">
+                  {/* Vertical line for subordinate */}
+                  <div className="absolute -top-4 w-px h-4 bg-[#161e35]/30 dark:bg-cyan-400/40" />
+                  <motion.div
+                    layout
+                    animate={{
+                      opacity: isFadingOut && clickedId !== subId ? 0 : 1,
+                    }}
+                  >
+                    <PersonCard
+                      node={sub}
+                      isClicked={clickedId === subId}
+                      onClick={() => sub.promotesTo && onPromote(sub.promotesTo, subId)}
+                    />
+                  </motion.div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -107,15 +115,20 @@ function TierSection({
       </div>
 
       <div className="flex justify-center gap-4 sm:gap-6 relative z-10 w-full flex-wrap max-w-6xl px-2 sm:px-4">
-        {tier.members.map((node) => (
-          <NodeWithSubordinates
-            key={node.member.id}
-            node={node}
-            onPromote={onPromote}
-            clickedId={clickedId}
-            isFadingOut={isFadingOut}
-          />
-        ))}
+        {tier.members.map((node, idx) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const nodeMember = node.member || (node as any).person;
+          const nodeId = nodeMember?.id || `node-${idx}`;
+          return (
+            <NodeWithSubordinates
+              key={nodeId}
+              node={node}
+              onPromote={onPromote}
+              clickedId={clickedId}
+              isFadingOut={isFadingOut}
+            />
+          );
+        })}
       </div>
 
       <div className="absolute top-[100%] w-px h-16 bg-gradient-to-b from-[#161e35]/30 dark:from-cyan-400/40 to-transparent opacity-50 -z-10" />
@@ -126,19 +139,44 @@ function TierSection({
 // Format DB data into the structure ClanTree expects
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function formatTreeData(dbData: any[]) {
+  if (!dbData || !Array.isArray(dbData)) return [];
+
   return dbData.map(yearGroup => {
     // We need to re-attach subordinates manually by heuristics based on roles.
-    const rebuiltTiers = JSON.parse(JSON.stringify(yearGroup.tiers));
+    const rebuiltTiers = JSON.parse(JSON.stringify(yearGroup.tiers || {}));
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const normalizeNode = (m: any) => {
+      if (!m) return m;
+      if (!m.member && m.person) {
+        m.member = m.person;
+      }
+      return m;
+    };
+
+    // Ensure all tiers exist and their members are normalized
+    ["highCouncil", "auxiliary", "management", "base"].forEach(tierKey => {
+      if (!rebuiltTiers[tierKey]) {
+        const defaultTitles: Record<string, string> = {
+          highCouncil: "مجلس القيادة",
+          auxiliary: "الهيكل المعاون",
+          management: "مجلس الإدارة",
+          base: "قاعدة العشيرة",
+        };
+        rebuiltTiers[tierKey] = { title: defaultTitles[tierKey], members: [] };
+      }
+      rebuiltTiers[tierKey].members = (rebuiltTiers[tierKey].members || []).map(normalizeNode);
+    });
+
     // Process Auxiliary: Leaders have assistants
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const aux = rebuiltTiers.auxiliary.members as any[];
-    const auxLeaders = aux.filter(m => !m.role.includes("مساعد"));
-    const auxAssists = aux.filter(m => m.role.includes("مساعد"));
+    const auxLeaders = aux.filter(m => !m.role?.includes("مساعد"));
+    const auxAssists = aux.filter(m => m.role?.includes("مساعد"));
     
     auxLeaders.forEach(leader => {
       leader.subordinates = [];
-      const roleBase = leader.role.replace("قائد ", "");
+      const roleBase = leader.role ? leader.role.replace("قائد ", "") : "";
       const assist = auxAssists.find(a => a.role === `مساعد ${roleBase}`);
       if (assist) {
         leader.subordinates.push(assist);
@@ -149,13 +187,13 @@ function formatTreeData(dbData: any[]) {
     // Process Management: Raht Leaders have Deputies
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const man = rebuiltTiers.management.members as any[];
-    const manLeaders = man.filter(m => m.role.includes("رائد"));
-    const manDeputies = man.filter(m => m.role.includes("وكيل"));
+    const manLeaders = man.filter(m => m.role?.includes("رائد"));
+    const manDeputies = man.filter(m => m.role?.includes("وكيل"));
     
     manLeaders.forEach(leader => {
       leader.subordinates = [];
       // Example matching: "رائد رهط الفايكنج" with "وكيل رهط الفايكنج"
-      const roleBase = leader.role.replace("رائد ", "");
+      const roleBase = leader.role ? leader.role.replace("رائد ", "") : "";
       const deputy = manDeputies.find(d => d.role === `وكيل ${roleBase}`);
       if (deputy) {
         leader.subordinates.push(deputy);
@@ -184,7 +222,10 @@ function formatTreeData(dbData: any[]) {
     
     // Add any missing
     hc.forEach(m => {
-      if (!orderedHc.find(om => om.member.id === m.member.id)) {
+      const mId = m.member?.id || m.person?.id;
+      if (mId && !orderedHc.find(om => (om.member?.id || om.person?.id) === mId)) {
+        orderedHc.push(m);
+      } else if (!mId && !orderedHc.includes(m)) {
         orderedHc.push(m);
       }
     });
@@ -200,7 +241,7 @@ function formatTreeData(dbData: any[]) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ClanTree({ dbData = [], defaultYear, hideTabs = false }: { dbData?: any[], defaultYear?: number; hideTabs?: boolean }) {
-  const treeData = formatTreeData(dbData);
+  const treeData = dbData && dbData.length > 0 ? formatTreeData(dbData) : clanTreeData;
   const initialYear = defaultYear || (treeData.length > 0 ? treeData[0].year : new Date().getFullYear());
   
   const [currentYear, setCurrentYear] = useState(initialYear);
@@ -231,17 +272,17 @@ export function ClanTree({ dbData = [], defaultYear, hideTabs = false }: { dbDat
             <button
               key={data.year}
               className={cn(
-                "relative px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-base sm:text-lg font-bold transition-all duration-300 z-10",
+                "relative px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-base sm:text-lg font-bold transition-all duration-300 z-10 cursor-pointer",
                 currentYear === data.year 
-                  ? "text-white dark:text-[#080b10]" 
-                  : "text-[#475569] dark:text-gray-400 hover:text-[#161e35] dark:hover:text-white"
+                  ? "text-[#0b1a30] dark:text-[#080b10]" 
+                  : "text-[#475569] dark:text-gray-400 hover:text-[#0b1a30] dark:hover:text-white"
               )}
               onClick={() => !isAnimating && setCurrentYear(data.year)}
             >
               {currentYear === data.year && (
                 <motion.div
                   layoutId="timeline-bubble-3"
-                  className="absolute inset-0 bg-gradient-to-r from-[#161e35] to-[#1e2746] dark:from-cyan-400 dark:to-teal-300 rounded-full -z-10 shadow-md dark:shadow-[0_0_15px_rgba(0,240,255,0.6)]"
+                  className="absolute inset-0 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] dark:from-[#00f0ff] dark:to-[#38f4ff] rounded-full -z-10 shadow-[0_2px_12px_rgba(212,163,115,0.35)] dark:shadow-[0_0_15px_rgba(0,240,255,0.6)]"
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 />
               )}

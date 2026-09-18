@@ -19,6 +19,8 @@ export default async function HierarchyPage() {
   const yearGroups: Record<number, any> = {};
   
   for (const role of allRoles) {
+    if (!role.member) continue;
+
     if (!yearGroups[role.year]) {
       yearGroups[role.year] = {
         year: role.year,
@@ -31,11 +33,11 @@ export default async function HierarchyPage() {
       };
     }
     
-    // Convert to Person format expected by ClanTree
-    const personObj = {
+    // Convert to Member/Person format expected by ClanTree
+    const memberObj = {
       id: role.member.id,
       name: role.member.fullName,
-      initials: role.member.fullName.substring(0, 2),
+      initials: role.member.fullName ? role.member.fullName.substring(0, 2) : "??",
       avatar: role.member.avatarUrl || undefined
     };
 
@@ -55,7 +57,8 @@ export default async function HierarchyPage() {
     }
     
     const node = {
-      person: personObj,
+      member: memberObj,
+      person: memberObj, // backwards-compatible alias
       role: title,
       tier: inferredTier,
       isSecondary: role.isSecondary,
