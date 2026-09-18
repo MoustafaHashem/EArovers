@@ -6,12 +6,15 @@
 - **Database Host**: Supabase (PostgreSQL).
 - **Authentication**: Supabase Auth integrated with Next.js Server Actions and `proxy.ts` (middleware).
 - **Media Hosting**: Cloudinary for direct image/video uploads, but Prisma `Media` model stores the URLs and metadata for fast querying and custom sorting.
-- **Styling**: Tailwind CSS with custom CSS variables (`var(--color-scout-blue)`, `var(--color-scout-navy)`, etc.) defined in `src/app/globals.css`.
+- **Styling**: Tailwind CSS with custom CSS variables defined in `src/app/globals.css`. Built with a dual-mode professional design system:
+  - **Concept 1 (Deep Tech Dark Mode)**: Deep charcoal and midnight black background (`#080b10`) fading into midnight blue at edges, electric cyan interactive accents and glowing edges, polished rich gold accents (`#ffd700`), crisp off-white typography, and layered dark-blue-tinted glass cards.
+  - **Concept 2 (Organic Light Mode)**: Crisp off-white/cream background (`#fbfbf9`) with subtle tactile warm linen texture, deep rich navy blue typography (`#0b1a30`), authentic clan scarf navy buttons & CTAs (`#161e35` to `#1e2746`), warm sandy gold accents (`#d4a373`), and subtle layered white cards with soft neumorphic depth shadows.
+- **Theming**: `next-themes` handles dark/light mode switching via a `ThemeProvider` wrapper in `src/app/layout.tsx` (attribute `class`, default theme `dark`). The animated sun/moon toggle is in `src/components/theme-toggle.tsx` with CSS in `src/app/toggle.css`.
 - **UI Components**: `shadcn/ui` is integrated. Migrated to `@base-ui/react` (which requires the `render` prop instead of `asChild`) for accessible unstyled components (like Tabs, buttons). Magic UI concepts (`framer-motion` layout animations) are used for animated navigation pills.
 
 ## 🎨 Design Philosophy
-- **Aesthetic**: Premium, sleek, and modern. Dark mode by default.
-- **UI Elements**: Glassmorphism (`glass-card` CSS class), neon ambient glows (`shadow-[0_0_20px_rgba(...)]`), smooth transitions. 
+- **Aesthetic**: Premium, elite, high-contrast, and tactile. High fidelity textures, modern glass effects, and soft depth without device frames.
+- **UI Elements**: Layered cards (`glass-card` & `honor-card` CSS classes), neon ambient electric cyan glows (`shadow-[0_0_20px_rgba(...)]`), fine gold borders on honor cards, animated sun/moon theme toggle.
 - **Layout Direction**: Arabic (RTL - Right to Left). Ensure flex directions, margins (`ml`/`mr`), borders (`border-l`/`border-r`), and gradients (`bg-gradient-to-l`) are mapped correctly for RTL.
 
 ## 🧩 Key Components
@@ -22,6 +25,11 @@
 - **Media Galleries**: 
   - `src/components/FullGallery.tsx`: Used on `/gallery`. Has categories, loads everything, and uses `yet-another-react-lightbox`.
   - `src/components/MediaGallery.tsx`: Used on the homepage. Drops the "All" filter and limits the return to max 12 items.
+- **Brand Identity & Clan Scarves Modal**: `src/components/layout/Identity.tsx` displays the official clan logo (`public/Logo.png`) alongside "عشيرة جوالة هندسة", and showcases the official scout clan scarf using `public/images/clan-scarf.png`. Clicking the footer scarf card triggers `src/components/layout/ClanScarvesModal.tsx`, an animated pop-out modal featuring the 3 official scout scarves in RTL order:
+  1. Right (`/images/scarfs/board-scarf.png`): "هيكل العشيرة" (board / council scarf with red stripe).
+  2. Center (`/images/scarfs/leader-scarf.png`): "قائد العشيرة / قائدة المرشدات" (featured clan leader / guide leader light blue scarf).
+  3. Left (`/images/scarfs/member-scarf.png`): "أعضاء العشيرة" (member scarf with cyan/light blue stripe).
+  Full support for both Organic Light and Deep Tech Dark themes, keyboard ESC exit, and backdrop click-to-close.
 - **Health Check Infrastructure**: A direct internal API route (`GET /api/health/ping`) performs a `prisma.$queryRaw` to keep the Supabase connection warm, triggered by a GitHub Actions workflow (`keep-alive.yml`).
 
 ## 🚨 Known Gotchas
@@ -31,22 +39,12 @@
 4. **Icons**: Using `lucide-react` for iconography. When passing icons to client components, pass their string name (e.g. `iconName: "users"`) instead of the raw React Component to avoid Server/Client boundary serialization errors.
 
 ## 🚀 Current Session Context & Next Steps (Read First for New Agents!)
-**Current Branch:** `master` (recently merged `redesign/mobile-ui`)
-**Database State:** 
-- The Supabase database was successfully synced with the new `schema.prisma`. The old `profiles` table was dropped, and the new `members` table is active.
-- Two test accounts were manually re-created (`admin@rovers.com` and `scouts@rovers.com`) and inserted into the `members` table.
-- **Middleware Security**: `src/proxy.ts` performs Edge authentication checks, but relies on Server Components (like `admin/layout.tsx` via Prisma) for authorization and role checks using `redirect()`. This avoids slow edge DB queries.
-
+**Current Branch:** `master`
 **Code State (Completed in this session):**
-- Split Mobile and Desktop home page experiences in `src/app/page.tsx` using responsive hiding.
-- Integrated Upstash Redis for Edge rate limiting in `src/proxy.ts`.
-- Implemented `ParticipantStatus` Prisma enum and removed the deprecated `tier` column from `RoleHistory`, relying on heuristic tier mapping via `roleTitle`.
-- Overhauled the `Navbar.tsx` and `AdminSidebar.tsx` with responsive, accessible Shadcn `Sheet` drawers, replacing fragile custom Framer Motion variants for mobile menus.
-- Cleaned and refactored `DashboardActions.tsx` utilizing Shadcn `Button` components.
-- Configured Edge Incremental Static Regeneration (ISR) (`revalidate = 60`) on data-heavy public routes (`/events`, `/fame`, `/gallery`, `/hierarchy`).
-- Created `/api/health/ping` directly pinging Prisma for the keep-alive workflow.
-- **Legacy PR Integration:** Audited and integrated PRs #2 and #5. Rebuilt the `/shields` page to dynamically fetch from the Prisma `Shield` model using the PR's interactive UI. Directed the hierarchy features to the dynamic `/hierarchy` route utilizing the `RoleHistory` model.
-
-**Immediate Next Step (Your Task):**
-- Await the user's next feature request or bug report on the `master` branch.
-- The repository is now fully built, type-checked, and successfully audited. The architecture is stable and dynamic routes are fully integrated with the PostgreSQL database.
+- **Clan Scarves Modal**: Added `src/components/layout/ClanScarvesModal.tsx` and connected it to the footer scarf card in `src/components/layout/Identity.tsx`.
+- Extracted, cleaned, and placed transparent PNG assets in `public/images/scarfs/`:
+  - `leader-scarf.png` (قائد العشيرة / قائدة المرشدات)
+  - `board-scarf.png` (هيكل العشيرة)
+  - `member-scarf.png` (أعضاء العشيرة)
+- Formatted in RTL layout: Board on the right, Clan Leader in the center with featured gold badge, and Members on the left.
+- Fully verified via browser subagent tests and screenshots in both light and dark themes.

@@ -73,35 +73,33 @@ export default async function HierarchyPage() {
   const rawClanData = Object.values(yearGroups).sort((a: any, b: any) => b.year - a.year);
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-[var(--color-scout-navy)] overflow-x-hidden relative">
+    <main className="flex min-h-screen flex-col items-center bg-transparent text-foreground overflow-x-hidden relative">
       <Navbar />
       
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(92,124,182,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(92,124,182,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[var(--color-scout-blue)] rounded-full blur-[200px] opacity-10"></div>
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-[var(--color-anchor)] rounded-full blur-[200px] opacity-10"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#d4a373]/10 dark:bg-cyan-500/10 rounded-full blur-[160px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#161e35]/10 dark:bg-blue-600/10 rounded-full blur-[160px]"></div>
       </div>
 
       <div className="w-full px-4 pt-32 pb-12 z-10 flex flex-col min-h-screen">
         <div className="max-w-7xl mx-auto w-full mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
           <div>
-            <Link href="/" className="inline-flex items-center text-[var(--color-scout-blue-light)] hover:text-white mb-4 transition-colors">
+            <Link href="/" className="inline-flex items-center text-[#161e35] dark:text-cyan-400 hover:opacity-80 mb-4 transition-colors font-bold">
               <ArrowRight className="w-5 h-5 ml-2" />
               العودة للرئيسية
             </Link>
-            <h1 className="text-4xl md:text-5xl font-black text-white">الهيكل التنظيمي والقيادي</h1>
-            <p className="text-gray-400 text-lg mt-2 max-w-2xl">
+            <h1 className="text-4xl md:text-5xl font-black text-[#0b1a30] dark:text-white">الهيكل التنظيمي والقيادي</h1>
+            <p className="text-[#475569] dark:text-gray-400 text-lg mt-2 max-w-2xl">
               تصفح الأرشيف الكامل لتشكيل مجلس القيادة والهيكل المعاون والرهوط عبر السنين.
             </p>
           </div>
         </div>
         
-        <div className="flex-1 w-full bg-black/20 rounded-3xl sm:p-8 border border-[var(--color-dark-border)] shadow-2xl backdrop-blur-md relative overflow-hidden">
+        <div className="flex-1 w-full glass-card rounded-3xl sm:p-8 border border-[#d4a373]/25 dark:border-white/10 shadow-xl relative overflow-hidden">
           {rawClanData.length > 0 ? (
             <ClanTree dbData={rawClanData} />
           ) : (
-            <div className="text-center py-20 text-gray-500">لا يوجد بيانات للهيكل التنظيمي حالياً</div>
+            <div className="text-center py-20 text-[#64748b] dark:text-gray-500 font-bold">لا يوجد بيانات للهيكل التنظيمي حالياً</div>
           )}
         </div>
       </div>

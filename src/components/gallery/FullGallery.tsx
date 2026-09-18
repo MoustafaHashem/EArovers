@@ -47,19 +47,23 @@ export function FullGallery() {
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col items-center py-20">
       <div className="text-center mb-10">
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-4">معرض الصور الشامل</h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">تصفح كافة ذكريات جوالة هندسة عين شمس، من مسابقات ومعسكرات إلى كواليس و دروع.</p>
+        <h1 className="text-4xl md:text-5xl font-black text-[#0b1a30] dark:text-white mb-4">معرض الصور الشامل</h1>
+        <p className="text-[#475569] dark:text-gray-400 text-lg max-w-2xl mx-auto">تصفح كافة ذكريات جوالة هندسة عين شمس، من مسابقات ومعسكرات إلى كواليس و دروع.</p>
       </div>
 
       <div 
-        className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-3 mb-10 sticky top-20 z-30 bg-[var(--color-dark-bg)]/80 backdrop-blur-md p-4 rounded-3xl border border-[var(--color-dark-border)] shadow-xl w-full max-w-[95vw] md:max-w-full"
+        className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-3 mb-10 sticky top-20 z-30 bg-white/85 dark:bg-[#080b10]/80 backdrop-blur-md p-3 sm:p-4 rounded-3xl border border-[#d4a373]/30 dark:border-cyan-500/20 shadow-xl w-full max-w-[95vw] md:max-w-full"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {categories.map((cat) => (
           <button 
             key={cat} 
             onClick={() => { setLoading(true); setActiveCategory(cat); }}
-            className={`whitespace-nowrap flex-shrink-0 px-6 py-2 rounded-full text-sm font-bold border transition-all duration-300 ${activeCategory === cat ? 'bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] border-transparent scale-105 shadow-[0_0_15px_rgba(40,160,255,0.4)]' : 'bg-transparent text-gray-300 border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue-light)] hover:text-white'}`}
+            className={`whitespace-nowrap flex-shrink-0 px-6 py-2 rounded-full text-sm font-bold border transition-all duration-300 ${
+              activeCategory === cat 
+                ? 'bg-gradient-to-r from-[#161e35] to-[#1e2746] text-white border-transparent scale-105 shadow-md dark:from-cyan-400 dark:to-teal-300 dark:text-[#080b10] dark:shadow-[0_0_15px_rgba(0,240,255,0.5)]' 
+                : 'bg-white/80 dark:bg-white/5 text-[#475569] dark:text-gray-300 border-[#d4a373]/30 dark:border-white/10 hover:border-[#161e35] dark:hover:border-cyan-400 hover:text-[#0b1a30] dark:hover:text-white'
+            }`}
           >
             {cat}
           </button>
@@ -68,12 +72,12 @@ export function FullGallery() {
 
       <div className="w-full min-h-[500px]">
         {loading ? (
-          <div className="w-full h-full flex flex-col items-center justify-center text-[var(--color-scout-blue-light)] py-32">
+          <div className="w-full h-full flex flex-col items-center justify-center text-[#161e35] dark:text-cyan-400 py-32">
             <Loader2 className="animate-spin mb-6" size={64} />
-            <p className="text-gray-400 font-bold text-xl">جاري تحميل المعرض بالكامل...</p>
+            <p className="text-[#475569] dark:text-gray-400 font-bold text-xl">جاري تحميل المعرض بالكامل...</p>
           </div>
         ) : images.length === 0 ? (
-          <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 py-32">
+          <div className="w-full h-full flex flex-col items-center justify-center text-[#64748b] dark:text-gray-500 py-32">
             <ImageIcon size={80} className="mb-6 opacity-50" />
             <p className="text-2xl font-bold">لا توجد صور في هذا القسم حالياً</p>
           </div>
@@ -83,7 +87,7 @@ export function FullGallery() {
               <div 
                 key={img.id} 
                 onClick={() => setLightboxIndex(i)}
-                className={`relative rounded-2xl overflow-hidden group bg-[var(--color-dark-card)] ${i % 7 === 1 || i % 7 === 4 ? 'row-span-2' : ''} ${i % 9 === 3 ? 'col-span-2' : ''} min-h-[180px] md:min-h-[250px] flex items-center justify-center cursor-pointer border border-[var(--color-dark-border)] hover:border-[var(--color-glow-cyan)] transition-all shadow-lg hover:shadow-[0_0_20px_rgba(40,160,255,0.3)]`}
+                className={`relative rounded-2xl overflow-hidden group bg-white/70 dark:bg-[var(--color-dark-card)] ${i % 7 === 1 || i % 7 === 4 ? 'row-span-2' : ''} ${i % 9 === 3 ? 'col-span-2' : ''} min-h-[180px] md:min-h-[250px] flex items-center justify-center cursor-pointer border border-[#d4a373]/25 dark:border-[var(--color-dark-border)] hover:border-[#161e35] dark:hover:border-[var(--color-glow-cyan)] transition-all shadow-md hover:shadow-xl dark:shadow-lg dark:hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]`}
               >
                 {img.format === 'mp4' ? (
                   <PlayCircle className="absolute text-white/70 group-hover:text-white transition-colors z-20" size={64} />

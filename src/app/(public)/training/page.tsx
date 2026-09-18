@@ -9,13 +9,13 @@ export const metadata = {
 
 export default function TrainingPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center overflow-x-hidden pt-24 bg-[#081221]">
+    <main className="flex min-h-screen flex-col items-center overflow-x-hidden pt-24 bg-transparent text-foreground">
       <Navbar />
       
       <section className="w-full py-12 px-6 z-10 flex-grow">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-4">التأهيل والدراسات الكشفية</h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-black text-[#0b1a30] dark:text-white mb-4">التأهيل والدراسات الكشفية</h1>
+          <p className="text-[#475569] dark:text-gray-400 text-lg max-w-2xl mx-auto">
             مسارات التدريب والتأهيل لإعداد قادة الجوالة
           </p>
         </div>

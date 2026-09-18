@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, LogIn } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -144,36 +145,42 @@ export function Navbar() {
       <motion.nav
         layout
         className={cn(
-          "pointer-events-auto transition-colors duration-500 lg:rounded-full",
+          "pointer-events-auto transition-all duration-500 lg:rounded-full",
           isScrolled
-            ? "bg-[var(--color-scout-navy)]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] border-b lg:border border-white/10 px-4 lg:px-6 py-3 lg:py-3"
+            ? "bg-[#fbfbf9]/85 dark:bg-[#080b10]/85 backdrop-blur-xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] border-b lg:border border-[#d4a373]/20 dark:border-cyan-500/20 px-4 lg:px-6 py-3 lg:py-3"
             : "bg-transparent px-4 lg:px-6 py-3 lg:py-3 w-full max-w-7xl"
         )}
       >
         <motion.div layout className={cn("flex items-center", isScrolled ? "justify-center gap-8" : "w-full")}>
           
-          {/* Left Side (Logo) */}
-          <AnimatePresence>
-            {!isScrolled && (
-              <motion.div 
-                layout 
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: "auto" }}
-                exit={{ opacity: 0, width: 0 }}
-                className="flex items-center flex-1 justify-start"
-              >
-                <Link href="/" className="flex items-center gap-3 group pt-2 lg:pt-0">
-                  <div className="w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center shrink-0 -ml-2 -mb-2 lg:-ml-4 lg:-my-4 transition-all duration-300">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/Logo.png" alt="شعار عشيرة جوالة هندسة" className="w-24 h-24 lg:w-28 lg:h-28 object-contain drop-shadow-[0_0_15px_rgba(92,124,182,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(92,124,182,0.7)] transition-all duration-300" />
-                  </div>
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Left Side (Logo + Theme Toggle) */}
+          <motion.div layout className={cn("flex items-center gap-3", !isScrolled && "flex-1 justify-start")}>
+            <AnimatePresence>
+              {!isScrolled && (
+                <motion.div 
+                  layout 
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                >
+                  <Link href="/" className="flex items-center gap-3 group">
+                    <div className="w-14 h-14 lg:w-16 lg:h-16 flex items-center justify-center shrink-0 transition-all duration-300">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/Logo.png"
+                        alt="شعار عشيرة جوالة هندسة"
+                        className="w-14 h-14 lg:w-16 lg:h-16 object-contain drop-shadow-[0_2px_8px_rgba(11,26,48,0.15)] dark:drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] group-hover:scale-105 transition-all duration-300"
+                      />
+                    </div>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <ThemeToggle />
+          </motion.div>
 
           {/* Center (Desktop Navigation) */}
-          <motion.div layout ref={navRef} className="hidden lg:flex relative items-center gap-2 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md">
+          <motion.div layout ref={navRef} className="hidden lg:flex relative items-center gap-1.5 bg-white/75 dark:bg-[#0d1527]/75 border border-[#d4a373]/30 dark:border-cyan-500/25 rounded-full p-1.5 backdrop-blur-md shadow-sm dark:shadow-[0_0_20px_rgba(0,240,255,0.08)]">
             {navLinks.map((link) => {
               const isHashLink = link.href.includes("#");
               const hashPart = isHashLink ? link.href.split("#")[1] : "";
@@ -235,13 +242,15 @@ export function Navbar() {
                   }}
                   className={cn(
                     "relative px-4 py-2 rounded-full text-sm font-bold transition-colors duration-300 z-10",
-                    isActive ? "text-[var(--color-scout-navy)]" : "text-gray-400 hover:text-white"
+                    isActive
+                      ? "text-[#0b1a30] dark:text-[#080b10]"
+                      : "text-[#334155] dark:text-slate-300 hover:text-[#0b1a30] dark:hover:text-white"
                   )}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="navbar-active-pill"
-                      className="absolute inset-0 bg-[var(--color-glow-cyan)] rounded-full shadow-[0_0_15px_var(--color-glow-cyan)]"
+                      className="absolute inset-0 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] dark:from-[#00f0ff] dark:to-[#38f4ff] rounded-full shadow-[0_2px_12px_rgba(212,163,115,0.35)] dark:shadow-[0_0_18px_#00f0ff]"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       style={{ zIndex: -1 }}
                     />
@@ -261,41 +270,40 @@ export function Navbar() {
                   animate={{ opacity: 1, width: "auto", x: 0 }}
                   exit={{ opacity: 0, width: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="hidden lg:flex items-center gap-4 overflow-hidden whitespace-nowrap"
+                  className="hidden lg:flex items-center gap-4 overflow-hidden whitespace-nowrap text-[#475569] dark:text-slate-400"
                 >
                   {/* Social Icons */}
                   <div className="flex items-center gap-3 px-2">
-                    <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
+                    <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#1877F2] dark:hover:text-[#ffd700] transition-colors" title="Facebook">
                       <FacebookIcon size={18} />
                     </a>
-                    <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-colors" title="Instagram">
+                    <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#E4405F] dark:hover:text-[#ffd700] transition-colors" title="Instagram">
                       <InstagramIcon size={18} />
                     </a>
-                    <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF0000] transition-colors" title="YouTube">
+                    <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#FF0000] dark:hover:text-[#ffd700] transition-colors" title="YouTube">
                       <YoutubeIcon size={18} />
                     </a>
-                    <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#ff5500] transition-colors" title="SoundCloud">
+                    <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#ff5500] dark:hover:text-[#ffd700] transition-colors" title="SoundCloud">
                       <CloudIcon size={18} />
                     </a>
                   </div>
 
                   {/* Divider */}
-                  <div className="w-px h-6 bg-white/15 mx-1" />
+                  <div className="w-px h-6 bg-black/15 dark:bg-white/15 mx-1" />
 
                   <div className="p-2">
                     <Link
                       href="/join"
-                      className="relative group block px-5 py-2 overflow-hidden rounded-full font-bold bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] transition-all duration-300 hover:scale-105"
+                      className="relative group block px-5 py-2 overflow-hidden rounded-full font-bold text-white transition-all duration-300 hover:scale-105 shadow-md bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] border border-[#161e35]/20 dark:from-cyan-500 dark:via-teal-400 dark:to-cyan-400 dark:text-[#080b10] dark:shadow-[0_0_18px_rgba(0,240,255,0.5)]"
                     >
                       <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                      <span className="absolute -inset-1 rounded-full blur bg-gradient-to-r from-[var(--color-scout-blue)] to-[var(--color-glow-cyan)] opacity-40 group-hover:opacity-70 transition-opacity duration-300 -z-10"></span>
                       <span className="relative z-10">انضم إلينا</span>
                     </Link>
                   </div>
 
                   <a
                     href="/login"
-                    className="flex items-center gap-1.5 text-sm font-bold text-gray-400 hover:text-white transition-colors px-2"
+                    className="flex items-center gap-1.5 text-sm font-bold text-[#475569] dark:text-slate-400 hover:text-[#0b1a30] dark:hover:text-white transition-colors px-2"
                   >
                     <LogIn size={16} />
                     <span>دخول</span>
@@ -306,25 +314,25 @@ export function Navbar() {
 
             {/* Mobile Menu Button */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <SheetTrigger render={<button className="lg:hidden w-10 h-10 flex items-center justify-center text-white hover:bg-white/10 rounded-full transition-colors ml-2" aria-label="فتح القائمة" />}>
+              <SheetTrigger render={<button className="lg:hidden w-10 h-10 flex items-center justify-center text-[#0b1a30] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors ml-2" aria-label="فتح القائمة" />}>
                 <Menu size={24} />
               </SheetTrigger>
               
-              <SheetContent side="right" showCloseButton={false} className="bg-[var(--color-scout-navy)] border-l border-[var(--color-dark-border)] p-0 flex flex-col w-[300px] sm:w-[400px]">
+              <SheetContent side="right" showCloseButton={false} className="bg-[#fbfbf9] dark:bg-[#080b10] border-l border-[#d4a373]/20 dark:border-cyan-500/20 p-0 flex flex-col w-[300px] sm:w-[400px]">
                 <SheetTitle className="sr-only">القائمة الرئيسية</SheetTitle>
                 
                 {/* Drawer Header */}
-                <div className="flex items-center justify-between p-6 border-b border-[var(--color-dark-border)]">
+                <div className="flex items-center justify-between p-6 border-b border-[#d4a373]/20 dark:border-cyan-500/20">
                   <div className="flex items-center gap-3">
-                    <div className="w-20 h-20 flex items-center justify-center shrink-0 -my-2">
+                    <div className="w-12 h-12 flex items-center justify-center shrink-0">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/Logo.png" alt="شعار عشيرة جوالة هندسة" className="w-20 h-20 object-contain" />
+                      <img src="/Logo.png" alt="شعار عشيرة جوالة هندسة" className="w-12 h-12 object-contain drop-shadow-[0_2px_8px_rgba(11,26,48,0.15)] dark:drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]" />
                     </div>
-                    <span className="text-white font-bold">القائمة</span>
+                    <span className="text-[#0b1a30] dark:text-white font-bold">القائمة</span>
                   </div>
                   <button
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors lg:hidden"
+                    className="w-8 h-8 flex items-center justify-center text-[#475569] hover:text-[#0b1a30] dark:text-slate-400 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors lg:hidden"
                     aria-label="إغلاق القائمة"
                   >
                     <X size={20} />
@@ -361,8 +369,8 @@ export function Navbar() {
                           className={cn(
                             "block w-full text-right px-4 py-3 rounded-xl font-bold transition-colors",
                             isActive
-                              ? "bg-[var(--color-scout-blue)]/20 text-[var(--color-scout-blue-light)] border border-[var(--color-scout-blue)]/30"
-                              : "text-gray-300 hover:bg-white/5 hover:text-white"
+                              ? "bg-[#d4a373]/15 text-[#0b1a30] border border-[#d4a373]/40 dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30"
+                              : "text-[#475569] dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 hover:text-[#0b1a30] dark:hover:text-white"
                           )}
                         >
                           {link.label}
@@ -373,19 +381,20 @@ export function Navbar() {
                 </div>
 
                 {/* Drawer Footer */}
-                <div className="p-4 border-t border-[var(--color-dark-border)] space-y-4">
+                <div className="p-4 border-t border-[#d4a373]/20 dark:border-cyan-500/20 space-y-4">
+
                   {/* Social Icons - Mobile */}
                   <div className="flex items-center justify-center gap-6 py-2">
-                    <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
+                    <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#1877F2] dark:hover:text-[#ffd700] transition-colors" title="Facebook">
                       <FacebookIcon size={22} />
                     </a>
-                    <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#E4405F] transition-colors" title="Instagram">
+                    <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#E4405F] dark:hover:text-[#ffd700] transition-colors" title="Instagram">
                       <InstagramIcon size={22} />
                     </a>
-                    <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF0000] transition-colors" title="YouTube">
+                    <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#FF0000] dark:hover:text-[#ffd700] transition-colors" title="YouTube">
                       <YoutubeIcon size={22} />
                     </a>
-                    <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#ff5500] transition-colors" title="SoundCloud">
+                    <a href="https://m.soundcloud.com/eng_asu-rovers" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#ff5500] dark:hover:text-[#ffd700] transition-colors" title="SoundCloud">
                       <CloudIcon size={22} />
                     </a>
                   </div>
@@ -393,13 +402,13 @@ export function Navbar() {
                   <Link
                     href="/join"
                     onClick={() => setIsMenuOpen(false)}
-                    className="block text-center w-full bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] py-3 rounded-xl font-bold hover:bg-[var(--color-scout-blue-light)] transition-colors"
+                    className="block text-center w-full bg-gradient-to-r from-[#161e35] to-[#1e2746] text-white dark:from-cyan-500 dark:to-teal-400 dark:text-[#080b10] py-3 rounded-xl font-bold shadow-md hover:opacity-95 transition-all"
                   >
                     انضم إلينا
                   </Link>
                   <a
                     href="/login"
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-[#475569] dark:text-slate-400 hover:text-[#0b1a30] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                   >
                     <LogIn size={16} />
                     <span>تسجيل الدخول</span>

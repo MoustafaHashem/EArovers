@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from 'sonner';
 import { TrafficTracker } from '@/components/analytics/TrafficTracker';
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -30,9 +31,16 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-cairo text-right">
-        {children}
-        <TrafficTracker />
-        <Toaster position="bottom-right" richColors dir="rtl" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <TrafficTracker />
+          <Toaster position="bottom-right" richColors dir="rtl" />
+        </ThemeProvider>
       </body>
     </html>
   );

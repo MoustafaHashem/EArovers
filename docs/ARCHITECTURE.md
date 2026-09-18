@@ -5,7 +5,11 @@ This document outlines the high-level architecture and technical decisions for t
 ## 1. System Architecture
 
 - **Frontend**: Next.js 16.3 (App Router) using React Server Components (RSC).
-- **Styling**: Tailwind CSS combined with `shadcn/ui` components for rapid, accessible UI development.
+- **Styling & Theming**: Tailwind CSS combined with `shadcn/ui` components and a dual design system:
+  - *Deep Tech Dark Mode*: Deep charcoal/midnight black `#080b10`, electric cyan interactive highlights, glowing accents, polished rich gold, off-white Arabic typography, layered dark-blue cards.
+  - *Organic Light Mode*: Crisp off-white/cream `#fbfbf9`, tactile warm linen textures, deep rich navy blue `#0b1a30`, authentic clan scarf navy CTAs `#161e35` to `#1e2746`, warm sandy gold `#d4a373`, layered white cards with soft neumorphic shadows.
+  - *Hero Experience*: Full-screen auto-playing image carousel (`HeroCarousel.tsx`) inspired by Red Bull design with dark cinematic gradient overlays, smooth cross-fades, and bottom-right glowing capsule pagination.
+  - Toggled seamlessly with `next-themes` and a custom animated switch.
 - **Backend**: Next.js Server Actions handle form submissions, database mutations, and server-side operations securely.
 - **Database**: PostgreSQL hosted on Supabase, managed via Prisma ORM.
 - **Authentication**: Supabase Auth (integrated via `proxy.ts` middleware and Server Actions).
@@ -56,3 +60,7 @@ The schema centers around the `Member` model, unifying user authentication profi
 ### Performance & Caching
 - **Rate Limiting**: Integrated Upstash Redis within the Edge middleware (`src/proxy.ts`) to prevent abuse and DDoS attacks.
 - **Incremental Static Regeneration (ISR)**: Next.js ISR is configured (`revalidate = 60`) on data-heavy public routes (`/events`, `/fame`, `/gallery`, `/hierarchy`, `/shields`) to ensure fast page loads while keeping database queries to a minimum.
+
+### Clan Traditions & Visual Identity
+- **Scout Scarves Modal**: The footer (`src/components/layout/Identity.tsx`) features an interactive showcase card for the clan scarf. Clicking this opens `ClanScarvesModal.tsx`, a centered dialog displaying the three official scarves (Board on the right, Clan/Guide Leader in the center, and Members on the left) with dedicated assets under `/public/images/scarfs/`.
+

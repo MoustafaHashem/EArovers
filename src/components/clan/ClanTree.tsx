@@ -42,13 +42,13 @@ function NodeWithSubordinates({
       {hasSubordinates && (
         <div className="relative flex flex-col items-center mt-6">
           {/* Vertical line going down from leader */}
-          <div className="absolute -top-6 w-px h-6 bg-[var(--color-scout-blue)] opacity-50" />
+          <div className="absolute -top-6 w-px h-6 bg-[#161e35]/30 dark:bg-cyan-400/40" />
           
           <div className="flex gap-4 relative pt-4 justify-center">
             {/* Horizontal line if multiple subordinates */}
             {node.subordinates!.length > 1 && (
               <div
-                className="absolute top-0 h-px bg-[var(--color-scout-blue)] opacity-50"
+                className="absolute top-0 h-px bg-[#161e35]/30 dark:bg-cyan-400/40"
                 style={{
                   left: `calc(50% / ${node.subordinates!.length})`,
                   width: `calc(100% - 100% / ${node.subordinates!.length})`,
@@ -59,7 +59,7 @@ function NodeWithSubordinates({
             {node.subordinates!.map((sub) => (
               <div key={sub.member.id} className="relative flex flex-col items-center">
                 {/* Vertical line for subordinate */}
-                <div className="absolute -top-4 w-px h-4 bg-[var(--color-scout-blue)] opacity-50" />
+                <div className="absolute -top-4 w-px h-4 bg-[#161e35]/30 dark:bg-cyan-400/40" />
                 <motion.div
                   layout
                   animate={{
@@ -102,7 +102,7 @@ function TierSection({
       transition={{ duration: 0.6, type: "spring", bounce: 0.4 }}
       className="relative flex flex-col items-center w-full my-8"
     >
-      <div className="text-xl font-bold text-[var(--color-scout-blue-light)] mb-8 bg-[var(--color-scout-navy)] px-6 py-2 rounded-full border border-[var(--color-dark-border)] shadow-[0_0_15px_rgba(0,0,0,0.5)] z-20">
+      <div className="text-xl font-bold text-[#161e35] dark:text-cyan-300 mb-8 bg-white dark:bg-[#0a1628] px-6 py-2.5 rounded-full border border-[#d4a373]/40 dark:border-cyan-500/30 shadow-md dark:shadow-[0_0_15px_rgba(0,0,0,0.5)] z-20">
         {tier.title}
       </div>
 
@@ -118,7 +118,7 @@ function TierSection({
         ))}
       </div>
 
-      <div className="absolute top-[100%] w-px h-16 bg-gradient-to-b from-[var(--color-scout-blue)] to-transparent opacity-50 -z-10" />
+      <div className="absolute top-[100%] w-px h-16 bg-gradient-to-b from-[#161e35]/30 dark:from-cyan-400/40 to-transparent opacity-50 -z-10" />
     </motion.div>
   );
 }
@@ -226,20 +226,22 @@ export function ClanTree({ dbData = [], defaultYear, hideTabs = false }: { dbDat
   return (
     <div className="flex flex-col items-center min-h-[80vh] py-12 w-full px-4 overflow-x-hidden">
       {!hideTabs && treeData.length > 0 && (
-        <div className="mb-20 bg-white/5 backdrop-blur-md p-2 rounded-full border border-white/10 flex items-center justify-center gap-2">
+        <div className="mb-20 bg-white/80 dark:bg-white/5 backdrop-blur-md p-1.5 rounded-full border border-[#d4a373]/30 dark:border-white/10 flex items-center justify-center gap-2 shadow-sm">
           {treeData.map((data) => (
             <button
               key={data.year}
               className={cn(
-                "relative px-8 py-3 rounded-full text-lg font-bold transition-colors duration-300 z-10",
-                currentYear === data.year ? "text-[var(--color-scout-navy)]" : "text-[var(--color-scout-blue)] hover:text-white"
+                "relative px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-base sm:text-lg font-bold transition-all duration-300 z-10",
+                currentYear === data.year 
+                  ? "text-white dark:text-[#080b10]" 
+                  : "text-[#475569] dark:text-gray-400 hover:text-[#161e35] dark:hover:text-white"
               )}
               onClick={() => !isAnimating && setCurrentYear(data.year)}
             >
               {currentYear === data.year && (
                 <motion.div
                   layoutId="timeline-bubble-3"
-                  className="absolute inset-0 bg-[var(--color-glow-cyan)] rounded-full -z-10 shadow-[0_0_15px_var(--color-glow-cyan)]"
+                  className="absolute inset-0 bg-gradient-to-r from-[#161e35] to-[#1e2746] dark:from-cyan-400 dark:to-teal-300 rounded-full -z-10 shadow-md dark:shadow-[0_0_15px_rgba(0,240,255,0.6)]"
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 />
               )}

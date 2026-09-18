@@ -38,13 +38,13 @@ export function JoinForm() {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto glass-card p-6 md:p-8 rounded-[32px] relative overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-white/10 bg-[#0a1122]/80 backdrop-blur-2xl">
-      <div className="absolute -top-20 -right-20 w-64 h-64 bg-[var(--color-scout-blue)] rounded-full blur-[100px] opacity-20 pointer-events-none" />
-      <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-cyan-500 rounded-full blur-[100px] opacity-10 pointer-events-none" />
+    <div className="w-full max-w-xl mx-auto glass-card p-6 md:p-8 rounded-[32px] relative overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-[#d4a373]/30 dark:border-white/10 bg-white/90 dark:bg-[#0a1122]/80 backdrop-blur-2xl">
+      <div className="absolute -top-20 -right-20 w-64 h-64 bg-[#161e35]/10 dark:bg-cyan-500/15 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[#d4a373]/15 dark:bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="text-center mb-8 relative z-10">
-        <h2 className="text-3xl font-black text-white mb-2 tracking-tight">انضم إلينا</h2>
-        <p className="text-gray-400 text-sm">سجل بياناتك للالتحاق بعشيرة جوالة هندسة عين شمس</p>
+        <h2 className="text-3xl font-black text-[#0b1a30] dark:text-white mb-2 tracking-tight">انضم إلينا</h2>
+        <p className="text-[#475569] dark:text-gray-400 text-sm">سجل بياناتك للالتحاق بعشيرة جوالة هندسة عين شمس</p>
       </div>
 
       {/* Progress Bar */}
@@ -54,8 +54,8 @@ export function JoinForm() {
             <div className={cn(
               "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-500",
               step >= i 
-                ? "bg-gradient-to-br from-[var(--color-scout-blue)] to-blue-500 text-white shadow-[0_0_15px_rgba(92,124,182,0.5)]" 
-                : "bg-white/5 border border-white/10 text-gray-500"
+                ? "bg-gradient-to-br from-[#161e35] to-[#1e2746] dark:from-cyan-400 dark:to-teal-400 text-white dark:text-[#080b10] shadow-[0_4px_14px_rgba(22,30,53,0.35)] dark:shadow-[0_0_15px_rgba(0,240,255,0.5)]" 
+                : "bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-gray-400"
             )}>
               {i === 1 && <User size={18} />}
               {i === 2 && <GraduationCap size={18} />}
@@ -64,9 +64,9 @@ export function JoinForm() {
           </div>
         ))}
         {/* Connecting Lines */}
-        <div className="absolute top-5 left-10 right-10 h-[2px] bg-white/5 -z-0">
+        <div className="absolute top-5 left-10 right-10 h-[2px] bg-black/5 dark:bg-white/5 -z-0">
           <div 
-            className="h-full bg-gradient-to-r from-[var(--color-scout-blue)] to-cyan-400 transition-all duration-500" 
+            className="h-full bg-gradient-to-r from-[#161e35] to-[#26355d] dark:from-cyan-400 dark:to-teal-400 transition-all duration-500" 
             style={{ width: `${((step - 1) / (totalSteps - 1)) * 100}%` }} 
           />
         </div>
@@ -97,8 +97,8 @@ export function JoinForm() {
                 className="flex flex-col gap-5 absolute inset-0"
               >
                 <div>
-                  <label className="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
-                    <User size={16} className="text-[var(--color-scout-blue-light)]" />
+                  <label className="block text-sm font-bold text-[#0b1a30] dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <User size={16} className="text-[#161e35] dark:text-cyan-400" />
                     الاسم الثلاثي
                   </label>
                   <input 
@@ -107,14 +107,14 @@ export function JoinForm() {
                     type="text" 
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3.5 text-white focus:outline-none focus:border-[var(--color-scout-blue-light)] focus:ring-1 focus:ring-[var(--color-scout-blue-light)] transition-all placeholder:text-gray-600" 
+                    className="w-full bg-black/[0.03] dark:bg-black/40 border border-[#d4a373]/30 dark:border-white/10 rounded-2xl px-4 py-3.5 text-[#0b1a30] dark:text-white focus:outline-none focus:border-[#161e35] dark:focus:border-cyan-400 focus:ring-1 focus:ring-[#161e35] dark:focus:ring-cyan-400 transition-all placeholder:text-gray-400" 
                     placeholder="أحمد محمد محمود" 
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
-                    <Phone size={16} className="text-[var(--color-scout-blue-light)]" />
+                  <label className="block text-sm font-bold text-[#0b1a30] dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <Phone size={16} className="text-[#161e35] dark:text-cyan-400" />
                     رقم الهاتف (واتساب)
                   </label>
                   <input 
@@ -123,7 +123,7 @@ export function JoinForm() {
                     type="tel" 
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3.5 text-white focus:outline-none focus:border-[var(--color-scout-blue-light)] focus:ring-1 focus:ring-[var(--color-scout-blue-light)] transition-all text-right placeholder:text-gray-600" 
+                    className="w-full bg-black/[0.03] dark:bg-black/40 border border-[#d4a373]/30 dark:border-white/10 rounded-2xl px-4 py-3.5 text-[#0b1a30] dark:text-white focus:outline-none focus:border-[#161e35] dark:focus:border-cyan-400 focus:ring-1 focus:ring-[#161e35] dark:focus:ring-cyan-400 transition-all text-right placeholder:text-gray-400" 
                     placeholder="01xxxxxxxxx" 
                     dir="ltr" 
                   />
@@ -141,8 +141,8 @@ export function JoinForm() {
                 className="flex flex-col gap-5 absolute inset-0"
               >
                 <div>
-                  <label className="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
-                    <GraduationCap size={16} className="text-[var(--color-scout-blue-light)]" />
+                  <label className="block text-sm font-bold text-[#0b1a30] dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <GraduationCap size={16} className="text-[#161e35] dark:text-cyan-400" />
                     الفرقة الدراسية
                   </label>
                   <select 
@@ -150,13 +150,13 @@ export function JoinForm() {
                     required 
                     value={formData.academicYear}
                     onChange={handleChange}
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-4 text-gray-200 focus:outline-none focus:border-[var(--color-scout-blue-light)] focus:ring-1 focus:ring-[var(--color-scout-blue-light)] transition-all appearance-none cursor-pointer"
+                    className="w-full bg-black/[0.03] dark:bg-black/40 border border-[#d4a373]/30 dark:border-white/10 rounded-2xl px-4 py-4 text-[#0b1a30] dark:text-gray-200 focus:outline-none focus:border-[#161e35] dark:focus:border-cyan-400 focus:ring-1 focus:ring-[#161e35] dark:focus:ring-cyan-400 transition-all appearance-none cursor-pointer"
                   >
-                    <option className="bg-[#0f172a] text-white py-2">إعدادي</option>
-                    <option className="bg-[#0f172a] text-white py-2">الفرقة الأولى</option>
-                    <option className="bg-[#0f172a] text-white py-2">الفرقة الثانية</option>
-                    <option className="bg-[#0f172a] text-white py-2">الفرقة الثالثة</option>
-                    <option className="bg-[#0f172a] text-white py-2">الفرقة الرابعة</option>
+                    <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2">إعدادي</option>
+                    <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2">الفرقة الأولى</option>
+                    <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2">الفرقة الثانية</option>
+                    <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2">الفرقة الثالثة</option>
+                    <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2">الفرقة الرابعة</option>
                   </select>
                 </div>
               </motion.div>
@@ -172,16 +172,17 @@ export function JoinForm() {
                 className="flex flex-col gap-5 absolute inset-0"
               >
                 <div>
-                  <label className="block text-sm font-bold text-gray-300 mb-2 flex items-center gap-2">
-                    <Sparkles size={16} className="text-[var(--color-scout-blue-light)]" />
+                  <label className="block text-sm font-bold text-[#0b1a30] dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <Sparkles size={16} className="text-[#161e35] dark:text-cyan-400" />
                     مجالات الاهتمام (اختياري)
                   </label>
                   <textarea 
                     name="interests" 
                     value={formData.interests}
                     onChange={handleChange}
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-4 text-white focus:outline-none focus:border-[var(--color-scout-blue-light)] focus:ring-1 focus:ring-[var(--color-scout-blue-light)] transition-all min-h-[120px] placeholder:text-gray-600 resize-none" 
-                    placeholder="رياضة، فنون، سمر..." 
+                    rows={4}
+                    className="w-full bg-black/[0.03] dark:bg-black/40 border border-[#d4a373]/30 dark:border-white/10 rounded-2xl px-4 py-3 text-[#0b1a30] dark:text-white focus:outline-none focus:border-[#161e35] dark:focus:border-cyan-400 focus:ring-1 focus:ring-[#161e35] dark:focus:ring-cyan-400 transition-all placeholder:text-gray-400 resize-none" 
+                    placeholder="التخييم، الفنون، الرياضة، التكنولوجيا..." 
                   />
                 </div>
               </motion.div>
@@ -190,12 +191,12 @@ export function JoinForm() {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex gap-4 mt-8 pt-6 border-t border-white/10">
+        <div className="flex gap-4 mt-8">
           {step > 1 && (
             <button 
               type="button" 
               onClick={prevStep}
-              className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 transition-colors active:scale-95"
+              className="flex-1 bg-black/5 hover:bg-black/10 text-[#0b1a30] dark:bg-white/5 dark:text-gray-300 dark:hover:bg-white/10 font-bold py-4 rounded-2xl flex items-center justify-center gap-2 transition-colors active:scale-95 border border-black/5 dark:border-white/5"
             >
               <ChevronRight size={18} />
               السابق
@@ -207,7 +208,7 @@ export function JoinForm() {
               type="button" 
               onClick={nextStep}
               disabled={!canGoNext()}
-              className="flex-1 bg-[var(--color-scout-blue)] text-[var(--color-scout-navy)] hover:bg-[var(--color-scout-blue-light)] font-black py-4 rounded-2xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(92,124,182,0.3)] active:scale-95"
+              className="flex-1 bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] text-white dark:from-cyan-400 dark:to-teal-300 dark:text-[#080b10] font-black py-4 rounded-2xl flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_15px_rgba(22,30,53,0.25)] dark:shadow-[0_0_15px_rgba(0,240,255,0.4)] active:scale-95"
             >
               التالي
               <ChevronLeft size={18} />
@@ -216,7 +217,7 @@ export function JoinForm() {
             <button 
               disabled={pending} 
               type="submit" 
-              className="flex-1 bg-gradient-to-r from-[var(--color-scout-blue)] to-cyan-500 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(45,212,191,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
+              className="flex-1 bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] text-white dark:from-cyan-400 dark:to-teal-300 dark:text-[#080b10] font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:shadow-[0_8px_25px_rgba(22,30,53,0.3)] dark:hover:shadow-[0_0_20px_rgba(45,212,191,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
             >
               {pending ? (
                 <Loader2 size={18} className="animate-spin" />

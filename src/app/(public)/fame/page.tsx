@@ -11,7 +11,7 @@ export const revalidate = 60;
 
 export default function FamePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center overflow-x-hidden pt-24 bg-[var(--color-scout-navy)]">
+    <main className="flex min-h-screen flex-col items-center overflow-x-hidden pt-24 bg-transparent text-foreground">
       <Navbar />
       
       <section className="w-full py-12 px-6 z-10 flex-grow">
