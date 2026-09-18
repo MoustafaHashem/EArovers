@@ -8,7 +8,7 @@ This document outlines the high-level architecture and technical decisions for t
 - **Styling & Theming**: Tailwind CSS combined with `shadcn/ui` components and a dual design system:
   - *Deep Tech Dark Mode*: Deep charcoal/midnight black `#080b10`, electric cyan interactive highlights, glowing accents, polished rich gold, off-white Arabic typography, layered dark-blue cards.
   - *Organic Light Mode*: Crisp off-white/cream `#fbfbf9`, tactile warm linen textures, deep rich navy blue `#0b1a30`, authentic clan scarf navy CTAs `#161e35` to `#1e2746`, warm sandy gold `#d4a373`, layered white cards with soft neumorphic shadows.
-  - *Hero Experience*: Full-screen auto-playing image carousel (`HeroCarousel.tsx`) inspired by Red Bull design with dark cinematic gradient overlays, smooth cross-fades, and bottom-right glowing capsule pagination.
+  - *Hero Experience*: Dual-mode responsive hero (`HeroCarousel.tsx`). Mobile viewports (< `md`) play a portrait cinematic scout activity video (`public/videos/hero-mobile.mp4` with auto-extracted poster frame and muted autoplay/playsinline), while desktop/laptop viewports retain the full-screen auto-playing image carousel with dark cinematic gradient overlays, smooth cross-fades, and glowing capsule pagination.
   - Toggled seamlessly with `next-themes` and a custom animated switch.
 - **Backend**: Next.js Server Actions handle form submissions, database mutations, and server-side operations securely.
 - **Database**: PostgreSQL hosted on Supabase, managed via Prisma ORM.

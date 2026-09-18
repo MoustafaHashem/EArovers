@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -74,6 +74,7 @@ const HERO_SLIDES: HeroSlide[] = [
 export function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -82,6 +83,17 @@ export function HeroCarousel() {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  // Ensure mobile video reliably autoplays
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {
+        // Fallback if browser blocks autoplay
+      });
+    }
+  }, []);
 
   // Auto-play every 5 seconds
   useEffect(() => {
@@ -104,8 +116,24 @@ export function HeroCarousel() {
       onMouseLeave={() => setIsPaused(false)}
       dir="rtl"
     >
-      {/* Background Images with Preloaded Cross-Fade Animation */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      {/* Mobile Video Background (visible only on mobile: < md) */}
+      <div className="md:hidden absolute inset-0 w-full h-full overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/videos/hero-mobile-poster.jpg"
+          preload="auto"
+          className="w-full h-full object-cover object-center"
+        >
+          <source src="/videos/hero-mobile.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Desktop / Laptop Background Images with Preloaded Cross-Fade Animation (hidden on mobile, visible on md+) */}
+      <div className="hidden md:block absolute inset-0 w-full h-full overflow-hidden">
         {HERO_SLIDES.map((slide, index) => {
           const isActive = index === currentIndex;
           return (
@@ -176,8 +204,8 @@ export function HeroCarousel() {
         </AnimatePresence>
       </div>
 
-      {/* Red Bull Style Pagination Indicator (Bottom Right Corner) */}
-      <div className="absolute bottom-6 sm:bottom-10 right-6 sm:right-10 z-30 flex items-center gap-2 sm:gap-2.5 bg-black/35 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15 shadow-lg">
+      {/* Red Bull Style Pagination Indicator */}
+      <div className="absolute bottom-6 sm:bottom-10 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-10 z-30 flex items-center gap-2 sm:gap-2.5 bg-black/35 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/15 shadow-lg">
         {HERO_SLIDES.map((slide, index) => {
           const isActive = index === currentIndex;
           return (
