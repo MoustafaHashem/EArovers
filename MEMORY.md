@@ -55,4 +55,5 @@
   - Added fallback in `ClanTree` to `clanTreeData` when `dbData` is empty/omitted (e.g. on homepage preview).
   - Configured `images.remotePatterns` in `next.config.ts` to support external member avatar URLs (e.g. `cdn.jsdelivr.net`, Cloudinary, Unsplash).
 - **Mobile Hero Video Background**: Configured `HeroCarousel.tsx` to use a responsive background video on mobile (`< md` screen sizes, `public/videos/hero-mobile.mp4` with `hero-mobile-poster.jpg`) with `autoPlay`, `loop`, `muted`, and `playsInline`, while seamlessly maintaining the multi-image cross-fading carousel on desktop/laptop screens (`md:` and above). Centered pagination indicators on mobile viewports for clean visual symmetry.
+- **Brand Favicon & App Icons**: Replaced default Next.js / Vercel favicon with official clan logo (`Logo.png`). Generated multi-resolution `favicon.ico` (16, 32, 48, 64), `icon.png` (192x192), and `apple-icon.png` (180x180) in both `src/app/` and `public/`, and configured `metadata.icons` in `src/app/layout.tsx`.
 

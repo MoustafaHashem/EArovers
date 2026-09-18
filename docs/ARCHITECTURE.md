@@ -31,7 +31,7 @@ The schema centers around the `Member` model, unifying user authentication profi
 ## 3. Directory Structure
 
 - `/prisma`: Contains `schema.prisma` and generated types.
-- `/public`: Static assets (fonts, icons, PR images like badges and leadership photos).
+- `/public`: Static assets (clan logo `Logo.png`, `favicon.ico`, `icon.png`, fonts, PR images like badges, leadership photos, and hero video).
 - `/src/app`: The Next.js App Router root.
   - `/api`: API routes (including the `/health/ping` cron target).
   - `/admin`: The secure admin dashboard (protected by `proxy.ts`).

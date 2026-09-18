@@ -16,6 +16,13 @@ const cairo = Cairo({
 export const metadata: Metadata = {
   title: "عشيرة جوالة هندسة عين شمس",
   description: "الموقع الرسمي لعشيرة جوالة كلية الهندسة جامعة عين شمس",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
