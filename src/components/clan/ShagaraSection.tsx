@@ -31,6 +31,23 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
     ...getExactRole(highCouncil, "الرائدة الكبرى")
   ];
 
+  // Pre-process auxiliary groups
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const auxiliaryGroups: { base: any, assistants: any[] }[] = [];
+  const auxBaseRoles = auxiliary.members.filter((m: any) => !m.role.includes("مساعد"));
+  
+  auxBaseRoles.forEach((baseMember: any) => {
+    // e.g. base = "قائد الميديا", keyword = "الميديا"
+    const keyword = baseMember.role.replace("قائد ", "").replace("قائدة ", "");
+    const assistants = auxiliary.members.filter((m: any) => 
+      m.role.includes("مساعد") && m.role.includes(keyword)
+    );
+    auxiliaryGroups.push({ base: baseMember, assistants });
+  });
+
+  const groupedAssistants = new Set(auxiliaryGroups.flatMap(g => g.assistants).map(a => a.member.id));
+  const orphans = auxiliary.members.filter((m: any) => m.role.includes("مساعد") && !groupedAssistants.has(m.member.id));
+
   return (
     <div className="bg-[#1D4E89]/20 border border-white/10 rounded-3xl p-6 sm:p-12 space-y-16 shadow-2xl w-full dir-rtl font-sans text-center mx-auto max-w-6xl">
       
@@ -58,7 +75,7 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
               <div className="flex justify-center flex-wrap gap-12 sm:gap-24 w-full">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {row2.map((item: any, idx: number) => (
-                  <LeaderCard key={idx} item={item} />
+                  <LeaderCard key={idx} item={item} isAssistant />
                 ))}
               </div>
             )}
@@ -102,10 +119,20 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
             </h2>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-12 max-w-4xl mx-auto">
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {auxiliary.members.map((item: any, idx: number) => (
-              <LeaderCard key={idx} item={item} />
+          <div className="flex flex-wrap justify-center gap-12 sm:gap-20 max-w-4xl mx-auto items-start">
+            {auxiliaryGroups.map((group, idx) => (
+              <div key={idx} className="flex flex-col items-center gap-6">
+                <LeaderCard item={group.base} />
+                {group.assistants.map((ast, i) => (
+                  <LeaderCard key={i} item={ast} isAssistant />
+                ))}
+              </div>
+            ))}
+            
+            {orphans.map((orphan, idx) => (
+              <div key={`orphan-${idx}`} className="flex flex-col items-center gap-6">
+                 <LeaderCard item={orphan} isAssistant />
+              </div>
             ))}
           </div>
         </div>
@@ -115,12 +142,12 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function LeaderCard({ item }: { item: any }) {
+function LeaderCard({ item, isAssistant = false }: { item: any, isAssistant?: boolean }) {
   const imageSrc = item.member.avatar || "/gold-circle.png";
   
   return (
     <div className="flex flex-col items-center space-y-2.5 group">
-      <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+      <div className={`relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105 ${isAssistant ? "w-24 h-24 sm:w-28 sm:h-28" : "w-32 h-32 sm:w-40 sm:h-40 md:w-44 md:h-44"}`}>
         <Image
           src={imageSrc}
           alt={item.role}
@@ -130,10 +157,12 @@ function LeaderCard({ item }: { item: any }) {
         />
       </div>
       <div className="text-center space-y-0.5 max-w-[160px]">
-        <h3 className="font-extrabold text-base sm:text-lg text-white">
+        <h3 className={`font-extrabold text-white ${isAssistant ? "text-sm sm:text-base" : "text-base sm:text-lg"}`}>
           {item.role}
         </h3>
-        <p className="text-xs sm:text-sm text-[#A7A9AC] leading-snug">{item.member.name}</p>
+        <p className={`text-[#A7A9AC] leading-snug ${isAssistant ? "text-[10px] sm:text-xs" : "text-xs sm:text-sm"}`}>
+          {item.member.name}
+        </p>
       </div>
     </div>
   );
