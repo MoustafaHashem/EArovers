@@ -56,18 +56,18 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
         </p>
       </div>
 
-      <div className="relative">
+      <div className="relative group/carousel">
         {/* Navigation Buttons */}
         <button 
           onClick={() => scrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#102A43] text-white flex items-center justify-center shadow-lg hover:bg-[var(--color-scout-blue)] transition-colors hidden sm:flex"
+          className="absolute -right-8 md:-right-14 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#102A43] text-[#E0B84B] border-2 border-[#E0B84B] flex items-center justify-center shadow-lg hover:bg-[#E0B84B] hover:text-[#102A43] transition-colors hidden sm:flex opacity-0 group-hover/carousel:opacity-100"
         >
           <ChevronLeft className="w-6 h-6 rotate-180" />
         </button>
         
         <button 
           onClick={() => scrollRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#102A43] text-white flex items-center justify-center shadow-lg hover:bg-[var(--color-scout-blue)] transition-colors hidden sm:flex"
+          className="absolute -left-8 md:-left-14 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#102A43] text-[#E0B84B] border-2 border-[#E0B84B] flex items-center justify-center shadow-lg hover:bg-[#E0B84B] hover:text-[#102A43] transition-colors hidden sm:flex opacity-0 group-hover/carousel:opacity-100"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
