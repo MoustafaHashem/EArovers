@@ -19,9 +19,8 @@ export default async function EventDetailsPage({
 
   if (!event || !event.isPublic) notFound();
 
-  // In a real app we'd fetch actual related photos from Media table where category matches event title
   const eventPhotos = await prisma.media.findMany({
-    where: { category: event.eventType }, // Just an approximation for UI sake
+    where: { eventId: event.id },
     take: 6,
   });
 

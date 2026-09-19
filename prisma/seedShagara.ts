@@ -6,6 +6,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Starting seed...');
 
+  await prisma.roleHistory.deleteMany({
+    where: { member: { hasAccount: false } }
+  });
+  await prisma.member.deleteMany({
+    where: { hasAccount: false }
+  });
 
   // 2026 Members (High Council)
   const highCouncil2026 = [
@@ -30,7 +36,7 @@ async function main() {
   }
 
   // الهيكل المعاون 2026 (Placeholders as requested)
-  const auxRoles = ['قائد الميديا', 'مساعد قائد الميديا', 'قائد السيكرتارية', 'مساعد قائد السكيرتارية', 'أمين العهدة'];
+  const auxRoles = ['قائد الميديا', 'مساعد قائد الميديا', 'قائد السكريتارية', 'مساعد قائد السكريتارية', 'أمين العهدة'];
   for (const role of auxRoles) {
     await prisma.member.create({
       data: {

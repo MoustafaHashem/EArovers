@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Calendar, MapPin, Users } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
+import Link from "next/link";
 
 export const revalidate = 60; // Revalidate every minute
 
@@ -81,59 +82,61 @@ export default async function EventsPage() {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function EventCard({ event }: { event: any }) {
   return (
-    <div className="glass-card p-6 rounded-2xl border border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue)]/50 transition-colors group">
-      <div className="flex flex-col md:flex-row gap-6">
-        
-        <div className="shrink-0 w-32 flex flex-col items-center justify-center text-center p-4 bg-white/5 rounded-xl border border-white/5 group-hover:bg-[var(--color-scout-blue)]/10 transition-colors">
-          <span className="text-sm font-bold text-gray-400 group-hover:text-[var(--color-scout-blue)]">
-            {new Date(event.startDate).toLocaleDateString('ar-EG', { month: 'long' })}
-          </span>
-          <span className="text-4xl font-black text-white my-1">
-            {new Date(event.startDate).getDate()}
-          </span>
-          <span className="text-xs font-bold text-gray-500">
-            {new Date(event.startDate).getFullYear()}
-          </span>
-        </div>
+    <Link href={`/events/${event.id}`} className="block">
+      <div className="glass-card p-6 rounded-2xl border border-[var(--color-dark-border)] hover:border-[var(--color-scout-blue)]/50 transition-colors group">
+        <div className="flex flex-col md:flex-row gap-6">
+          
+          <div className="shrink-0 w-32 flex flex-col items-center justify-center text-center p-4 bg-white/5 rounded-xl border border-white/5 group-hover:bg-[var(--color-scout-blue)]/10 transition-colors">
+            <span className="text-sm font-bold text-gray-400 group-hover:text-[var(--color-scout-blue)]">
+              {new Date(event.startDate).toLocaleDateString('ar-EG', { month: 'long' })}
+            </span>
+            <span className="text-4xl font-black text-white my-1">
+              {new Date(event.startDate).getDate()}
+            </span>
+            <span className="text-xs font-bold text-gray-500">
+              {new Date(event.startDate).getFullYear()}
+            </span>
+          </div>
 
-        <div className="flex-1 space-y-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-3 py-1 text-xs font-bold rounded-full bg-[var(--color-scout-blue)]/20 text-blue-400 border border-[var(--color-scout-blue)]/30">
-                {event.eventType}
-              </span>
+          <div className="flex-1 space-y-4">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-3 py-1 text-xs font-bold rounded-full bg-[var(--color-scout-blue)]/20 text-blue-400 border border-[var(--color-scout-blue)]/30">
+                  {event.eventType}
+                </span>
+              </div>
+              <h3 className="text-2xl font-bold text-white group-hover:text-[var(--color-scout-blue-light)] transition-colors">{event.title}</h3>
+              {event.description && (
+                <p className="text-gray-400 mt-2 leading-relaxed text-sm">
+                  {event.description}
+                </p>
+              )}
             </div>
-            <h3 className="text-2xl font-bold text-white">{event.title}</h3>
-            {event.description && (
-              <p className="text-gray-400 mt-2 leading-relaxed text-sm">
-                {event.description}
-              </p>
-            )}
+
+            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300">
+              {event.location && (
+                <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg">
+                  <MapPin size={16} className="text-red-400" />
+                  <span>{event.location}</span>
+                </div>
+              )}
+              {event.maxParticipants && (
+                <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg">
+                  <Users size={16} className="text-green-400" />
+                  <span>الحد الأقصى: {event.maxParticipants}</span>
+                </div>
+              )}
+              {event.endDate && (
+                <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg">
+                  <Calendar size={16} className="text-purple-400" />
+                  <span>إلى {new Date(event.endDate).toLocaleDateString('ar-EG')}</span>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300">
-            {event.location && (
-              <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg">
-                <MapPin size={16} className="text-red-400" />
-                <span>{event.location}</span>
-              </div>
-            )}
-            {event.maxParticipants && (
-              <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg">
-                <Users size={16} className="text-green-400" />
-                <span>الحد الأقصى: {event.maxParticipants}</span>
-              </div>
-            )}
-            {event.endDate && (
-              <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg">
-                <Calendar size={16} className="text-purple-400" />
-                <span>إلى {new Date(event.endDate).toLocaleDateString('ar-EG')}</span>
-              </div>
-            )}
-          </div>
         </div>
-
       </div>
-    </div>
+    </Link>
   );
 }

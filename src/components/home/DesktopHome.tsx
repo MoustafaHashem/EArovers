@@ -1,5 +1,5 @@
 
-import { ClanTree } from "@/components/clan/ClanTree";
+import { ShagaraSection } from "@/components/clan/ShagaraSection";
 import { ScoutShields } from "@/components/home/ScoutShields";
 import { HallOfFame } from "@/components/home/HallOfFame";
 import { MediaGallery } from "@/components/gallery/MediaGallery";
@@ -120,7 +120,7 @@ export async function DesktopHome() {
         </div>
 
         <div className="w-full max-w-7xl mx-auto">
-          <ClanTree dbData={rawClanData} defaultYear={2026} hideTabs={true} />
+          <ShagaraSection currentData={rawClanData[0]} />
         </div>
 
         <div className="mt-4 px-6 text-center">

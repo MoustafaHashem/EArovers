@@ -8,7 +8,7 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { EventsCarousel } from "@/components/home/EventsCarousel";
 import { prisma } from "@/lib/prisma";
 import { getClanData } from "@/lib/clanDataFetcher";
-import { ClanTree } from "@/components/clan/ClanTree";
+import { ShagaraSection } from "@/components/clan/ShagaraSection";
 
 export async function MobileHome() {
   const rawClanData = await getClanData();
@@ -47,7 +47,7 @@ export async function MobileHome() {
 
         <div className="w-full px-6 flex flex-col items-center relative z-10">
           <div className="w-full mb-8">
-            <ClanTree dbData={rawClanData} defaultYear={2026} hideTabs={true} />
+            <ShagaraSection currentData={rawClanData[0]} />
           </div>
           <div className="inline-block mb-8 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-[var(--color-scout-blue-light)] text-xs font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-md">
             أعرق العشائر الكشفية الجامعية
