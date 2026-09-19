@@ -24,16 +24,6 @@ export async function DesktopHome() {
           <p className="text-[#475569] dark:text-slate-400 text-lg max-w-2xl mx-auto">تغطي أنشطة الجوالة مجالات متعددة لبناء شخصية متكاملة</p>
         </div>
         <ScoutShields />
-        
-        <div className="mt-12 px-6 text-center">
-          <Link 
-            href="/shields" 
-            className="inline-block px-6 py-3 md:px-10 md:py-4 rounded-2xl font-bold text-lg md:text-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:hover:from-[#38f4ff] dark:hover:to-[#00d8e6] dark:text-[#080b10] dark:shadow-[0_0_25px_rgba(0,240,255,0.4)] border border-[#d4a373]/40"
-          >
-            عرض جميع الدروع
-            <span className="block text-xs md:text-sm font-medium text-[#0b1a30]/80 dark:text-[#080b10]/80 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
-          </Link>
-        </div>
       </section>
 
       {/* Media Gallery */}

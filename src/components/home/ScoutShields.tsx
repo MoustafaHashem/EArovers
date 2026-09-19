@@ -4,6 +4,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { shieldsData } from "@/data/clanData";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+
+import { ChevronLeft } from "lucide-react";
 
 export function ScoutShields() {
   const [activeTab, setActiveTab] = useState(shieldsData[0].id);
@@ -18,12 +22,12 @@ export function ScoutShields() {
         className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-2 mb-12 w-full max-w-[95vw] md:max-w-full px-4"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {shieldsData.map((tab) => (
+        {shieldsData.slice(0, 3).map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "whitespace-nowrap flex-shrink-0 relative px-6 py-3 rounded-full text-sm md:text-lg font-bold transition-colors z-10 overflow-hidden",
+              "whitespace-nowrap flex-shrink-0 relative px-6 py-3 rounded-full text-sm md:text-lg font-bold transition-colors z-10 overflow-hidden cursor-pointer",
               activeTab === tab.id 
                 ? "text-[#0b1a30] dark:text-[#080b10]" 
                 : "text-[#475569] hover:text-[#0b1a30] bg-[#f0eee6] hover:bg-[#e8e5dc] dark:text-slate-300 dark:hover:text-white dark:bg-white/5"
@@ -39,6 +43,16 @@ export function ScoutShields() {
             <span className="relative z-10">{tab.title}</span>
           </button>
         ))}
+
+        {/* 4th Tab: "عرض المزيد" Link to /shields */}
+        <Link
+          href="/shields"
+          className="whitespace-nowrap flex-shrink-0 relative px-6 py-3 rounded-full text-sm md:text-lg font-bold transition-all z-10 overflow-hidden cursor-pointer text-[#475569] hover:text-[#0b1a30] bg-[#f0eee6] hover:bg-[#e8e5dc] dark:text-slate-300 dark:hover:text-white dark:bg-white/5 border border-dashed border-[#d4a373]/50 dark:border-cyan-500/30 hover:border-solid hover:border-[#d4a373] dark:hover:border-cyan-400 hover:scale-105 active:scale-95 flex items-center gap-1.5"
+          title="عرض جميع الدروع"
+        >
+          <span>عرض المزيد</span>
+          <ChevronLeft size={18} />
+        </Link>
       </div>
 
       {/* Content Area */}
@@ -52,8 +66,21 @@ export function ScoutShields() {
             transition={{ duration: 0.3 }}
             className="flex flex-col items-center text-center w-full"
           >
-            <h3 className="text-3xl font-black text-[#0b1a30] dark:text-white mb-4 drop-shadow-sm">{activeCategory.title}</h3>
-            <p className="text-[#475569] dark:text-slate-300 text-lg mb-10 max-w-2xl">{activeCategory.description}</p>
+            {/* Shield Image */}
+            <Link
+              href={`/shields?shield=${activeCategory.id}`}
+              className="relative w-64 h-52 md:w-80 md:h-64 mb-6 flex items-center justify-center overflow-visible cursor-pointer group/shield"
+              title={`عرض تفاصيل ${activeCategory.title}`}
+            >
+              <Image
+                src={activeCategory.image}
+                alt={activeCategory.title}
+                fill
+                sizes="(max-width: 768px) 256px, 320px"
+                className="object-contain scale-125 md:scale-140 filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_10px_25px_rgba(0,240,255,0.25)] transition-transform duration-300 group-hover/shield:scale-130 md:group-hover/shield:scale-145"
+                priority
+              />
+            </Link>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
               {activeCategory.items.map((item, idx) => (
@@ -62,13 +89,19 @@ export function ScoutShields() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  className="glass-card p-6 rounded-2xl flex flex-col items-center text-center hover:glass-card-hover transition-all group"
                 >
-                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-4 bg-[#d4a373]/10 border border-[#d4a373]/25 dark:bg-cyan-500/10 dark:border-cyan-400/30 dark:shadow-[0_0_15px_rgba(0,240,255,0.15)] group-hover:scale-110 transition-transform">
-                    {item.icon}
-                  </div>
-                  <h4 className="text-xl font-bold text-[#0b1a30] dark:text-white mb-2">{item.title}</h4>
-                  <p className="text-[#64748b] dark:text-cyan-300 font-medium text-sm">{item.desc}</p>
+                  <Link
+                    href={`/shields?shield=${activeCategory.id}&field=${encodeURIComponent(item.title)}`}
+                    className="glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:glass-card-hover transition-all group min-h-[140px] cursor-pointer hover:-translate-y-1.5 shadow-sm hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] block w-full"
+                    title={`عرض مجال ${item.title}`}
+                  >
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-3 bg-[#d4a373]/10 border border-[#d4a373]/25 dark:bg-cyan-500/10 dark:border-cyan-400/30 dark:shadow-[0_0_15px_rgba(0,240,255,0.15)] group-hover:scale-110 transition-transform">
+                      {item.icon}
+                    </div>
+                    <h4 className="text-xl font-bold text-[#0b1a30] dark:text-white group-hover:text-[#d4a373] dark:group-hover:text-cyan-300 transition-colors">
+                      {item.title}
+                    </h4>
+                  </Link>
                 </motion.div>
               ))}
             </div>

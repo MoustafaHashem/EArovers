@@ -56,4 +56,17 @@
   - Configured `images.remotePatterns` in `next.config.ts` to support external member avatar URLs (e.g. `cdn.jsdelivr.net`, Cloudinary, Unsplash).
 - **Mobile Hero Video Background**: Configured `HeroCarousel.tsx` to use a responsive background video on mobile (`< md` screen sizes, `public/videos/hero-mobile.mp4` with `hero-mobile-poster.jpg`) with `autoPlay`, `loop`, `muted`, and `playsInline`, while seamlessly maintaining the multi-image cross-fading carousel on desktop/laptop screens (`md:` and above). Centered pagination indicators on mobile viewports for clean visual symmetry.
 - **Brand Favicon & App Icons**: Replaced default Next.js / Vercel favicon with official clan logo (`Logo.png`). Generated multi-resolution `favicon.ico` (16, 32, 48, 64), `icon.png` (192x192), and `apple-icon.png` (180x180) in both `src/app/` and `public/`, and configured `metadata.icons` in `src/app/layout.tsx`.
+- **Scout Shields UI Streamlining & Deep Linking**: Updated `ScoutShields.tsx` (desktop), `MobileShieldsGallery.tsx` (mobile), `ShieldsClient.tsx`, and `shields/page.tsx`:
+  - Replaced the text title (e.g. "الدرع الكشفي") and subtitle description with the official transparent shield badge image (`/images/badges/*.png`) centered with drop-shadow effects.
+  - Streamlined each domain/activity sub-card to display only the domain title (e.g., "الريادة والكادجات") with its icon, removing the redundant description subtext.
+  - Connected the shield badge image and domain cards directly to `/shields?shield=<id>&field=<name>`:
+    - Clicking on the shield badge opens the dedicated shield detail view directly on `/shields`.
+    - Clicking on any domain card opens the shield detail view with that specific domain automatically highlighted with a badge and border accent.
+    - Added Suspense boundary and Server Component searchParams synchronization in `src/app/(public)/shields/page.tsx` with fallback to `clanData` for zero-flash SSR loading.
+  - **Mobile Shields Card Layout Refinement**: In `MobileShieldsGallery.tsx`, replaced the empty photo placeholder box (`لا توجد صور حالياً`) at the top of each mobile card with the prominent official shield badge image itself, and placed the domain activity buttons directly below it, eliminating visual clutter and duplicate badges.
+  - **Shields Tabs & Bottom Button Refactoring**: In `ScoutShields.tsx` and `DesktopHome.tsx`:
+    - Displaying only 3 shield tabs (`الدرع الكشفي`، `الدرع الفني`، `الدرع الرياضي`).
+    - Added a 4th tab labeled `"عرض المزيد"` linking directly to `/shields`.
+    - Removed the bottom `"عرض جميع الدروع"` button to keep the section compact and clean.
+    - Synchronized `MobileShieldsGallery.tsx` to render the top 3 shields.
 

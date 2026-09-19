@@ -211,7 +211,8 @@ export type ShieldCategory = {
   id: string;
   title: string;
   description: string;
-  items: { title: string; desc: string; icon: string }[];
+  image: string;
+  items: { title: string; desc?: string; icon: string }[];
 };
 
 export const shieldsData: ShieldCategory[] = [
@@ -219,48 +220,53 @@ export const shieldsData: ShieldCategory[] = [
     id: "scout",
     title: "الدرع الكشفي",
     description: "أساس الحركة الكشفية، مهارات البقاء، والريادة.",
+    image: "/images/badges/scout.png",
     items: [
-      { title: "الريادة والكادجات", desc: "بناء الهياكل الخشبية بالحبال.", icon: "🏕️" },
-      { title: "العقد والربطات", desc: "أساسيات التعامل مع الحبال.", icon: "🪢" },
-      { title: "حفلات السمر", desc: "الكشفي، الفردي، والتراث.", icon: "🔥" },
+      { title: "الريادة والكادجات", icon: "🏕️" },
+      { title: "العقد والربطات", icon: "🪢" },
+      { title: "حفلات السمر", icon: "🔥" },
     ],
   },
   {
     id: "art",
     title: "الدرع الفني",
     description: "تنمية المواهب الفنية والإبداعية لدى الجوالين.",
+    image: "/images/badges/artistic.png",
     items: [
-      { title: "أركيت", desc: "النحت وتفريغ الأخشاب.", icon: "🪵" },
-      { title: "سترنج آرت", desc: "الرسم بالمسامير والخيوط.", icon: "🧵" },
-      { title: "حرق على الجلد", desc: "النقش على الجلود.", icon: "🔥" },
+      { title: "أركيت", icon: "🪵" },
+      { title: "سترنج آرت", icon: "🧵" },
+      { title: "حرق على الجلد", icon: "🔥" },
     ],
   },
   {
     id: "sports",
     title: "الدرع الرياضي",
     description: "بناء الجسم السليم وتعزيز الروح الرياضية.",
+    image: "/images/badges/sports.png",
     items: [
-      { title: "كرة قدم", desc: "دوريات العشيرة.", icon: "⚽" },
-      { title: "كرة سلة", desc: "الرميات الثلاثية والعمل الجماعي.", icon: "🏀" },
-      { title: "كرة طائرة", desc: "بطولات الطائرة الشاطئية.", icon: "🏐" },
+      { title: "كرة قدم", icon: "⚽" },
+      { title: "كرة سلة", icon: "🏀" },
+      { title: "كرة طائرة", icon: "🏐" },
     ],
   },
   {
     id: "service",
     title: "درع الخدمة العامة",
     description: "خدمة المجتمع وتنمية روح العطاء.",
+    image: "/images/badges/service.png",
     items: [
-      { title: "الأعمال الخيرية", desc: "توزيع الوجبات والملابس.", icon: "🤲" },
-      { title: "الخدمة المجتمعية", desc: "تنظيف وتجميل الكلية.", icon: "🧹" },
+      { title: "الأعمال الخيرية", icon: "🤲" },
+      { title: "الخدمة المجتمعية", icon: "🧹" },
     ],
   },
   {
     id: "culture",
     title: "الدرع الثقافي",
     description: "نشر الوعي وتبادل المعرفة.",
+    image: "/images/badges/cultural.png",
     items: [
-      { title: "البامفلت", desc: "تصميم ونشر المطويات.", icon: "📰" },
-      { title: "المجلات المسطحة", desc: "مجلات حائط ثقافية.", icon: "🗞️" },
+      { title: "البامفلت", icon: "📰" },
+      { title: "المجلات المسطحة", icon: "🗞️" },
     ],
   },
 ];

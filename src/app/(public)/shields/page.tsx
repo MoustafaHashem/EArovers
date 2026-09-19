@@ -4,25 +4,45 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Identity } from "@/components/layout/Identity";
 import { Metadata } from "next";
 
+import { Suspense } from "react";
+
+import { shieldsData } from "@/data/clanData";
+
 export const metadata: Metadata = {
   title: "الدروع الكشفية | عشيرة جوالة هندسة عين شمس",
   description: "تغطي أنشطة الجوالة مجالات متعددة لبناء شخصية متكاملة.",
 };
 
-export const revalidate = 3600; // Cache for 1 hour
+export default async function ShieldsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ shield?: string; id?: string; field?: string }>;
+}) {
+  const resolvedParams = await searchParams;
 
-export default async function ShieldsPage() {
-  const shields = await prisma.shield.findMany({
-    orderBy: { sortOrder: 'asc' }
-  });
+  let shields: any[] = [];
+  try {
+    shields = await prisma.shield.findMany({
+      orderBy: { sortOrder: 'asc' }
+    });
+  } catch (err) {
+    console.error("Error fetching shields from DB:", err);
+  }
 
-  // Map to the structure expected by the client component
-  const formattedShields = shields.map(shield => ({
-    id: shield.id,
-    title: shield.name,
-    description: shield.description,
-    image: shield.image || undefined,
-  }));
+  // Map to the structure expected by the client component, with fallback to clanData
+  const formattedShields = shields.length > 0 
+    ? shields.map(shield => ({
+        id: shield.id,
+        title: shield.name,
+        description: shield.description,
+        image: shield.image || undefined,
+      }))
+    : shieldsData.map(s => ({
+        id: s.id,
+        title: s.title,
+        description: s.description,
+        image: s.image,
+      }));
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-transparent text-foreground dir-rtl overflow-x-hidden relative">
@@ -34,7 +54,13 @@ export default async function ShieldsPage() {
       </div>
 
       <main className="flex-1 pt-28 pb-16 px-6 max-w-7xl mx-auto w-full relative z-10">
-        <ShieldsClient initialShields={formattedShields} />
+        <Suspense fallback={<div className="text-center py-20 font-bold text-[#64748b]">جاري تحميل الدروع...</div>}>
+          <ShieldsClient 
+            initialShields={formattedShields} 
+            initialShieldParam={resolvedParams?.shield || resolvedParams?.id}
+            initialFieldParam={resolvedParams?.field}
+          />
+        </Suspense>
       </main>
 
       <div className="w-full z-10 relative">
