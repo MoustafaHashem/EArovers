@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
+import { createClient } from "@/lib/supabase/server";
+
 export default async function EventDetailsPage({
   params,
 }: {
@@ -13,6 +15,9 @@ export default async function EventDetailsPage({
 }) {
   const { id } = await params;
   
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   const event = await prisma.event.findUnique({
     where: { id },
   });
@@ -23,6 +28,23 @@ export default async function EventDetailsPage({
     where: { eventId: event.id },
     take: 6,
   });
+
+  // Check if event is upcoming
+  const isUpcoming = new Date(event.startDate) >= new Date();
+
+  // Check if user already joined (if logged in)
+  let hasJoined = false;
+  if (user) {
+    const existingParticipant = await prisma.eventParticipant.findUnique({
+      where: {
+        eventId_memberId: {
+          eventId: event.id,
+          memberId: user.id
+        }
+      }
+    });
+    hasJoined = !!existingParticipant;
+  }
 
   return (
     <main dir="rtl" className="min-h-screen w-full pt-32 pb-16 px-6 md:px-16 bg-[var(--color-dark-bg)] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,102,255,0.15),rgba(255,255,255,0))] font-cairo">
@@ -114,6 +136,48 @@ export default async function EventDetailsPage({
                   </div>
                 </div>
               )}
+              
+              {/* Join Section */}
+              <div className="pt-6 mt-6 border-t border-[var(--color-scout-blue)]/30">
+                {isUpcoming ? (
+                  user ? (
+                    hasJoined ? (
+                      <button disabled className="w-full bg-green-500/20 text-green-400 border border-green-500/50 py-3 rounded-xl font-bold cursor-not-allowed">
+                        تم تسجيل حضورك
+                      </button>
+                    ) : (
+                      <form action={async () => {
+                        "use server";
+                        const { prisma } = await import("@/lib/prisma");
+                        await prisma.eventParticipant.create({
+                          data: {
+                            eventId: event.id,
+                            memberId: user.id
+                          }
+                        });
+                        const { revalidatePath } = await import("next/cache");
+                        revalidatePath(`/events/${event.id}`);
+                      }}>
+                        <button type="submit" className="w-full bg-[var(--color-scout-blue)] hover:bg-[var(--color-scout-blue-light)] text-white py-3 rounded-xl font-bold transition-colors shadow-lg hover:shadow-[0_0_20px_rgba(92,124,182,0.4)]">
+                          تسجيل الحضور
+                        </button>
+                      </form>
+                    )
+                  ) : (
+                    <div className="text-center">
+                      <p className="text-sm text-slate-400 mb-3">سجل الدخول لتتمكن من الانضمام للفعالية</p>
+                      <Link href="/login" className="block w-full bg-white/10 hover:bg-white/20 text-white border border-white/20 py-3 rounded-xl font-bold transition-colors">
+                        تسجيل الدخول
+                      </Link>
+                    </div>
+                  )
+                ) : (
+                  <button disabled className="w-full bg-slate-800 text-slate-500 py-3 rounded-xl font-bold cursor-not-allowed">
+                    انتهت الفعالية
+                  </button>
+                )}
+              </div>
+
             </div>
           </div>
 

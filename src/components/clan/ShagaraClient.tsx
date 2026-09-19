@@ -65,5 +65,4 @@ export function ShagaraClient({ clanData }: { clanData: any[] }) {
       <Identity />
     </div>
   );
-  );
 }

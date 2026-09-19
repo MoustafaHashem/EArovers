@@ -56,13 +56,29 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
         </p>
       </div>
 
-      {/* Horizontal event cards */}
-      <div
-        ref={scrollRef}
-        className="flex gap-6 sm:gap-8 overflow-x-auto snap-x snap-mandatory pb-8 pt-4 scrollbar-none"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {events.map((event) => (
+      <div className="relative">
+        {/* Navigation Buttons */}
+        <button 
+          onClick={() => scrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#102A43] text-white flex items-center justify-center shadow-lg hover:bg-[var(--color-scout-blue)] transition-colors hidden sm:flex"
+        >
+          <ChevronLeft className="w-6 h-6 rotate-180" />
+        </button>
+        
+        <button 
+          onClick={() => scrollRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#102A43] text-white flex items-center justify-center shadow-lg hover:bg-[var(--color-scout-blue)] transition-colors hidden sm:flex"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+
+        {/* Horizontal event cards */}
+        <div
+          ref={scrollRef}
+          className="flex gap-6 sm:gap-8 overflow-x-auto snap-x snap-mandatory pb-8 pt-4 scrollbar-none"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {events.map((event) => (
           <Link
             key={event.id}
             href={`/events/${event.id}`}
@@ -105,6 +121,7 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
             </div>
           </Link>
         ))}
+      </div>
       </div>
 
       <div className="flex justify-center mt-6">

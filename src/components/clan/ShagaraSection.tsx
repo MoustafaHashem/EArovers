@@ -46,7 +46,7 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
           <div className="flex flex-col items-center gap-8 max-w-2xl mx-auto">
             {/* Row 1: Leaders */}
             {row1.length > 0 && (
-              <div className="flex justify-center flex-wrap gap-8 sm:gap-16 w-full">
+              <div className="flex justify-center flex-wrap gap-4 sm:gap-8 w-full">
                 {row1.map((item, idx) => (
                   <LeaderCard key={idx} item={item} />
                 ))}
@@ -55,7 +55,7 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
 
             {/* Row 2: Assistants */}
             {row2.length > 0 && (
-              <div className="flex justify-center flex-wrap gap-8 sm:gap-16 w-full">
+              <div className="flex justify-center flex-wrap gap-12 sm:gap-24 w-full">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {row2.map((item: any, idx: number) => (
                   <LeaderCard key={idx} item={item} />
@@ -65,7 +65,7 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
 
             {/* Row 3: Senior Pioneers */}
             {row3.length > 0 && (
-              <div className="flex justify-center flex-wrap gap-8 sm:gap-16 w-full">
+              <div className="flex justify-center flex-wrap gap-4 sm:gap-8 w-full">
                 {row3.map((item, idx) => (
                   <LeaderCard key={idx} item={item} />
                 ))}

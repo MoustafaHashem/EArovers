@@ -38,7 +38,7 @@ export async function getClanData() {
       inferredTier = "highCouncil";
     } else if (title.includes("رائد رهط") || title.includes("وكيل رهط") || title.includes("رائدة رهط") || title.includes("وكيلة رهط")) {
       inferredTier = "management";
-    } else if (title.includes("سكرتارية") || title.includes("ميديا") || title.includes("مسؤول") || title.includes("أمين العهدة")) {
+    } else if (title.includes("سكرتارية") || title.includes("سكريتارية") || title.includes("ميديا") || title.includes("مسؤول") || title.includes("أمين العهدة")) {
       inferredTier = "auxiliary";
     }
     
