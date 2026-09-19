@@ -28,12 +28,12 @@ export async function MobileHome() {
       coverImage: true,
     }
   });
-  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialMedia = shieldsData.reduce((acc, shield, index) => {
     acc[shield.id] = shieldsMediaArray[index];
     return acc;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }, {} as Record<string, any[]>);
   return (
     <div className="flex flex-col items-center overflow-x-hidden pb-20">
@@ -52,17 +52,17 @@ export async function MobileHome() {
           <div className="inline-block mb-8 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-[var(--color-scout-blue-light)] text-xs font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-md">
             أعرق العشائر الكشفية الجامعية
           </div>
-          
+
           <h1 className="text-5xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white via-blue-50 to-[var(--color-scout-blue)] drop-shadow-[0_0_30px_rgba(92,124,182,0.3)] leading-[1.2]">
             عشيرة جوالة
             <br />
             هندسة عين شمس
           </h1>
-          
+
           <p className="text-base text-gray-300 font-medium leading-relaxed mb-10 max-w-[280px]">
             منصة متكاملة لأرشيف العشيرة، التدرج القيادي، وتوثيق البطولات على مدار السنين.
           </p>
-          
+
           <div className="relative inline-block group w-[280px]">
             <div className="absolute -inset-1 bg-gradient-to-r from-[var(--color-scout-blue)] via-cyan-400 to-indigo-500 rounded-full blur opacity-60 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
             <Link href="/join" className="relative w-full flex items-center justify-center gap-3 bg-[#060d1a] px-8 py-5 rounded-full text-white font-black text-lg overflow-hidden transition-all duration-300 border border-white/20 hover:border-cyan-400/50 active:scale-95 shadow-[0_0_40px_rgba(92,124,182,0.4)]">
@@ -85,7 +85,7 @@ export async function MobileHome() {
           <p className="text-gray-400 text-sm max-w-2xl mx-auto px-4">تغطي أنشطة الجوالة مجالات متعددة لبناء شخصية متكاملة</p>
         </div>
         <MobileShieldsGallery initialMedia={initialMedia} />
-        
+
         <div className="mt-8 px-4 text-center">
           <Link href="/shields" className="inline-block w-full bg-[var(--color-scout-navy-light)] hover:bg-[var(--color-anchor)] text-[var(--color-scout-blue-light)] hover:text-white border border-[var(--color-dark-border)] px-6 py-4 rounded-xl font-bold text-lg transition-all shadow-lg active:scale-95">
             عرض جميع الدروع

@@ -53,9 +53,11 @@ export function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
 
   const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
-  // The navbar should act exactly the same on all pages to keep the logo in the top right corner
-  const effectivelyScrolled = isScrolled;
+  // The hovering navbar (pill animation) should only happen on the home page.
+  // On all other pages, it should remain static at the top.
+  const effectivelyScrolled = isHomePage ? isScrolled : false;
 
   // Track scroll, hash changes, and active sections via IntersectionObserver
   useEffect(() => {
@@ -143,7 +145,7 @@ export function Navbar() {
   const activeTabId = getActiveTab();
 
   return (
-    <div className="absolute lg:fixed top-0 lg:top-4 inset-x-0 z-50 flex justify-center px-0 lg:px-4 pointer-events-none">
+    <div className={cn("absolute top-0 lg:top-4 inset-x-0 z-50 flex justify-center px-0 lg:px-4 pointer-events-none", !isHomePage ? "lg:absolute" : "lg:fixed")}>
       <motion.nav
         layout
         className={cn(
