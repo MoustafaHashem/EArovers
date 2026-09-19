@@ -10,16 +10,24 @@ export const revalidate = 60;
 export default async function PersonBiographyPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const person = await prisma.member.findUnique({
-    where: { id: params.id },
-    include: {
-      roles: {
-        orderBy: { year: 'desc' }
+  const { id } = await params;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let person: any = null;
+  try {
+    person = await prisma.member.findUnique({
+      where: { id },
+      include: {
+        roles: {
+          orderBy: { year: 'desc' }
+        }
       }
-    }
-  });
+    });
+  } catch (err) {
+    console.error("Error fetching person from DB:", err);
+  }
 
   if (!person) {
     notFound();

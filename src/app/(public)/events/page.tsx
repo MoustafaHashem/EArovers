@@ -5,14 +5,20 @@ import { Navbar } from "@/components/layout/Navbar";
 export const revalidate = 60; // Revalidate every minute
 
 export default async function EventsPage() {
-  const events = await prisma.event.findMany({
-    where: {
-      isPublic: true,
-    },
-    orderBy: {
-      startDate: "asc",
-    },
-  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let events: any[] = [];
+  try {
+    events = await prisma.event.findMany({
+      where: {
+        isPublic: true,
+      },
+      orderBy: {
+        startDate: "asc",
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching events from DB:", error);
+  }
 
   const now = new Date();
   const upcomingEvents = events.filter(e => new Date(e.startDate) >= now);

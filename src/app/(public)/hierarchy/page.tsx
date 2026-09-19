@@ -8,11 +8,17 @@ import { prisma } from "@/lib/prisma";
 export const revalidate = 60;
 
 export default async function HierarchyPage() {
-  const allRoles = await prisma.roleHistory.findMany({
-    include: {
-      member: true
-    }
-  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let allRoles: any[] = [];
+  try {
+    allRoles = await prisma.roleHistory.findMany({
+      include: {
+        member: true
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching hierarchy from DB:", error);
+  }
 
   // Group by year, then format into ClanTreeData format
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

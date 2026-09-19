@@ -69,4 +69,9 @@
     - Added a 4th tab labeled `"عرض المزيد"` linking directly to `/shields`.
     - Removed the bottom `"عرض جميع الدروع"` button to keep the section compact and clean.
     - Synchronized `MobileShieldsGallery.tsx` to render the top 3 shields.
+- **Vercel Deployment Build Error Fix**:
+  - Root cause: `DATABASE_URL` was not configured in Vercel Project Settings > Environment Variables. Next.js statically pre-renders ISR pages like `/events` and `/hierarchy` during `next build`, crashing when Prisma Client cannot find `DATABASE_URL`.
+  - Added safe `try...catch` blocks to `src/app/(public)/events/page.tsx`, `src/app/(public)/hierarchy/page.tsx`, and `src/app/(public)/people/[id]/page.tsx` to ensure static prerendering falls back gracefully without terminating the build process.
+  - Updated Next.js 15/16 dynamic route params handling in `src/app/(public)/people/[id]/page.tsx` (`params: Promise<{ id: string }>`).
+
 
