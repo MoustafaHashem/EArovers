@@ -1,7 +1,8 @@
 "use client";
 
 import { fameData } from "@/data/clanData";
-import { Trophy, Medal, Star } from "lucide-react";
+import { Trophy, Medal, Star, ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 export function HallOfFame() {
   return (
@@ -50,6 +51,16 @@ export function HallOfFame() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="flex justify-center mt-12 w-full">
+        <Link 
+          href="/fame" 
+          className="group flex items-center gap-2 bg-white/5 hover:bg-[#E0B84B]/20 border border-white/10 hover:border-[#E0B84B]/50 px-8 py-3 rounded-full text-white transition-all duration-300"
+        >
+          <span className="font-bold">عرض المزيد من الإنجازات</span>
+          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+        </Link>
       </div>
     </div>
   );

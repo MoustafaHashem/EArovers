@@ -7,10 +7,30 @@ import { Sessions } from "@/components/home/Sessions";
 import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 import { fetchMediaAction } from "@/actions/media";
+import { AboutSection } from "@/components/home/AboutSection";
+import { EventsCarousel } from "@/components/home/EventsCarousel";
+import { prisma } from "@/lib/prisma";
+import { getClanData } from "@/lib/clanDataFetcher";
 
 export async function DesktopHome() {
+  const rawClanData = await getClanData();
   // Fetch initial media for the default category "مسابقات"
   const initialImages = await fetchMediaAction("مسابقات", 12);
+  const events = await prisma.event.findMany({
+    where: { isPublic: true },
+    take: 5,
+    orderBy: { startDate: "desc" },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      startDate: true,
+      location: true,
+      eventType: true,
+      coverImage: true,
+    }
+  });
+
   return (
     <div className="flex flex-col items-center overflow-x-hidden">
 
@@ -51,6 +71,9 @@ export async function DesktopHome() {
         </div>
       </section>
 
+      {/* About Section */}
+      <AboutSection />
+
       {/* Scout Shields */}
       <section id="shields" className="w-full py-24 px-6 z-10 border-t border-[var(--color-dark-border)] bg-gradient-to-b from-transparent to-black/30">
         <div className="text-center mb-16">
@@ -65,6 +88,11 @@ export async function DesktopHome() {
             <span className="block text-xs md:text-sm font-normal text-gray-400 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
           </Link>
         </div>
+      </section>
+
+      {/* Recent Events / Timeline */}
+      <section id="events" className="w-full pt-16 pb-24 border-t border-[var(--color-dark-border)] bg-[#030811] relative">
+        <EventsCarousel events={events} />
       </section>
 
       {/* Media Gallery */}
@@ -92,7 +120,7 @@ export async function DesktopHome() {
         </div>
 
         <div className="w-full max-w-7xl mx-auto">
-          <ClanTree defaultYear={2026} hideTabs={true} />
+          <ClanTree dbData={rawClanData} defaultYear={2026} hideTabs={true} />
         </div>
 
         <div className="mt-4 px-6 text-center">

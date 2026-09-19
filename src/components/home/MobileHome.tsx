@@ -1,14 +1,33 @@
-
 import { MobileShieldsGallery } from "@/components/home/MobileShieldsGallery";
 import { Identity } from "@/components/layout/Identity";
 import { Trophy, BookOpen, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { fetchMediaAction } from "@/actions/media";
 import { shieldsData } from "@/data/clanData";
+import { AboutSection } from "@/components/home/AboutSection";
+import { EventsCarousel } from "@/components/home/EventsCarousel";
+import { prisma } from "@/lib/prisma";
+import { getClanData } from "@/lib/clanDataFetcher";
+import { ClanTree } from "@/components/clan/ClanTree";
 
 export async function MobileHome() {
+  const rawClanData = await getClanData();
   const shieldsMediaPromises = shieldsData.map(shield => fetchMediaAction(shield.title, 6));
   const shieldsMediaArray = await Promise.all(shieldsMediaPromises);
+  const events = await prisma.event.findMany({
+    where: { isPublic: true },
+    take: 5,
+    orderBy: { startDate: "desc" },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      startDate: true,
+      location: true,
+      eventType: true,
+      coverImage: true,
+    }
+  });
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialMedia = shieldsData.reduce((acc, shield, index) => {
@@ -27,6 +46,9 @@ export async function MobileHome() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
         <div className="w-full px-6 flex flex-col items-center relative z-10">
+          <div className="w-full mb-8">
+            <ClanTree dbData={rawClanData} defaultYear={2026} hideTabs={true} />
+          </div>
           <div className="inline-block mb-8 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-[var(--color-scout-blue-light)] text-xs font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-md">
             أعرق العشائر الكشفية الجامعية
           </div>
@@ -53,6 +75,9 @@ export async function MobileHome() {
         </div>
       </section>
 
+      {/* About Section */}
+      <AboutSection />
+
       {/* Combined Shields & Media Gallery */}
       <section id="shields" className="w-full py-16 px-4 z-10 border-t border-[var(--color-dark-border)] bg-gradient-to-b from-transparent to-black/30">
         <div className="text-center mb-8">
@@ -67,6 +92,11 @@ export async function MobileHome() {
             <span className="block text-xs font-normal text-gray-400 mt-1">تصفح الدروع الكشفية ومتطلباتها بالتفصيل</span>
           </Link>
         </div>
+      </section>
+
+      {/* Recent Events / Timeline */}
+      <section id="events" className="w-full pt-12 pb-16 border-t border-[var(--color-dark-border)] bg-[#030811] relative">
+        <EventsCarousel events={events} />
       </section>
 
       {/* Hall of Fame Teaser */}

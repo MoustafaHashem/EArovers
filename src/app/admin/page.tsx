@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "@/lib/prisma";
 import AdminDashboardClient from '@/components/admin/AdminDashboardClient';
 import { MobileAdminDashboard } from '@/components/admin/MobileAdminDashboard';

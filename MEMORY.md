@@ -41,11 +41,12 @@
 - Split Mobile and Desktop home page experiences in `src/app/page.tsx` using responsive hiding.
 - Integrated Upstash Redis for Edge rate limiting in `src/proxy.ts`.
 - Implemented `ParticipantStatus` Prisma enum and removed the deprecated `tier` column from `RoleHistory`, relying on heuristic tier mapping via `roleTitle`.
-- Overhauled the `Navbar.tsx` and `AdminSidebar.tsx` with responsive, accessible Shadcn `Sheet` drawers, replacing fragile custom Framer Motion variants for mobile menus.
+- Overhauled the `Navbar.tsx` and `AdminSidebar.tsx` with responsive, accessible Shadcn `Sheet` drawers. **Logo behavior updated**: The logo is now consistently large and fixed at the top right globally, avoiding previous shrinking issues.
 - Cleaned and refactored `DashboardActions.tsx` utilizing Shadcn `Button` components.
 - Configured Edge Incremental Static Regeneration (ISR) (`revalidate = 60`) on data-heavy public routes (`/events`, `/fame`, `/gallery`, `/hierarchy`).
 - Created `/api/health/ping` directly pinging Prisma for the keep-alive workflow.
-- **Legacy PR Integration:** Audited and integrated PRs #2 and #5. Rebuilt the `/shields` page to dynamically fetch from the Prisma `Shield` model using the PR's interactive UI. Directed the hierarchy features to the dynamic `/hierarchy` route utilizing the `RoleHistory` model.
+- **Legacy PR Integration (Shields):** Audited and integrated PRs #2 and #5. Rebuilt the `/shields` page to dynamically fetch from the Prisma `Shield` model using the PR's interactive UI. The design was iterated to feature a massive 2-row full-width layout with maximized icons and generous padding for a premium feel.
+- **Legacy PR Integration (Hierarchy/Shagara):** Audited the `ShagaraBysalsabil` branch to understand the static `page.tsx` hierarchy layout and how the Auxiliary ("الهيكل المعاون") tier was structured in relation to the dynamic `RoleHistory` backend. *Note: The initial UI rewrite utilizing this layout was completely reverted upon user request. The UI integration will be rebuilt from scratch with Moe in a future session.*
 
 **Immediate Next Step (Your Task):**
 - Await the user's next feature request or bug report on the `master` branch.

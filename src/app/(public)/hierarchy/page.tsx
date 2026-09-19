@@ -3,74 +3,12 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { prisma } from "@/lib/prisma";
+import { getClanData } from "@/lib/clanDataFetcher";
 
 export const revalidate = 60;
 
 export default async function HierarchyPage() {
-  const allRoles = await prisma.roleHistory.findMany({
-    include: {
-      member: true
-    }
-  });
-
-  // Group by year, then format into ClanTreeData format
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const yearGroups: Record<number, any> = {};
-  
-  for (const role of allRoles) {
-    if (!yearGroups[role.year]) {
-      yearGroups[role.year] = {
-        year: role.year,
-        tiers: {
-          highCouncil: { title: "مجلس القيادة", members: [] },
-          auxiliary: { title: "الهيكل المعاون", members: [] },
-          management: { title: "مجلس الإدارة", members: [] },
-          base: { title: "قاعدة العشيرة", members: [] },
-        }
-      };
-    }
-    
-    // Convert to Person format expected by ClanTree
-    const personObj = {
-      id: role.member.id,
-      name: role.member.fullName,
-      initials: role.member.fullName.substring(0, 2),
-      avatar: role.member.avatarUrl || undefined
-    };
-
-    // Note: To perfectly recreate the subordination (who is subordinate to who) 
-    // without a self-referential schema, we use heuristics based on roleTitle in the frontend component.
-    // For now, just group them by tier.
-    // Infer tier from roleTitle
-    let inferredTier = "base";
-    const title = role.roleTitle || "";
-    
-    if (title.includes("قائد العشيرة") || title.includes("قائدة") || title.includes("الرائد الأكبر") || title.includes("الرائدة الكبرى") || title === "مساعد قائد العشيرة" || title === "مجلس قيادة") {
-      inferredTier = "highCouncil";
-    } else if (title.includes("رائد رهط") || title.includes("وكيل رهط") || title.includes("رائدة رهط") || title.includes("وكيلة رهط")) {
-      inferredTier = "management";
-    } else if (title.includes("مساعد") || title.includes("أمين") || title.includes("مسئول") || title.includes("هيكل معاون")) {
-      inferredTier = "auxiliary";
-    }
-    
-    const node = {
-      person: personObj,
-      role: title,
-      tier: inferredTier,
-      isSecondary: role.isSecondary,
-      promotesTo: undefined // Could calculate based on next year's roles, skipped for simplicity
-    };
-    
-    if (inferredTier === "highCouncil") yearGroups[role.year].tiers.highCouncil.members.push(node);
-    else if (inferredTier === "auxiliary") yearGroups[role.year].tiers.auxiliary.members.push(node);
-    else if (inferredTier === "management") yearGroups[role.year].tiers.management.members.push(node);
-    else if (inferredTier === "base") yearGroups[role.year].tiers.base.members.push(node);
-  }
-
-  // Convert to array and sort descending
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const rawClanData = Object.values(yearGroups).sort((a: any, b: any) => b.year - a.year);
+  const rawClanData = await getClanData();
 
   return (
     <main className="flex min-h-screen flex-col items-center bg-[var(--color-scout-navy)] overflow-x-hidden relative">

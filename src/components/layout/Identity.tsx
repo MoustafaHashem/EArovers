@@ -1,4 +1,4 @@
-import React from "react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import Link from "next/link";
 
 // Standard brand SVGs
@@ -72,6 +72,16 @@ export function Identity() {
           <h4 className="text-white font-bold text-lg mb-2">تواصل معنا</h4>
           <p className="text-gray-400 mb-4">تابعنا على منصات التواصل الاجتماعي لمعرفة أحدث الأخبار والفعاليات.</p>
           
+          <div className="flex items-start gap-3 mb-2">
+            <Phone size={20} className="text-[var(--color-scout-blue)] mt-1" />
+            <div className="flex flex-col">
+              <span className="text-gray-300">الهاتف (قائد العشيرة)</span>
+              <a href="tel:+201227552419" className="text-lg font-bold text-white hover:text-[var(--color-scout-blue-light)] transition-colors dir-ltr">
+                +20 122 755 2419
+              </a>
+            </div>
+          </div>
+
           <div className="flex gap-4">
             <a href="https://www.facebook.com/scoutingteam.eas" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-300 hover:bg-[#1877F2] hover:text-white transition-colors" title="Facebook">
               <FacebookIcon size={20} />
