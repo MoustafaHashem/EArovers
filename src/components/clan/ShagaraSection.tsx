@@ -129,7 +129,8 @@ export function ShagaraSection({ currentData }: { currentData: any }) {
               </div>
             ))}
             
-            {orphans.map((orphan, idx) => (
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {orphans.map((orphan: any, idx: number) => (
               <div key={`orphan-${idx}`} className="flex flex-col items-center gap-6">
                  <LeaderCard item={orphan} isAssistant />
               </div>
