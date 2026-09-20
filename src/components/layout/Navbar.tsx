@@ -155,7 +155,7 @@ export function Navbar() {
             : "bg-transparent px-4 lg:px-6 py-3 lg:py-3 w-full max-w-7xl"
         )}
       >
-        <motion.div layout className={cn("flex items-center", effectivelyScrolled ? "justify-center gap-8" : "w-full")}>
+        <motion.div layout className={cn("flex items-center", effectivelyScrolled ? "justify-center" : "w-full")}>
           
           {/* Left Side (Logo) */}
           <AnimatePresence>
@@ -258,7 +258,7 @@ export function Navbar() {
           </motion.div>
 
           {/* Right Side (Actions) */}
-          <motion.div layout className={cn("flex items-center", effectivelyScrolled ? "" : "flex-1 justify-end mr-8")}>
+          <motion.div layout className={cn("flex items-center", effectivelyScrolled ? "lg:hidden" : "flex-1 justify-end mr-8")}>
             <AnimatePresence>
               {!effectivelyScrolled && (
                 <motion.div
