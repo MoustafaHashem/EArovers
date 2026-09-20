@@ -158,17 +158,24 @@ export function Navbar() {
         <motion.div layout className={cn("flex items-center", effectivelyScrolled ? "justify-center gap-8" : "w-full")}>
           
           {/* Left Side (Logo) */}
-          <motion.div 
-            layout 
-            className="flex items-center flex-1 justify-start"
-          >
-            <Link href="/" className="flex items-center gap-3 group pt-2 lg:pt-0">
-              <div className="w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center shrink-0 -ml-2 -mb-2 lg:-ml-4 lg:-my-4 transition-all duration-300">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/Logo.png" alt="شعار عشيرة جوالة هندسة" className="w-24 h-24 lg:w-28 lg:h-28 object-contain drop-shadow-[0_0_15px_rgba(92,124,182,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(92,124,182,0.7)] transition-all duration-300" />
-              </div>
-            </Link>
-          </motion.div>
+          <AnimatePresence>
+            {!effectivelyScrolled && (
+              <motion.div 
+                layout 
+                initial={{ opacity: 0, width: 0 }}
+                animate={{ opacity: 1, width: "auto" }}
+                exit={{ opacity: 0, width: 0 }}
+                className="flex items-center flex-1 justify-start overflow-hidden"
+              >
+                <Link href="/" className="flex items-center gap-3 group pt-2 lg:pt-0">
+                  <div className="w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center shrink-0 -ml-2 -mb-2 lg:-ml-4 lg:-my-4 transition-all duration-300">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/Logo.png" alt="شعار عشيرة جوالة هندسة" className="w-24 h-24 lg:w-28 lg:h-28 object-contain drop-shadow-[0_0_15px_rgba(92,124,182,0.4)] group-hover:drop-shadow-[0_0_25px_rgba(92,124,182,0.7)] transition-all duration-300" />
+                  </div>
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Center (Desktop Navigation) */}
           <motion.div layout ref={navRef} className="hidden lg:flex relative items-center gap-2 bg-white/5 border border-white/10 rounded-full p-1 backdrop-blur-md">
