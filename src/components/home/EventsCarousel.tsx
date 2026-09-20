@@ -75,14 +75,15 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
         {/* Horizontal event cards */}
         <div
           ref={scrollRef}
-          className="flex gap-6 sm:gap-8 overflow-x-auto snap-x snap-mandatory pb-8 pt-4 scrollbar-none"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className="flex gap-6 sm:gap-8 overflow-x-auto pb-8 pt-4 scrollbar-none touch-pan-x"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
         >
           {events.map((event) => (
           <Link
             key={event.id}
             href={`/events/${event.id}`}
-            className="group flex flex-col bg-[#F3ECD6] rounded-3xl overflow-hidden shadow-xl hover:-translate-y-1 transition-transform shrink-0 w-[85%] sm:w-[45%] lg:w-[31%] snap-start border border-[#e5d9ba]"
+            className="group flex flex-col bg-[#F3ECD6] rounded-3xl overflow-hidden shadow-xl hover:-translate-y-1 transition-transform shrink-0 w-[85%] sm:w-[45%] lg:w-[31%] border border-[#e5d9ba]"
+            draggable={false}
           >
             <div className="relative w-full h-48 bg-gray-300">
               {event.coverImage ? (
@@ -91,6 +92,7 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
                   alt={event.title}
                   fill
                   className="object-cover"
+                  draggable={false}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">لا توجد صورة</div>
@@ -102,7 +104,7 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
                 <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#102A43] text-[#E0B84B] shrink-0">
                   <ChevronLeft size={14} />
                 </span>
-                <span className="font-black text-[#102A43] text-sm md:text-base truncate">
+                <span className="font-bold text-[#102A43] text-sm md:text-base truncate">
                   {event.title}
                 </span>
               </div>
