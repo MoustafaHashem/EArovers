@@ -63,4 +63,5 @@ The schema centers around the `Member` model, unifying user authentication profi
 
 ### Clan Traditions & Visual Identity
 - **Scout Scarves Modal**: The footer (`src/components/layout/Identity.tsx`) features an interactive showcase card for the clan scarf. Clicking this opens `ClanScarvesModal.tsx`, a centered dialog displaying the three official scarves (Board on the right, Clan/Guide Leader in the center, and Members on the left) with dedicated assets under `/public/images/scarfs/`.
+- **Global Footer & Official Channels**: Built in `src/components/layout/Identity.tsx` as a 4-column responsive grid providing official Clan Leader contact (`+20 11 58400222` with WhatsApp direct link), official email (`contact@earovers.me`), and faculty headquarters location (`Faculty of Engineering Ain Shams University`) directly linked to Google Maps, alongside social channels and quick navigation.
 

@@ -69,9 +69,13 @@
     - Added a 4th tab labeled `"عرض المزيد"` linking directly to `/shields`.
     - Removed the bottom `"عرض جميع الدروع"` button to keep the section compact and clean.
     - Synchronized `MobileShieldsGallery.tsx` to render the top 3 shields.
-- **Vercel Deployment Build Error Fix**:
-  - Root cause: `DATABASE_URL` was not configured in Vercel Project Settings > Environment Variables. Next.js statically pre-renders ISR pages like `/events` and `/hierarchy` during `next build`, crashing when Prisma Client cannot find `DATABASE_URL`.
-  - Added safe `try...catch` blocks to `src/app/(public)/events/page.tsx`, `src/app/(public)/hierarchy/page.tsx`, and `src/app/(public)/people/[id]/page.tsx` to ensure static prerendering falls back gracefully without terminating the build process.
-  - Updated Next.js 15/16 dynamic route params handling in `src/app/(public)/people/[id]/page.tsx` (`params: Promise<{ id: string }>`).
+- **Footer Expansion & Official Contacts Integration**:
+  - Rebuilt `src/components/layout/Identity.tsx` into an enhanced, responsive 4-column layout (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`) supporting both Light and Dark themes:
+    1. **Brand & Clan Scarf Badge**: Official logo, clan name, mission statement, and interactive modal trigger for clan scarves.
+    2. **Quick Navigation**: Full Next.js client routes (`/hierarchy`, `/shields`, `/fame`, `/gallery`, `/events`, `/training`, `/join`).
+    3. **Direct Contact**: Official Clan Leader telephone number (`+20 11 58400222`) with `tel:` link and quick WhatsApp click-to-chat button (`https://wa.me/201158400222`), plus official email (`contact@earovers.me`) with `mailto:` link.
+    4. **Clan Headquarters & Location**: Official faculty address (`كلية الهندسة جامعة عين شمس، 1 شارع السرايات، العباسية، الوايلي، القاهرة 11535`) linked directly to Google Maps search, alongside social media links (Facebook, Instagram, YouTube, SoundCloud, WhatsApp).
+  - Bottom bar with copyright year and official scout motto (`كُن مستعداً ⚜️ • خدمة - تنمية - قيادة`).
+  - Tested and visually verified via browser snapshots across light and dark modes with 0 TypeScript compilation errors.
 
 
