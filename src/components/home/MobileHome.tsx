@@ -46,9 +46,6 @@ export async function MobileHome() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
         <div className="w-full px-6 flex flex-col items-center relative z-10">
-          <div className="w-full mb-8">
-            <ShagaraSection currentData={rawClanData[0]} />
-          </div>
           <div className="inline-block mb-8 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-[var(--color-scout-blue-light)] text-xs font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)] backdrop-blur-md">
             أعرق العشائر الكشفية الجامعية
           </div>
@@ -141,6 +138,27 @@ export async function MobileHome() {
           <Link href="/training" className="flex items-center justify-center gap-2 w-full bg-white/5 border border-white/10 hover:bg-white/10 text-white py-3 rounded-xl font-bold transition-all">
             <span>عرض الدراسات</span>
             <ChevronLeft size={18} className="text-[var(--color-scout-blue-light)]" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Hierarchy Preview Section */}
+      <section id="hierarchy-preview" className="w-full flex flex-col items-center pt-16 pb-8 bg-gradient-to-b from-transparent to-black/20 border-t border-[var(--color-dark-border)] z-10 overflow-hidden">
+        <div className="text-center mb-6 px-6">
+          <h2 className="text-3xl font-black text-white mb-2">الهيكل التنظيمي والقيادي</h2>
+          <p className="text-gray-400 text-sm max-w-2xl mx-auto">
+            مجلس القيادة والهيكل المعاون للعام الحالي 2026.
+          </p>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto">
+          <ShagaraSection currentData={rawClanData[0]} />
+        </div>
+
+        <div className="mt-8 px-6 text-center w-full">
+          <Link href="/hierarchy" className="inline-block w-full bg-[var(--color-scout-navy-light)] hover:bg-[var(--color-anchor)] text-[var(--color-scout-blue-light)] hover:text-white border border-[var(--color-dark-border)] px-6 py-4 rounded-xl font-bold text-lg transition-all shadow-lg active:scale-95">
+            عرض المزيد
+            <span className="block text-xs font-normal text-gray-400 mt-1">تصفح شجرة العشيرة لجميع الأجيال</span>
           </Link>
         </div>
       </section>
