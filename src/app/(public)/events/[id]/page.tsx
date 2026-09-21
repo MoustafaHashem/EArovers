@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Identity } from "@/components/layout/Identity";
+import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 60;
 
@@ -19,8 +20,14 @@ export default async function EventDetailsPage({
   let event: any = null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let eventPhotos: any[] = [];
+  let user: any = null;
+  let hasJoined = false;
 
   try {
+    const supabase = await createClient();
+    const authRes = await supabase.auth.getUser();
+    user = authRes.data.user;
+
     event = await prisma.event.findUnique({
       where: { id },
     });
@@ -30,9 +37,21 @@ export default async function EventDetailsPage({
         where: { eventId: event.id },
         take: 6,
       });
+
+      if (user) {
+        const existingParticipant = await prisma.eventParticipant.findUnique({
+          where: {
+            eventId_memberId: {
+              eventId: event.id,
+              memberId: user.id,
+            },
+          },
+        });
+        hasJoined = !!existingParticipant;
+      }
     }
   } catch (err) {
-    console.error("Error fetching event:", err);
+    console.error("Error fetching event details:", err);
   }
 
   if (!event || !event.isPublic) notFound();
@@ -49,10 +68,10 @@ export default async function EventDetailsPage({
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#161e35]/10 dark:bg-blue-600/10 rounded-full blur-[160px]"></div>
       </div>
 
-      <main className="flex-1 w-full pt-32 pb-16 px-6 md:px-16 relative z-10">
-        <div className="max-w-6xl mx-auto space-y-10">
+      <main className="flex-1 container mx-auto px-4 pt-32 pb-16 relative z-10">
+        <div className="max-w-4xl mx-auto space-y-12">
           
-          {/* Back navigation */}
+          {/* Back Navigation */}
           <Link href="/events" className="inline-flex items-center text-[#161e35] dark:text-cyan-400 hover:opacity-80 transition-colors font-bold">
             <ArrowRight className="w-5 h-5 ml-2" />
             العودة للفعاليات
@@ -74,28 +93,34 @@ export default async function EventDetailsPage({
             )}
             
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent -z-10" />
-            
-            <div className="space-y-4 relative z-10">
-              <span className="inline-block px-4 py-1.5 text-sm font-bold rounded-full bg-[#d4a373]/90 text-[#0b1a30] dark:bg-cyan-500/90 dark:text-[#080b10] shadow-md">
-                {event.eventType}
-              </span>
-              <h1 className="text-4xl md:text-6xl font-black text-white leading-tight drop-shadow-lg">
+
+            <div className="space-y-4 max-w-2xl">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-[#d4a373] text-[#0b1a30] dark:bg-cyan-500 dark:text-[#080b10]">
+                  {event.eventType}
+                </span>
+                <span className={`px-3.5 py-1 rounded-full text-xs font-bold ${
+                  isUpcoming 
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" 
+                    : "bg-black/40 text-gray-300 border border-white/10"
+                }`}>
+                  {isUpcoming ? "فعالية قادمة" : "فعالية منتهية"}
+                </span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black text-white leading-tight drop-shadow-md">
                 {event.title}
               </h1>
             </div>
           </div>
 
-          {/* Content Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-start">
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             
-            {/* Details Card */}
-            <div className="order-2 md:order-1 glass-card p-8 rounded-3xl border border-[#d4a373]/25 dark:border-white/10 shadow-xl space-y-6">
-              <div className="flex items-center gap-4 mb-6">
-                <span className="h-px w-12 bg-[#d4a373]/40 dark:bg-cyan-500/40" />
-                <h2 className="text-2xl font-black text-[#0b1a30] dark:text-white">تفاصيل الفعالية</h2>
-                <span className="h-px w-12 bg-[#d4a373]/40 dark:bg-cyan-500/40" />
-              </div>
-              
+            {/* Description Body */}
+            <div className="md:col-span-2 glass-card p-6 sm:p-8 rounded-3xl border border-[#d4a373]/25 dark:border-white/10 shadow-xl space-y-4 order-2 md:order-1">
+              <h2 className="text-2xl font-black text-[#0b1a30] dark:text-white border-b border-black/10 dark:border-white/10 pb-4">
+                تفاصيل الفعالية
+              </h2>
               <p className="text-[#334155] dark:text-gray-300 whitespace-pre-line leading-relaxed text-lg">
                 {event.description || "لا يوجد وصف لهذه الفعالية بعد."}
               </p>
@@ -157,19 +182,48 @@ export default async function EventDetailsPage({
                     </div>
                   </div>
                 )}
-                
-                {/* Status Badge */}
-                <div className="pt-6 mt-6 border-t border-[#d4a373]/20 dark:border-cyan-500/15">
+
+                {/* Join / Attendance Section */}
+                <div className="pt-6 border-t border-black/10 dark:border-white/10">
                   {isUpcoming ? (
-                    <div className="w-full text-center py-3 rounded-xl font-bold bg-gradient-to-r from-[#e0a96d] to-[#d4a373] text-[#0b1a30] shadow-[0_2px_12px_rgba(212,163,115,0.3)] dark:from-cyan-500 dark:to-teal-400 dark:text-[#080b10] dark:shadow-[0_0_15px_rgba(0,240,255,0.4)]">
-                      فعالية قادمة — سجل حضورك!
-                    </div>
+                    user ? (
+                      hasJoined ? (
+                        <button disabled className="w-full bg-green-500/20 text-green-700 dark:text-green-400 border border-green-500/50 py-3 rounded-xl font-bold cursor-not-allowed text-center">
+                          تم تسجيل حضورك بنجاح ✓
+                        </button>
+                      ) : (
+                        <form action={async () => {
+                          "use server";
+                          const { prisma } = await import("@/lib/prisma");
+                          await prisma.eventParticipant.create({
+                            data: {
+                              eventId: event.id,
+                              memberId: user.id
+                            }
+                          });
+                          const { revalidatePath } = await import("next/cache");
+                          revalidatePath(`/events/${event.id}`);
+                        }}>
+                          <button type="submit" className="w-full bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] dark:from-[#00f0ff] dark:to-cyan-400 dark:text-[#080b10] py-3.5 rounded-xl font-bold transition-all shadow-md hover:scale-105 active:scale-95 cursor-pointer">
+                            تسجيل الحضور في الفعالية
+                          </button>
+                        </form>
+                      )
+                    ) : (
+                      <div className="text-center space-y-3">
+                        <p className="text-xs text-[#64748b] dark:text-slate-400">سجل الدخول لتتمكن من الانضمام للفعالية</p>
+                        <Link href="/login" className="block w-full bg-[#161e35] text-white dark:bg-white/10 hover:bg-[#1e2746] dark:hover:bg-white/20 border border-black/10 dark:border-white/20 py-2.5 rounded-xl font-bold text-sm transition-colors">
+                          تسجيل الدخول
+                        </Link>
+                      </div>
+                    )
                   ) : (
-                    <div className="w-full text-center py-3 rounded-xl font-bold bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-gray-500 border border-black/5 dark:border-white/5">
+                    <button disabled className="w-full bg-black/5 dark:bg-slate-800 text-[#64748b] dark:text-slate-500 py-3 rounded-xl font-bold cursor-not-allowed text-center">
                       انتهت الفعالية
-                    </div>
+                    </button>
                   )}
                 </div>
+
               </div>
             </div>
 

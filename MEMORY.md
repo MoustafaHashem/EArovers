@@ -41,6 +41,7 @@
 ## 🚀 Current Session Context & Next Steps (Read First for New Agents!)
 **Current Branch:** `master`
 **Code State (Completed in this session):**
+<<<<<<< HEAD
 - **Clan Scarves Modal**: Added `src/components/layout/ClanScarvesModal.tsx` and connected it to the footer scarf card in `src/components/layout/Identity.tsx`.
 - Extracted, cleaned, and placed transparent PNG assets in `public/images/scarfs/`:
   - `leader-scarf.png` (قائد العشيرة / قائدة المرشدات)
@@ -166,4 +167,8 @@
   - **Next.js Link Prefetching & Fixes (`Navbar.tsx`)**: Converted anchor `<a>` tags for login to `<Link prefetch={true}>` to avoid full-page browser reloads, and enabled `prefetch={true}` on primary desktop and mobile navigation links.
   - **Image `sizes` Props Fixes**: Added responsive `sizes` props across `EventsCarousel.tsx`, `MobileShieldsGallery.tsx`, `events/[id]/page.tsx`, `ShieldsClient.tsx`, and `EventsListClient.tsx` to stop Next.js full-viewport image warnings and optimize image download weight.
   - **Git Cleaning & .gitignore**: Removed tracked `__pycache__` and `*.pyc` files from git, moved temporary `prisma/restore_events.ts` to `scratch/`, and added patterns for Python cache, OS files, and IDE files to `.gitignore`.
+- **Legacy PR Integration Notes:**
+  - Audited and integrated PRs #2 and #5 (Shields) and PR #8 (Shagara / Clan hierarchy).
+  - Maintained `AboutSection` and `ShagaraSection` preview on homepage with dual design system styling.
+
 

@@ -317,3 +317,18 @@ body:not(.dark body) {
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  .animate-floating {
+    animation: floating 4s ease-in-out infinite;
+  }
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}

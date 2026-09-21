@@ -1,15 +1,18 @@
-
 import { HeroCarousel } from "@/components/home/HeroCarousel";
+import { AboutSection } from "@/components/home/AboutSection";
 import { MobileShieldsGallery } from "@/components/home/MobileShieldsGallery";
 import { EventsCarousel } from "@/components/home/EventsCarousel";
 import { HallOfFame } from "@/components/home/HallOfFame";
+import { ShagaraSection } from "@/components/clan/ShagaraSection";
 import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 import { fetchBatchShieldsMediaAction } from "@/actions/media";
 import { shieldsData } from "@/data/clanData";
 import { prisma } from "@/lib/prisma";
+import { getClanData } from "@/lib/clanDataFetcher";
 
 export async function MobileHome() {
+  const rawClanData = await getClanData();
   const initialMedia = await fetchBatchShieldsMediaAction(
     shieldsData.map((s) => ({ id: s.id, title: s.title }))
   );
@@ -38,8 +41,11 @@ export async function MobileHome() {
 
   return (
     <div className="flex flex-col items-center overflow-x-hidden pb-20">
-      {/* Dynamic Red Bull Style Hero Carousel */}
+      {/* Dynamic Red Bull Style Hero Carousel / Mobile Video */}
       <HeroCarousel />
+
+      {/* About Section */}
+      <AboutSection />
 
       {/* Combined Shields & Media Gallery */}
       <section id="shields" className="w-full py-16 px-4 z-10 border-t border-[#d4a373]/20 dark:border-cyan-500/15 bg-transparent dark:bg-gradient-to-b dark:from-transparent dark:to-black/30">
@@ -69,6 +75,29 @@ export async function MobileHome() {
       <section id="fame" className="w-full py-12 px-4 sm:px-6 z-10 border-t border-[#d4a373]/20 dark:border-cyan-500/15 bg-gradient-to-b from-transparent to-[#d4a373]/5 dark:to-black/20">
         <HallOfFame />
       </section>
+
+      {/* Hierarchy Preview Section */}
+      {rawClanData && rawClanData.length > 0 && (
+        <section id="hierarchy-preview" className="w-full flex flex-col items-center pt-16 pb-8 bg-gradient-to-b from-transparent to-black/20 border-t border-[#d4a373]/20 dark:border-cyan-500/15 z-10 overflow-hidden">
+          <div className="text-center mb-6 px-6">
+            <h2 className="text-3xl font-black text-[#0b1a30] dark:text-white mb-2">الهيكل التنظيمي والقيادي</h2>
+            <p className="text-[#475569] dark:text-gray-400 text-sm max-w-2xl mx-auto">
+              مجلس القيادة والهيكل المعاون للعام الحالي 2026.
+            </p>
+          </div>
+
+          <div className="w-full max-w-7xl mx-auto">
+            <ShagaraSection currentData={rawClanData[0]} />
+          </div>
+
+          <div className="mt-8 px-6 text-center w-full">
+            <Link href="/hierarchy" className="inline-block w-full bg-gradient-to-r from-[#e0a96d] to-[#d4a373] text-[#0b1a30] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:text-[#080b10] border border-[#d4a373]/40 px-6 py-4 rounded-xl font-bold text-lg transition-all shadow-lg active:scale-95">
+              عرض المزيد
+              <span className="block text-xs font-normal opacity-80 mt-1">تصفح شجرة العشيرة لجميع الأجيال</span>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Join Us CTA Section */}
       <section id="join" className="w-full flex flex-col items-center py-20 px-6 z-10 relative border-t border-[#d4a373]/20 dark:border-cyan-500/15 bg-gradient-to-b from-transparent to-[#161e35]/10 dark:to-cyan-950/25">

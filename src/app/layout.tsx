@@ -15,13 +15,30 @@ const cairo = Cairo({
 
 export const metadata: Metadata = {
   title: "عشيرة جوالة هندسة عين شمس",
-  description: "الموقع الرسمي لعشيرة جوالة كلية الهندسة جامعة عين شمس",
+  description: "الموقع الرسمي لعشيرة جوالة كلية الهندسة جامعة عين شمس. أرشيف الإنجازات والبطولات والأنشطة الكشفية.",
   icons: {
     icon: [
       { url: "/icon.png", type: "image/png" },
       { url: "/favicon.ico" },
     ],
     apple: "/apple-icon.png",
+  },
+  openGraph: {
+    title: "عشيرة جوالة هندسة عين شمس",
+    description: "أرشيف الإنجازات والبطولات الكشفية.",
+    url: "https://scoutingteam.com",
+    siteName: "عشيرة جوالة هندسة عين شمس",
+    locale: "ar_EG",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "عشيرة جوالة هندسة عين شمس",
+    description: "أرشيف الإنجازات والبطولات الكشفية.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

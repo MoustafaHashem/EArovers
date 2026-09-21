@@ -54,6 +54,11 @@ export function Navbar() {
   const navRef = useRef<HTMLDivElement>(null);
 
   const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  // The hovering navbar (pill animation) should only happen on the home page.
+  // On all other pages, it should remain static at the top.
+  const effectivelyScrolled = isHomePage ? isScrolled : false;
 
   // Track scroll, hash changes, and active sections via IntersectionObserver
   useEffect(() => {
@@ -141,22 +146,22 @@ export function Navbar() {
   const activeTabId = getActiveTab();
 
   return (
-    <div className="absolute lg:fixed top-0 lg:top-4 inset-x-0 z-50 flex justify-center px-0 lg:px-4 pointer-events-none">
+    <div className={cn("absolute top-0 lg:top-4 inset-x-0 z-50 flex justify-center px-0 lg:px-4 pointer-events-none", !isHomePage ? "lg:absolute" : "lg:fixed")}>
       <motion.nav
         layout
         className={cn(
           "pointer-events-auto transition-all duration-500 lg:rounded-full",
-          isScrolled
+          effectivelyScrolled
             ? "bg-[#fbfbf9]/85 dark:bg-[#080b10]/85 backdrop-blur-xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] border-b lg:border border-[#d4a373]/20 dark:border-cyan-500/20 px-4 lg:px-6 py-3 lg:py-3"
             : "bg-transparent px-4 lg:px-6 py-3 lg:py-3 w-full max-w-7xl"
         )}
       >
-        <motion.div layout className={cn("flex items-center", isScrolled ? "justify-center gap-8" : "w-full")}>
+        <motion.div layout className={cn("flex items-center", effectivelyScrolled ? "justify-center" : "w-full")}>
           
           {/* Left Side (Logo + Theme Toggle) */}
-          <motion.div layout className={cn("flex items-center gap-3", !isScrolled && "flex-1 justify-start")}>
+          <motion.div layout className={cn("flex items-center gap-3", !effectivelyScrolled && "flex-1 justify-start")}>
             <AnimatePresence>
-              {!isScrolled && (
+              {!effectivelyScrolled && (
                 <motion.div 
                   layout 
                   initial={{ opacity: 0, width: 0 }}
@@ -263,9 +268,9 @@ export function Navbar() {
           </motion.div>
 
           {/* Right Side (Actions) */}
-          <motion.div layout className={cn("flex items-center", isScrolled ? "" : "flex-1 justify-end mr-8")}>
+          <motion.div layout className={cn("flex items-center", effectivelyScrolled ? "lg:hidden" : "flex-1 justify-end mr-8")}>
             <AnimatePresence>
-              {!isScrolled && (
+              {!effectivelyScrolled && (
                 <motion.div
                   initial={{ opacity: 0, width: 0, x: -20 }}
                   animate={{ opacity: 1, width: "auto", x: 0 }}

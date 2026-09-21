@@ -21,7 +21,7 @@ The schema centers around the `Member` model, unifying user authentication profi
 
 - **`Member`**: Represents individuals in the clan. 
   - `hasAccount` boolean defines if they are an authenticated user or a historical entry.
-- **`RoleHistory`**: Maps a `Member` to specific clan roles in specific academic years, establishing the clan hierarchy and tree.
+- **`RoleHistory`**: Maps a `Member` to specific clan roles in specific academic years, establishing the clan hierarchy and tree. (Note: The `tier` column was deprecated; we now rely on heuristic tier mapping via `roleTitle`).
 - **`Achievement`**: Tracks milestones, courses, and honors tied to a `Member`.
 - **`Media`**: Stores metadata and URLs of photos/videos hosted on Cloudinary, categorized by type.
 - **`JoinRequest`**: Handles new user applications before they are approved and converted into a `Member`.

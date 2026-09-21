@@ -33,6 +33,7 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
     }
 
     let mounted = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     
     fetchMediaAction(activeCategory, 12)

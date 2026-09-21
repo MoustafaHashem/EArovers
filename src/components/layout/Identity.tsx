@@ -276,6 +276,7 @@ export function Identity() {
           </div>
         </div>
 
+
       </div>
 
       {/* Bottom Bar: Copyright & Clan Motto */}
