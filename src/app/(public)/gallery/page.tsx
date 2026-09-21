@@ -1,31 +1,35 @@
 import { FullGallery } from "@/components/gallery/FullGallery";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { Navbar } from "@/components/layout/Navbar";
+import { Identity } from "@/components/layout/Identity";
+import { fetchMediaAction } from "@/actions/media";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "معرض الميديا الشامل | جوالة هندسة عين شمس",
-  description: "استعرض جميع الصور والذكريات الكشفية الخاصة بجوالة هندسة عين شمس عبر السنوات المختلفة.",
+  description: "استعرض جميع الصور ومقاطع الفيديو والذكريات الكشفية الخاصة بجوالة هندسة عين شمس عبر السنوات المختلفة.",
 };
 
 export const revalidate = 60;
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const initialMedia = await fetchMediaAction("الكل");
+
   return (
-    <div className="min-h-screen bg-transparent text-foreground font-sans relative overflow-hidden">
-      
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[#d4a373]/10 dark:bg-cyan-500/10 blur-[150px]" />
-        <div className="absolute bottom-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#161e35]/10 dark:bg-blue-600/10 blur-[150px]" />
+    <div className="min-h-screen flex flex-col justify-between bg-transparent text-foreground font-cairo overflow-x-hidden relative" dir="rtl">
+      <Navbar />
+
+      {/* Ambient Background Blurs */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#d4a373]/10 dark:bg-cyan-500/10 rounded-full blur-[160px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#161e35]/10 dark:bg-blue-600/10 rounded-full blur-[160px]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-[#161e35] dark:text-cyan-400 hover:opacity-80 transition-opacity group mb-8 font-bold">
-          <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-          <span>العودة للرئيسية</span>
-        </Link>
-        
-        <FullGallery />
+      <main className="flex-1 pt-28 sm:pt-32 pb-16 px-4 sm:px-6 max-w-7xl mx-auto w-full relative z-10">
+        <FullGallery initialMedia={initialMedia} />
+      </main>
+
+      <div className="w-full z-10 relative">
+        <Identity />
       </div>
     </div>
   );

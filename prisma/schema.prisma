@@ -48,6 +48,7 @@ model Member {
   joinYear           Int?         @map("join_year")
   graduationYear     Int?         @map("graduation_year")
   externalActivities String[]     @map("external_activities") // Array of strings
+  adminPermissions   String[]     @default([]) @map("admin_permissions")
   status             MemberStatus @default(active)
   createdAt          DateTime     @default(now()) @map("created_at")
   updatedAt          DateTime     @updatedAt @map("updated_at")
@@ -255,16 +256,20 @@ model Media {
 // Join Requests (Public Form Submissions)
 // ============================================================
 model JoinRequest {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fullName     String    @map("full_name")
-  phone        String
-  email        String?
-  academicYear String    @map("academic_year")
-  interests    String?
-  status       String    @default("pending") // "pending", "approved", "rejected"
-  reviewedBy   String?   @map("reviewed_by") @db.Uuid
-  createdAt    DateTime  @default(now()) @map("created_at")
-  reviewedAt   DateTime? @map("reviewed_at")
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName       String    @map("full_name")
+  phone          String
+  whatsapp       String?   @map("whatsapp")
+  gender         String?   @map("gender") // "ذكر" | "أنثى"
+  email          String?
+  academicYear   String    @map("academic_year")
+  department     String?   @map("department")
+  interests      String?
+  interviewSlots String[]  @default([]) @map("interview_slots")
+  status         String    @default("pending") // "pending", "approved", "rejected"
+  reviewedBy     String?   @map("reviewed_by") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at")
+  reviewedAt     DateTime? @map("reviewed_at")
 
   reviewer Member? @relation("RequestReviewer", fields: [reviewedBy], references: [id])
 

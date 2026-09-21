@@ -56,6 +56,32 @@
   - Configured `images.remotePatterns` in `next.config.ts` to support external member avatar URLs (e.g. `cdn.jsdelivr.net`, Cloudinary, Unsplash).
 - **Mobile Hero Video Background**: Configured `HeroCarousel.tsx` to use a responsive background video on mobile (`< md` screen sizes, `public/videos/hero-mobile.mp4` with `hero-mobile-poster.jpg`) with `autoPlay`, `loop`, `muted`, and `playsInline`, while seamlessly maintaining the multi-image cross-fading carousel on desktop/laptop screens (`md:` and above). Centered pagination indicators on mobile viewports for clean visual symmetry.
 - **Brand Favicon & App Icons**: Replaced default Next.js / Vercel favicon with official clan logo (`Logo.png`). Generated multi-resolution `favicon.ico` (16, 32, 48, 64), `icon.png` (192x192), and `apple-icon.png` (180x180) in both `src/app/` and `public/`, and configured `metadata.icons` in `src/app/layout.tsx`.
+- **Shields Page Redesign & Dedicated Shield Media Gallery (`src/app/(public)/shields/ShieldsClient.tsx`, `src/actions/media.ts`)**:
+  - Main Grid: Removed container cards and external title text. In mobile view (`grid-cols-2`), increased shield image scale (`scale-[2.25]`, `max-w-[195px]`) for a much larger, clear, and prominent presentation.
+  - Detail View Top Header: Removed the duplicate `h1` title (as the shield name is integrated into the artwork's ribbon), enlarged the shield badge with rich drop-shadows (`scale-[2.05]`), and presented the description text cleanly.
+  - Retained Section 2 ("مجالات وأنشطة الدرع") with competitive fields.
+  - Replaced Section 3 with a dedicated "معرض صور وفعاليات الدرع" (Shield Photo & Media Gallery): connects to `fetchShieldMediaAction` to dynamically query database photos matching the shield, supports curated fallback albums per shield category, and includes full `yet-another-react-lightbox` viewer with zoom and video support.
+- **Homepage Shields Domains Smart Threshold (`src/components/home/ScoutShields.tsx`, `src/components/home/MobileShieldsGallery.tsx`)**:
+  - Implemented dynamic threshold rule: if a shield contains 3 or fewer domains (`items.length <= 3`), all are displayed.
+  - If a shield contains more than 3 domains (`items.length > 3`), only the first 2 are displayed, and the 3rd slot renders an interactive "عرض المزيد" card that links directly to that shield's full detail page.
+- **Hall of Fame & Championships (5 3D Islands & Dedicated Category Hub)**: Completely overhauled `/fame` (`src/app/(public)/fame/page.tsx`) and `FameIslands.tsx` to feature 5 new high-fidelity 3D crystal island graphics in strict user-specified order:
+  1. **وفدية** (`/images/fame/wafdeya.jpg` - shield in velvet box on crystal island)
+  2. **رياضية** (`/images/fame/sports.jpg` - crystal soccer trophy with laurel wreath)
+  3. **كشفي** (`/images/fame/scout.jpg` - fleur-de-lis scout emblem trophy)
+  4. **بحري** (`/images/fame/naval.jpg` - boat and oars trophy with water splash)
+  5. **فنون واسمار** (`/images/fame/arts.jpg` - golden ornate cup with art palette & notes)
+  - Arranged symmetrically at 72° circular intervals (`360 / 5 = 72°`).
+  - Island click behavior: Clicking any island on desktop or mobile dial directly navigates to the dedicated category route (`/fame/[category]`).
+  - **Dynamic Category Page (`/fame/[category]/page.tsx`)**:
+    - Hero banner featuring the category's 3D floating island image, category badge, gold title, rich scout description, and total count of registered competitions.
+    - Competitions grid sorted chronologically from newest to oldest (`startDate desc`).
+    - Cards identically formatted to the homepage card design: cover image with eventType badge, overlapping gold scout pill with RTL title on right & circle arrow on left, centered date & location.
+    - Each competition card links directly to its detail page at `/events/[id]`.
+    - Integrated `src/data/fameCategories.ts` with dataset and `isEventMatchingCategory` matcher.
+    - Seeded realistic scout competitions for all 5 categories.
+- **Studies/Training Consolidated into Events (5 Categories)**: Merged the standalone "التأهيل والدراسات" into the Events domain. Removed `/training` from `Navbar.tsx` and `Identity.tsx` footer (with auto-redirect to `/events?category=دراسات`), and removed the Sessions sections from `DesktopHome.tsx` and `MobileHome.tsx`. Divided events on `/events` (`EventsListClient.tsx`) into the 5 official categories: "معسكرات", "دراسات", "سيشنات", "خدمة عامة", "متنوع" with count badges, category icons, and deep linking, while preserving the homepage `EventsCarousel` intact with its clean 2-tab layout.
+- **Events 2-Tab Split (Upcoming vs Past)**: Added a 2-tab interactive switcher ("الفعاليات القادمة" and "الفعاليات السابقة") to both the homepage carousel (`EventsCarousel.tsx`) and the dedicated events directory (`EventsListClient.tsx` & `/events/page.tsx`). Tab numbers removed for clean minimal appearance. Carousel scroll buttons dynamically display only when events count exceeds 3 (`displayedEvents.length > 3`). Both tabs sort from newest to oldest (`startDate desc`) and handle empty states gracefully.
+- **Events Carousel Structure & Theme Alignment**: Rebuilt `src/components/home/EventsCarousel.tsx` to match the exact structural layout loved by the user (centered header with decorative divider lines and subtitle, overlapping gold pill badges with RTL Arabic text on the right and circular arrow button on the left, centered dates & locations, side navigation scroll buttons, and centered bottom "عرض جميع الفعاليات" button) while preserving the new dual-theme design system (Organic Light + Deep Tech Dark tokens, glowing borders, image error handling, and responsive styling).
 - **Scout Shields UI Streamlining & Deep Linking**: Updated `ScoutShields.tsx` (desktop), `MobileShieldsGallery.tsx` (mobile), `ShieldsClient.tsx`, and `shields/page.tsx`:
   - Replaced the text title (e.g. "الدرع الكشفي") and subtitle description with the official transparent shield badge image (`/images/badges/*.png`) centered with drop-shadow effects.
   - Streamlined each domain/activity sub-card to display only the domain title (e.g., "الريادة والكادجات") with its icon, removing the redundant description subtext.
@@ -77,5 +103,67 @@
     4. **Clan Headquarters & Location**: Official faculty address (`كلية الهندسة جامعة عين شمس، 1 شارع السرايات، العباسية، الوايلي، القاهرة 11535`) linked directly to Google Maps search, alongside social media links (Facebook, Instagram, YouTube, SoundCloud, WhatsApp).
   - Bottom bar with copyright year and official scout motto (`كُن مستعداً ⚜️ • خدمة - تنمية - قيادة`).
   - Tested and visually verified via browser snapshots across light and dark modes with 0 TypeScript compilation errors.
-
+- **Join Us Form Redesign & Interview Slots Architecture (`src/components/home/JoinForm.tsx`, `src/actions/join.ts`, `prisma/schema.prisma`, `src/app/admin/requests/RequestsClient.tsx`)**:
+  - **Prisma Schema Update (`JoinRequest` model)**:
+    - Added `whatsapp String? @map("whatsapp")` for direct WhatsApp communication.
+    - Added `gender String? @map("gender")` ("ذكر" | "أنثى") with scout distinction (جوال / مرشدة).
+    - Added `department String? @map("department")` for Faculty of Engineering Ain Shams University academic departments.
+    - Added `interviewSlots String[] @default([]) @map("interview_slots")` for storing candidate's selected interview slots.
+    - Preserved `adminPermissions String[] @default([]) @map("admin_permissions")` on `Member` to ensure 100% data safety.
+    - Executed `prisma db push` and `prisma generate` to synchronize Supabase PostgreSQL and Prisma Client.
+  - **Multi-Step Form Rebuild (4 Steps)**:
+    - **Step 1 (Personal & Contact)**: Full Name (`fullName`), Gender (`gender` radio pills: ذكر (جوال) / أنثى (مرشدة)), Call Phone Number (`phone`), and WhatsApp Number (`whatsapp`) with a one-click smart sync button ("نفس رقم الهاتف").
+    - **Step 2 (Academic Info)**: Academic Year (`academicYear`) and Department (`department`) with ASU Engineering departments dropdown + custom input if "أخرى (تحديد يدوي)" is chosen.
+    - **Step 3 (Scout Interests)**: Interactive interest pills + notes textarea.
+    - **Step 4 (Interview Slots - New)**: Full interactive calendar slots selector organized by days (السبت إلى الخميس) with 4 standard university time slots (10-12, 12-2, 2-4, 4-6). Candidates can select multiple slots across multiple days, with a per-day count badge and removable selected slots chips.
+    - Hidden inputs ensure 100% reliable state serialization on native HTML Form submission across steps.
+  - **Success Screen & Messaging**:
+    - Animated celebratory screen displaying the requested confirmation message:
+      *"تمام، تم تسجيل بياناتك بنجاح! هنبعتلك على الواتساب أو هنكلمك علشان نبلغك بميعاد الإنترفيو."*
+    - Displays complete registration recap (candidate name, gender, department, phone numbers, and chosen interview slots) with quick actions to return to homepage or register a new response.
+  - **Admin Requests Integration (`RequestsClient.tsx`)**:
+    - Displays gender badge, academic department alongside the academic year.
+    - Direct phone call link (`tel:`) + direct WhatsApp chat button (`https://wa.me/20...`) to start conversation with candidate in one click.
+    - Visual tags for all selected interview slots.
+- **Clan Scarves Modal & Footer Refinements (`src/components/layout/ClanScarvesModal.tsx`, `src/components/layout/Identity.tsx`)**:
+  - **Mobile Scarf Order**: Made Clan Leader scarf ("قائد العشيرة / قائدة المرشدات") appear first at the top on mobile viewports using responsive Tailwind ordering (`order-1 md:order-2` for Leader, `order-2 md:order-1` for Board, `order-3 md:order-3` for Members), perfectly preserving the 3-column RTL symmetry on desktop screens.
+  - **Footer Social Icons Cleanup**: Removed the redundant WhatsApp button from the social platforms row (Facebook, Instagram, YouTube, SoundCloud), keeping WhatsApp exclusively within the leader contact card.
+  - Added graceful fallbacks ("غير محدد") when `endDate` or `location` are not specified in the database.
+  - Populated realistic scout dates and venues for dummy events (`Dummy Event 3: المهرجان الكشفي`, `Dummy Event 2: الدورة المتقدمة`, `Dummy Event 1: مخيم الإعداد`) in the database and in `prisma/restore_events.ts`.
+- **Championships & Category Pages Complete Overhaul (`/fame`, `/fame/[category]`, `src/app/(public)/fame/page.tsx`, `src/app/(public)/fame/[category]/page.tsx`, `src/components/home/FameIslands.tsx`, `FameCategoryClient.tsx`)**:
+  - **Dual-Theme Harmonization**: Replaced hardcoded dark background gradients with the site-wide dual design system tokens (`bg-transparent text-foreground font-cairo`) and ambient blur background (`blur-[160px]`), ensuring flawless aesthetic symmetry in both Light Mode (warm linen & navy gold) and Dark Mode (deep tech midnight & electric cyan).
+  - **Hero & Live Analytics**: Added breadcrumb link, scout badge (`🏆 لوحة الشرف وسجل البطولات الكشفية`), main heading and subtitle, and 4 quick statistics cards (إجمالي البطولات, أقسام تخصصية, مسابقات قادمة, سجل التميز الكشفي).
+  - **Responsive Layout Specialization**:
+    - **Desktop/Laptop View (`hidden md:block`)**: Exclusively renders the 3D circular islands platform (`FameIslands.tsx`) with the central emblem ("من عبدو باشا وجي بصوته يهز الدورة دي!!") and 5 floating category islands, eliminating the redundant bottom cards grid. Removed duplicate internal titles via `showTitle = false`.
+    - **Mobile View (`md:hidden`)**: Completely removed the clunky 3D rotating dial/wheel. Replaced with an elegant mobile chant banner and 5 stacked category cards with crystal island images, badges, descriptions, competition counts, and direct links.
+  - **Dedicated Category Hub (`/fame/[category]`)**:
+    - Extracted client interactivity into `FameCategoryClient.tsx`.
+    - Integrated a **Quick Category Switcher Bar** with count badges allowing instantaneous jumping between all 5 categories (`وفدية`, `رياضية`, `كشفي`, `بحري`, `فنون واسمار`).
+    - Added **Live Search Bar** (by competition name or venue) and **Status Tabs** (الكل / القادمة / السابقة) with live results counter and filters reset.
+    - Upgraded competition cards with standardized top cover images, floating type badges, overlapping gold pill banners with circular arrow buttons, and date/location metadata.
+- **Homepage Tournament Cards Background Images (`src/components/home/HallOfFame.tsx`, `src/data/clanData.ts`)**:
+  - Added `image?: string` attribute to `FameItem` and populated authentic scout tournament imagery from clan archives (`hero-2.jpg` for festival & `hero-3.jpg` for summit competition awards).
+  - Upgraded tournament cards in `HallOfFame.tsx` with smooth background images using Next.js `Image` with responsive sizing and subtle zoom micro-interaction on hover (`group-hover:scale-105 duration-700`).
+  - Added dual-mode gradient and vignette overlays ensuring 100% typography sharpness and contrast for event titles, placement badges, and special awards tags in both Dark and Light modes.
+- **Tournaments / Hall of Fame Decoupling & Dedicated Tournament Pages (`src/data/tournamentsData.ts`, `src/app/(public)/fame/tournaments/[id]/page.tsx`, `src/app/(public)/fame/[category]/FameCategoryClient.tsx`)**:
+  - **Strict Domain Separation**: Fully decoupled Tournaments (البطولات / لوحة الشرف) from standard Events (الفعاليات). Tournaments now have an independent domain model (`TournamentItem` in `src/data/tournamentsData.ts`) with dedicated categories (wafdeya, sports, scout, naval, arts), eliminating accidental linking to regular event routes (`/events/[id]`).
+  - **Category Cards Redesign**: Completely replaced the old 3-column event grid in `/fame/[category]` with the unified horizontal luxury card design matching the homepage `HallOfFame` (cinematic background photo, year badge, venue, gold placement badge with Medal icon, and special awards badges with Star icons).
+  - **Dedicated Tournament Detail Route (`/fame/tournaments/[id]`)**:
+    - Hero banner with full-bleed tournament cover image, year pill, date, venue, and grand placement spotlight badge.
+    - **Participating Delegation Section (الوفد المشارك في البطولة)**: Renders a dedicated grid of clan delegation members, distinguishing leaders with special gold glowing badges/borders, displaying member roles (e.g. قائد الوفد، مسؤول الريادة، مخرج السمر، حارس المرمى) and stylized avatar initials.
+    - **Special Awards & Honors**: Interactive cards for all special prizes, trophies, and shields won in the tournament.
+    - **Narrative Story & Overview**: Recounting the clan's preparation and championship achievements.
+    - **Tournament Photo Gallery**: Multi-photo gallery documenting the championship celebration.
+  - **Global Card Linking**: Clicking any tournament card from either the homepage (`HallOfFame.tsx`) or category pages (`FameCategoryClient.tsx`) seamlessly navigates to `/fame/tournaments/[id]`.
+- **Mobile Homepage Championships Section (`src/components/home/MobileHome.tsx`, `src/components/home/HallOfFame.tsx`)**:
+  - Replaced the old small teaser card in `MobileHome.tsx` with the `<HallOfFame />` component, ensuring the latest 2 tournaments appear with their full luxury visual cards (background photos, year badge, medal placement, special awards) followed by the explore button (`اكتشف جميع البطولات والإنجازات` linking to `/fame`), matching the desktop experience seamlessly.
+  - Sliced homepage display data to explicitly render the top 2 latest tournaments (`.slice(0, 2)`).
+- **Navigation Performance & Database Optimizations**:
+  - **Proxy Middleware Fast-Path (`src/proxy.ts`)**: Eliminated unnecessary `supabase.auth.getUser()` network calls on public pages. If the route is public and has no Supabase auth token, the proxy returns immediately (`NextResponse.next()`), eliminating 150-400ms of blocking roundtrip latency on every link click and RSC fetch.
+  - **Prisma Client Singleton (`src/lib/prisma.ts`)**: Fixed broken singleton instantiation to prevent recreating new `PrismaClient` connection pools across requests and hot-reloads.
+  - **Conditional Upstash Redis (`src/proxy.ts`, `src/actions/tracking.ts`)**: Guarded Redis client instantiation so unconfigured environment variables do not emit runtime warnings or attempt dummy network pings.
+  - **Batch Shield Media Query (`src/actions/media.ts`, `src/components/home/MobileHome.tsx`)**: Added `fetchBatchShieldsMediaAction` with `unstable_cache` to fetch all shields' media in a single query instead of 8 separate parallel queries on every mobile homepage render.
+  - **Next.js Link Prefetching & Fixes (`Navbar.tsx`)**: Converted anchor `<a>` tags for login to `<Link prefetch={true}>` to avoid full-page browser reloads, and enabled `prefetch={true}` on primary desktop and mobile navigation links.
+  - **Image `sizes` Props Fixes**: Added responsive `sizes` props across `EventsCarousel.tsx`, `MobileShieldsGallery.tsx`, `events/[id]/page.tsx`, `ShieldsClient.tsx`, and `EventsListClient.tsx` to stop Next.js full-viewport image warnings and optimize image download weight.
+  - **Git Cleaning & .gitignore**: Removed tracked `__pycache__` and `*.pyc` files from git, moved temporary `prisma/restore_events.ts` to `scratch/`, and added patterns for Python cache, OS files, and IDE files to `.gitignore`.
 

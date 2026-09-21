@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ArrowLeft } from "lucide-react";
 
 export function ScoutShields() {
   const [activeTab, setActiveTab] = useState(shieldsData[0].id);
@@ -82,29 +82,58 @@ export function ScoutShields() {
               />
             </Link>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-              {activeCategory.items.map((item, idx) => (
-                <motion.div 
-                  key={item.title}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                >
-                  <Link
-                    href={`/shields?shield=${activeCategory.id}&field=${encodeURIComponent(item.title)}`}
-                    className="glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:glass-card-hover transition-all group min-h-[140px] cursor-pointer hover:-translate-y-1.5 shadow-sm hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] block w-full"
-                    title={`عرض مجال ${item.title}`}
-                  >
-                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-3 bg-[#d4a373]/10 border border-[#d4a373]/25 dark:bg-cyan-500/10 dark:border-cyan-400/30 dark:shadow-[0_0_15px_rgba(0,240,255,0.15)] group-hover:scale-110 transition-transform">
-                      {item.icon}
-                    </div>
-                    <h4 className="text-xl font-bold text-[#0b1a30] dark:text-white group-hover:text-[#d4a373] dark:group-hover:text-cyan-300 transition-colors">
-                      {item.title}
-                    </h4>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+            {(() => {
+              const hasMore = activeCategory.items.length > 3;
+              const displayedItems = hasMore ? activeCategory.items.slice(0, 2) : activeCategory.items;
+
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                  {displayedItems.map((item, idx) => (
+                    <motion.div 
+                      key={item.title}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: idx * 0.1 }}
+                    >
+                      <Link
+                        href={`/shields?shield=${activeCategory.id}&field=${encodeURIComponent(item.title)}`}
+                        className="glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:glass-card-hover transition-all group min-h-[140px] cursor-pointer hover:-translate-y-1.5 shadow-sm hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] block w-full"
+                        title={`عرض مجال ${item.title}`}
+                      >
+                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-3 bg-[#d4a373]/10 border border-[#d4a373]/25 dark:bg-cyan-500/10 dark:border-cyan-400/30 dark:shadow-[0_0_15px_rgba(0,240,255,0.15)] group-hover:scale-110 transition-transform">
+                          {item.icon}
+                        </div>
+                        <h4 className="text-xl font-bold text-[#0b1a30] dark:text-white group-hover:text-[#d4a373] dark:group-hover:text-cyan-300 transition-colors">
+                          {item.title}
+                        </h4>
+                      </Link>
+                    </motion.div>
+                  ))}
+
+                  {hasMore && (
+                    <motion.div 
+                      key="show-more"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 2 * 0.1 }}
+                    >
+                      <Link
+                        href={`/shields?shield=${activeCategory.id}`}
+                        className="glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:glass-card-hover transition-all group min-h-[140px] cursor-pointer hover:-translate-y-1.5 shadow-sm hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] border border-dashed border-[#d4a373]/40 dark:border-cyan-500/30 hover:border-solid hover:border-[#d4a373] dark:hover:border-cyan-400 block w-full bg-[#d4a373]/5 dark:bg-cyan-500/5"
+                        title={`عرض جميع مجالات ${activeCategory.title}`}
+                      >
+                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-3 bg-[#d4a373]/15 border border-[#d4a373]/30 dark:bg-cyan-500/15 dark:border-cyan-400/40 text-[#0b1a30] dark:text-cyan-300 group-hover:scale-110 transition-transform">
+                          <ArrowLeft className="w-7 h-7 transition-transform group-hover:-translate-x-1" />
+                        </div>
+                        <h4 className="text-xl font-bold text-[#0b1a30] dark:text-white group-hover:text-[#d4a373] dark:group-hover:text-cyan-300 transition-colors">
+                          عرض المزيد
+                        </h4>
+                      </Link>
+                    </motion.div>
+                  )}
+                </div>
+              );
+            })()}
           </motion.div>
         </AnimatePresence>
       </div>

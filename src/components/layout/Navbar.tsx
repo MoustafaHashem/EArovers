@@ -40,9 +40,9 @@ const CloudIcon = ({ size = 20 }: { size?: number }) => (
 const navLinks = [
   { href: "/", label: "الرئيسية" },
   { href: "/shields", label: "الدروع" },
-  { href: "/#media", label: "الميديا" },
-  { href: "/#fame", label: "المسابقات" },
-  { href: "/#sessions", label: "الدراسات" },
+  { href: "/events", label: "الفعاليات" },
+  { href: "/gallery", label: "الميديا" },
+  { href: "/fame", label: "المسابقات" },
   { href: "/hierarchy", label: "الهيكل التنظيمي" },
 ];
 
@@ -190,6 +190,7 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  prefetch={true}
                   onClick={(e) => {
                     const isSamePageHome = link.href === "/" && pathname === "/";
                     
@@ -301,13 +302,14 @@ export function Navbar() {
                     </Link>
                   </div>
 
-                  <a
+                  <Link
                     href="/login"
+                    prefetch={true}
                     className="flex items-center gap-1.5 text-sm font-bold text-[#475569] dark:text-slate-400 hover:text-[#0b1a30] dark:hover:text-white transition-colors px-2"
                   >
                     <LogIn size={16} />
                     <span>دخول</span>
-                  </a>
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -362,6 +364,7 @@ export function Navbar() {
                       >
                         <Link
                           href={link.href}
+                          prefetch={true}
                           onClick={() => {
                             setIsMenuOpen(false);
                             if (isHashLink) setActiveHash(`#${hashPart}`);
@@ -406,13 +409,15 @@ export function Navbar() {
                   >
                     انضم إلينا
                   </Link>
-                  <a
+                  <Link
                     href="/login"
+                    prefetch={true}
+                    onClick={() => setIsMenuOpen(false)}
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-[#475569] dark:text-slate-400 hover:text-[#0b1a30] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                   >
                     <LogIn size={16} />
                     <span>تسجيل الدخول</span>
-                  </a>
+                  </Link>
                 </div>
               </SheetContent>
             </Sheet>

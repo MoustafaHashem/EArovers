@@ -1,9 +1,10 @@
 "use client";
 
-import { sessionsData } from "@/data/clanData";
+import { sessionsData, type Session } from "@/data/clanData";
 import { BookOpen, Calendar, UserCheck } from "lucide-react";
 
-export function Sessions() {
+export function Sessions({ dbData }: { dbData?: Session[] }) {
+  const data = dbData && dbData.length > 0 ? dbData : sessionsData;
   return (
     <div className="w-full max-w-6xl mx-auto">
       <div className="text-center mb-16 px-4">
@@ -15,7 +16,7 @@ export function Sessions() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sessionsData.map((session) => (
+        {data.map((session) => (
           <div key={session.id} className="glass-card p-6 rounded-2xl hover:glass-card-hover transition-all">
             <h3 className="text-xl font-bold text-[#0b1a30] dark:text-white mb-6 border-b border-black/10 dark:border-white/10 pb-4">{session.title}</h3>
             

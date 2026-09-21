@@ -43,4 +43,17 @@ next-env.d.ts
 # scratch & temporary files
 /scratch/
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
 

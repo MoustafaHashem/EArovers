@@ -49,16 +49,11 @@ export default function EventsClient({ initialEvents }: { initialEvents: Event[]
   };
 
   const getEventTypeBadge = (type: string) => {
-    switch (type) {
-      case "معسكر":
-        return "bg-green-400/10 text-green-400 border-green-400/20";
-      case "مسابقة":
-        return "bg-purple-400/10 text-purple-400 border-purple-400/20";
-      case "درع":
-        return "bg-yellow-400/10 text-yellow-400 border-yellow-400/20";
-      default:
-        return "bg-[var(--color-scout-blue)]/10 text-[var(--color-scout-blue-light)] border-[var(--color-scout-blue)]/20";
-    }
+    if (type.includes("معسكر")) return "bg-emerald-400/10 text-emerald-400 border-emerald-400/20";
+    if (type.includes("دراس")) return "bg-blue-400/10 text-blue-400 border-blue-400/20";
+    if (type.includes("سيشن") || type.includes("ندوة") || type.includes("ورشة")) return "bg-purple-400/10 text-purple-400 border-purple-400/20";
+    if (type.includes("خدم")) return "bg-amber-400/10 text-amber-400 border-amber-400/20";
+    return "bg-cyan-400/10 text-cyan-400 border-cyan-400/20";
   };
 
   return (
@@ -124,10 +119,11 @@ export default function EventsClient({ initialEvents }: { initialEvents: Event[]
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">نوع الفعالية *</label>
             <select required name="eventType" className="w-full bg-white/5 border border-[var(--color-dark-border)] rounded-xl px-4 py-2 text-white">
-              <option value="معسكر" className="bg-[var(--color-dark-bg)]">معسكر</option>
-              <option value="مسابقة" className="bg-[var(--color-dark-bg)]">مسابقة</option>
-              <option value="درع" className="bg-[var(--color-dark-bg)]">درع</option>
-              <option value="ندوة" className="bg-[var(--color-dark-bg)]">ندوة/ورشة</option>
+              <option value="معسكرات" className="bg-[var(--color-dark-bg)]">معسكرات</option>
+              <option value="دراسات" className="bg-[var(--color-dark-bg)]">دراسات</option>
+              <option value="سيشنات" className="bg-[var(--color-dark-bg)]">سيشنات</option>
+              <option value="خدمة عامة" className="bg-[var(--color-dark-bg)]">خدمة عامة</option>
+              <option value="متنوع" className="bg-[var(--color-dark-bg)]">متنوع</option>
             </select>
           </div>
           <div>

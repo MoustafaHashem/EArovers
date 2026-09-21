@@ -138,13 +138,20 @@ export function ClanScarvesModal({ isOpen, onClose }: ClanScarvesModalProps) {
               </p>
             </div>
 
-            {/* Scarves Showcase Grid (3 Columns on Desktop, Responsive on Mobile) */}
+            {/* Scarves Showcase Grid (3 Columns on Desktop, Responsive on Mobile: Leader First) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 relative z-10">
               {scarves.map((scarf) => {
+                const orderClass = 
+                  scarf.id === "leader"
+                    ? "order-1 md:order-2"
+                    : scarf.id === "board"
+                      ? "order-2 md:order-1"
+                      : "order-3 md:order-3";
+
                 return (
                   <div
                     key={scarf.id}
-                    className={`group relative flex flex-col items-center text-center p-5 sm:p-6 rounded-2xl bg-white/85 dark:bg-[#121b2f]/80 border transition-all duration-300 shadow-sm hover:shadow-xl backdrop-blur-sm hover:-translate-y-1.5 ${
+                    className={`group relative flex flex-col items-center text-center p-5 sm:p-6 rounded-2xl bg-white/85 dark:bg-[#121b2f]/80 border transition-all duration-300 shadow-sm hover:shadow-xl backdrop-blur-sm hover:-translate-y-1.5 ${orderClass} ${
                       scarf.isFeatured
                         ? "border-[#d4a373]/50 dark:border-amber-400/40 ring-1 ring-[#d4a373]/20 dark:ring-amber-400/20 md:-translate-y-2 md:hover:-translate-y-3"
                         : "border-[#d4a373]/25 dark:border-slate-800"

@@ -123,9 +123,6 @@ export function Identity() {
             <Link href="/events" className="text-[#475569] hover:text-[#161e35] dark:text-slate-400 dark:hover:text-cyan-300 transition-colors py-0.5">
               فعاليات وأنشطة العشيرة
             </Link>
-            <Link href="/training" className="text-[#475569] hover:text-[#161e35] dark:text-slate-400 dark:hover:text-cyan-300 transition-colors py-0.5">
-              الدراسات والتدريب
-            </Link>
             <Link href="/join" className="text-[#8c5e2d] dark:text-cyan-400 font-bold hover:underline transition-all py-0.5 flex items-center justify-center sm:justify-start gap-1">
               <span>انضم إلى العشيرة</span>
               <span className="text-xs">←</span>
@@ -274,15 +271,6 @@ export function Identity() {
                 title="SoundCloud"
               >
                 <CloudIcon size={17} />
-              </a>
-              <a
-                href="https://wa.me/201158400222"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 flex items-center justify-center text-[#475569] dark:text-slate-300 hover:text-[#25D366] dark:hover:text-[#25D366] dark:hover:border-[#25D366]/50 hover:scale-105 transition-all shadow-sm"
-                title="WhatsApp"
-              >
-                <WhatsAppIcon size={17} />
               </a>
             </div>
           </div>

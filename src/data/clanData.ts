@@ -225,6 +225,7 @@ export const shieldsData: ShieldCategory[] = [
       { title: "الريادة والكادجات", icon: "🏕️" },
       { title: "العقد والربطات", icon: "🪢" },
       { title: "حفلات السمر", icon: "🔥" },
+      { title: "الملاحة والخرائط", icon: "🧭" },
     ],
   },
   {
@@ -236,6 +237,7 @@ export const shieldsData: ShieldCategory[] = [
       { title: "أركيت", icon: "🪵" },
       { title: "سترنج آرت", icon: "🧵" },
       { title: "حرق على الجلد", icon: "🔥" },
+      { title: "أشغال النحاس والمعادن", icon: "🔨" },
     ],
   },
   {
@@ -247,6 +249,7 @@ export const shieldsData: ShieldCategory[] = [
       { title: "كرة قدم", icon: "⚽" },
       { title: "كرة سلة", icon: "🏀" },
       { title: "كرة طائرة", icon: "🏐" },
+      { title: "تنس طاولة", icon: "🏓" },
     ],
   },
   {
@@ -278,6 +281,7 @@ export type FameItem = {
   year: number;
   placement: string;
   specialAwards: string[];
+  image?: string;
 };
 
 export const fameData: FameItem[] = [
@@ -287,6 +291,7 @@ export const fameData: FameItem[] = [
     year: 2023,
     placement: "المركز الأول عام",
     specialAwards: ["درع التميز الكشفي", "أفضل مخرج سمر"],
+    image: "/images/hero/hero-2.jpg",
   },
   {
     id: "f2",
@@ -294,6 +299,7 @@ export const fameData: FameItem[] = [
     year: 2022,
     placement: "المركز الثاني",
     specialAwards: ["جوال مثالي"],
+    image: "/images/hero/hero-3.jpg",
   },
 ];
 

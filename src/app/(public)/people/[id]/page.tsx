@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
-import { ArrowRight, Calendar, User, Award, History } from "lucide-react";
+import { Identity } from "@/components/layout/Identity";
+import { ArrowRight, Calendar, User, Award, History, Shield } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -33,9 +34,24 @@ export default async function PersonBiographyPage({
     notFound();
   }
 
-  // To perfectly display shields/trophies, we could add a new model.
-  // The user said "with his trophies and roles through his years".
-  // For now, I'll display the roles.
+  // Fetch shields and special awards
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let userShields: any[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let specialAwards: any[] = [];
+  try {
+    userShields = await prisma.userShield.findMany({
+      where: { memberId: id },
+      include: { shield: true },
+    });
+    specialAwards = await prisma.specialAward.findMany({
+      where: { memberId: id },
+      include: { event: true },
+      orderBy: { awardedAt: 'desc' },
+    });
+  } catch (err) {
+    console.error("Error fetching member awards:", err);
+  }
 
   return (
     <main className="flex min-h-screen flex-col bg-transparent text-foreground overflow-x-hidden font-cairo" dir="rtl">
@@ -121,13 +137,44 @@ export default async function PersonBiographyPage({
               الدروع والإنجازات
             </h2>
             
-            <div className="py-8 text-center bg-black/5 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5">
-              <Award className="w-12 h-12 text-[#64748b] dark:text-gray-600 mx-auto mb-3" />
-              <p className="text-[#475569] dark:text-gray-400 font-bold">نظام الدروع قيد التطوير</p>
-            </div>
+            {userShields.length > 0 || specialAwards.length > 0 ? (
+              <div className="space-y-4">
+                {userShields.map((us: { id: string; shield: { name: string; image?: string | null }; awardedAt: Date }) => (
+                  <div key={us.id} className="flex items-center gap-4 p-3 bg-[#d4a373]/10 dark:bg-cyan-500/10 rounded-xl border border-[#d4a373]/20 dark:border-cyan-500/20">
+                    <Shield className="w-8 h-8 text-[#d4a373] dark:text-cyan-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-[#0b1a30] dark:text-white">{us.shield.name}</p>
+                      <p className="text-xs text-[#64748b] dark:text-gray-500">
+                        تم الحصول عليه في {new Date(us.awardedAt).toLocaleDateString('ar-EG')}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                {specialAwards.map((sa: { id: string; title: string; event?: { title: string } | null; awardedAt: Date }) => (
+                  <div key={sa.id} className="flex items-center gap-4 p-3 bg-amber-500/10 dark:bg-yellow-500/10 rounded-xl border border-amber-500/20 dark:border-yellow-500/20">
+                    <Award className="w-8 h-8 text-amber-500 dark:text-yellow-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-[#0b1a30] dark:text-white">{sa.title}</p>
+                      {sa.event && (
+                        <p className="text-xs text-[#64748b] dark:text-gray-500">{sa.event.title}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-8 text-center bg-black/5 dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5">
+                <Award className="w-12 h-12 text-[#64748b] dark:text-gray-600 mx-auto mb-3" />
+                <p className="text-[#475569] dark:text-gray-400 font-bold">لا توجد دروع أو إنجازات مسجلة حتى الآن</p>
+              </div>
+            )}
           </div>
         </div>
 
+      </div>
+
+      <div className="w-full z-10">
+        <Identity />
       </div>
     </main>
   );

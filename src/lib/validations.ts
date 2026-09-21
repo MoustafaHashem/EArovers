@@ -8,13 +8,25 @@ export const joinFormSchema = z.object({
     .max(100, "الاسم طويل جدًا"),
   phone: z
     .string()
-    .regex(/^01[0-9]{9}$/, "رقم الهاتف يجب أن يبدأ بـ 01 ويتكون من 11 رقم"),
+    .regex(/^01[0125][0-9]{8}$/, "رقم الهاتف يجب أن يبدأ بـ 01 ويتكون من 11 رقماً"),
+  whatsapp: z
+    .string()
+    .regex(/^01[0125][0-9]{8}$/, "رقم الواتساب يجب أن يبدأ بـ 01 ويتكون من 11 رقماً"),
+  gender: z
+    .string()
+    .min(1, "يرجى اختيار النوع"),
   academicYear: z
     .string()
     .min(1, "يرجى اختيار الفرقة الدراسية"),
+  department: z
+    .string()
+    .min(1, "يرجى تحديد التخصص / القسم الأكاديمي"),
   interests: z
     .string()
     .optional(),
+  interviewSlots: z
+    .array(z.string())
+    .min(1, "يرجى اختيار موعد واحد على الأقل للمقابلة الشخصية"),
 });
 
 export type JoinFormData = z.infer<typeof joinFormSchema>;
