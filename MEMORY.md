@@ -41,7 +41,7 @@
 ## 🚀 Current Session Context & Next Steps (Read First for New Agents!)
 **Current Branch:** `master`
 **Code State (Completed in this session):**
-<<<<<<< HEAD
+- **Homepage Streamlining**: Removed the "عن العشيرة" (About Clan) section and the "الهيكل التنظيمي والقيادي" (Hierarchy Preview) section from both `DesktopHome.tsx` and `MobileHome.tsx`. The full organizational and leadership tree remains dedicated and accessible via `/hierarchy` and the main navigation. Removed unnecessary clan data fetches on the landing page for enhanced initial page load performance.
 - **Clan Scarves Modal**: Added `src/components/layout/ClanScarvesModal.tsx` and connected it to the footer scarf card in `src/components/layout/Identity.tsx`.
 - Extracted, cleaned, and placed transparent PNG assets in `public/images/scarfs/`:
   - `leader-scarf.png` (قائد العشيرة / قائدة المرشدات)
