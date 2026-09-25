@@ -3,7 +3,12 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  /** When true, forces the toggle icons to appear white (for use over dark backgrounds) */
+  forceLight?: boolean;
+}
+
+export function ThemeToggle({ forceLight = false }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -16,7 +21,7 @@ export function ThemeToggle() {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <label className="switch shrink-0">
+    <label className={`switch shrink-0${forceLight ? " switch--force-light" : ""}`}>
       <input
         className="switch__input"
         type="checkbox"

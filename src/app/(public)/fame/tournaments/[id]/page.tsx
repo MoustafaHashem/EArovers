@@ -177,41 +177,6 @@ export default async function TournamentDetailPage({
               </div>
             </div>
 
-            {/* Quick Stats Chips */}
-            {tournament.stats && (
-              <div className="grid grid-cols-3 gap-3 w-full md:w-auto">
-                {tournament.stats.participantsCount && (
-                  <div className="px-4 py-2.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-[#d4a373]/20 dark:border-white/10 text-center backdrop-blur-sm">
-                    <div className="text-lg sm:text-xl font-black text-[#0b1a30] dark:text-[#ffd700]">
-                      {tournament.stats.participantsCount}
-                    </div>
-                    <div className="text-[11px] text-[#64748b] dark:text-gray-400 font-semibold">
-                      جوال مشارك
-                    </div>
-                  </div>
-                )}
-                {tournament.stats.competingClans && (
-                  <div className="px-4 py-2.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-[#d4a373]/20 dark:border-white/10 text-center backdrop-blur-sm">
-                    <div className="text-lg sm:text-xl font-black text-[#0b1a30] dark:text-cyan-400">
-                      {tournament.stats.competingClans}
-                    </div>
-                    <div className="text-[11px] text-[#64748b] dark:text-gray-400 font-semibold">
-                      عشيرة منافسة
-                    </div>
-                  </div>
-                )}
-                {tournament.stats.shieldsCount && (
-                  <div className="px-4 py-2.5 rounded-2xl bg-white/80 dark:bg-black/40 border border-[#d4a373]/20 dark:border-white/10 text-center backdrop-blur-sm">
-                    <div className="text-lg sm:text-xl font-black text-[#d4a373] dark:text-amber-400">
-                      {tournament.stats.shieldsCount}
-                    </div>
-                    <div className="text-[11px] text-[#64748b] dark:text-gray-400 font-semibold">
-                      دروع وجوائز
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </section>
 
@@ -347,9 +312,8 @@ export default async function TournamentDetailPage({
           </section>
         )}
 
-        {/* ================= TOURNAMENT STORY & DESCRIPTION ================= */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          {/* Overview */}
+        {/* ================= TOURNAMENT DESCRIPTION ================= */}
+        <section className="grid grid-cols-1 gap-8 items-start">
           <div className="p-6 sm:p-8 rounded-3xl bg-white/80 dark:bg-[#0c1626]/80 border border-[#d4a373]/25 dark:border-white/10 shadow-sm space-y-4 backdrop-blur-sm">
             <h3 className="text-xl font-black text-[#0b1a30] dark:text-white">
               عن البطولة والمنافسة
@@ -358,19 +322,6 @@ export default async function TournamentDetailPage({
               {tournament.description}
             </p>
           </div>
-
-          {/* Clan Story */}
-          {tournament.clanStory && (
-            <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#d4a373]/10 via-white/80 to-transparent dark:from-cyan-950/20 dark:via-[#0c1626]/80 dark:to-transparent border border-[#d4a373]/30 dark:border-cyan-500/20 shadow-sm space-y-4 backdrop-blur-sm">
-              <h3 className="text-xl font-black text-[#0b1a30] dark:text-white flex items-center gap-2">
-                <Sparkles size={18} className="text-[#d4a373] dark:text-cyan-400" />
-                <span>ملحمة مشاركة العشيرة</span>
-              </h3>
-              <p className="text-[#475569] dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                {tournament.clanStory}
-              </p>
-            </div>
-          )}
         </section>
 
         {/* ================= TOURNAMENT PHOTO GALLERY ================= */}

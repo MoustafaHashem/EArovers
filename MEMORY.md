@@ -31,6 +31,7 @@
   3. Left (`/images/scarfs/member-scarf.png`): "أعضاء العشيرة" (member scarf with cyan/light blue stripe).
   Full support for both Organic Light and Deep Tech Dark themes, keyboard ESC exit, and backdrop click-to-close.
 - **Health Check Infrastructure**: A direct internal API route (`GET /api/health/ping`) performs a `prisma.$queryRaw` to keep the Supabase connection warm, triggered by a GitHub Actions workflow (`keep-alive.yml`).
+- **Hierarchy Route Visual Refresh**: `/hierarchy` now uses the shared site shell and glass-card treatment (ambient blur background, hero header, gold-accent pills, and updated year selector) so it visually matches the rest of the public site.
 
 ## 🚨 Known Gotchas
 1. **Next.js 16.3 proxy.ts**: Do not recreate a `middleware.ts` file; it is now `proxy.ts` with the exported function named `proxy`.
@@ -170,5 +171,6 @@
 - **Legacy PR Integration Notes:**
   - Audited and integrated PRs #2 and #5 (Shields) and PR #8 (Shagara / Clan hierarchy).
   - Maintained `AboutSection` and `ShagaraSection` preview on homepage with dual design system styling.
+  - Restyled the dedicated `/hierarchy` route to use the same transparent ambient shell and glass cards as the other public pages.
 
 

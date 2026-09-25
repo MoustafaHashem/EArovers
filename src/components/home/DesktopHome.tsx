@@ -6,33 +6,14 @@ import { EventsCarousel } from "@/components/home/EventsCarousel";
 import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 import { fetchMediaAction } from "@/actions/media";
-import { prisma } from "@/lib/prisma";
+import { EVENTS_DATA } from "@/data/eventsData";
 
 export async function DesktopHome() {
   // Fetch initial media for the default category "مسابقات"
   const initialImages = await fetchMediaAction("مسابقات", 12);
 
   // Fetch latest public events for the carousel
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let events: any[] = [];
-  try {
-    events = await prisma.event.findMany({
-      where: { isPublic: true },
-      take: 20,
-      orderBy: { startDate: "desc" },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        startDate: true,
-        location: true,
-        eventType: true,
-        coverImage: true,
-      }
-    });
-  } catch (err) {
-    console.error("Error fetching events for homepage:", err);
-  }
+  const events = EVENTS_DATA;
 
   return (
     <div className="flex flex-col items-center overflow-x-hidden">

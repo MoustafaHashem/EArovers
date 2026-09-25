@@ -1,12 +1,10 @@
-import { prisma } from "@/lib/prisma";
+import { MEMBERS_DATA } from "@/data/membersData";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Identity } from "@/components/layout/Identity";
 import { ArrowRight, Calendar, User, Award, History, Shield } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-export const revalidate = 60;
 
 export default async function PersonBiographyPage({
   params,
@@ -15,43 +13,14 @@ export default async function PersonBiographyPage({
 }) {
   const { id } = await params;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let person: any = null;
-  try {
-    person = await prisma.member.findUnique({
-      where: { id },
-      include: {
-        roles: {
-          orderBy: { year: 'desc' }
-        }
-      }
-    });
-  } catch (err) {
-    console.error("Error fetching person from DB:", err);
-  }
+  const person = MEMBERS_DATA.find((m) => m.id === id);
 
   if (!person) {
     notFound();
   }
 
-  // Fetch shields and special awards
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let userShields: any[] = [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let specialAwards: any[] = [];
-  try {
-    userShields = await prisma.userShield.findMany({
-      where: { memberId: id },
-      include: { shield: true },
-    });
-    specialAwards = await prisma.specialAward.findMany({
-      where: { memberId: id },
-      include: { event: true },
-      orderBy: { awardedAt: 'desc' },
-    });
-  } catch (err) {
-    console.error("Error fetching member awards:", err);
-  }
+  const userShields: any[] = [];
+  const specialAwards: any[] = [];
 
   return (
     <main className="flex min-h-screen flex-col bg-transparent text-foreground overflow-x-hidden font-cairo" dir="rtl">
@@ -87,7 +56,7 @@ export default async function PersonBiographyPage({
               <div>
                 <h1 className="text-3xl md:text-5xl font-black text-[#0b1a30] dark:text-white mb-2">{person.fullName}</h1>
                 <p className="text-xl text-[#161e35] dark:text-cyan-400 font-bold">
-                  {person.roles[0]?.roleTitle || "كادر عشيرة"}
+                  {person.role || "كادر عشيرة"}
                 </p>
               </div>
 
@@ -112,19 +81,16 @@ export default async function PersonBiographyPage({
             </h2>
             
             <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:ml-[1.125rem] before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-[#161e35]/20 dark:before:via-cyan-400/20 before:to-transparent">
-              {person.roles.length > 0 ? (
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                person.roles.map((role: any) => (
-                  <div key={role.id} className="relative pl-8 md:pl-0">
-                    <div className="md:flex items-center justify-between mb-1 group">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#161e35] dark:border-cyan-400 bg-white dark:bg-[#080b10] shadow-sm shrink-0 z-10 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 absolute right-0 translate-x-1/2 md:relative md:translate-x-0"></div>
-                        <h4 className="font-bold text-[#0b1a30] dark:text-white text-lg">{role.roleTitle}</h4>
-                      </div>
-                      <time className="block mb-2 text-sm font-bold text-[#161e35] dark:text-cyan-400 pr-4 md:pr-0">عام {role.year}</time>
+              {person.role ? (
+                <div className="relative pl-8 md:pl-0">
+                  <div className="md:flex items-center justify-between mb-1 group">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-[#161e35] dark:border-cyan-400 bg-white dark:bg-[#080b10] shadow-sm shrink-0 z-10 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 absolute right-0 translate-x-1/2 md:relative md:translate-x-0"></div>
+                      <h4 className="font-bold text-[#0b1a30] dark:text-white text-lg">{person.role}</h4>
                     </div>
+                    <time className="block mb-2 text-sm font-bold text-[#161e35] dark:text-cyan-400 pr-4 md:pr-0">عام {person.joinYear}</time>
                   </div>
-                ))
+                </div>
               ) : (
                 <div className="text-[#64748b] dark:text-gray-400 py-4 pr-8">لا يوجد مناصب مسجلة</div>
               )}

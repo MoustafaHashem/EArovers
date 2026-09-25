@@ -37,6 +37,12 @@ const CloudIcon = ({ size = 20 }: { size?: number }) => (
   </svg>
 );
 
+const TikTokIcon = ({ size = 20 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+  </svg>
+);
+
 const navLinks = [
   { href: "/", label: "الرئيسية" },
   { href: "/shields", label: "الدروع" },
@@ -181,7 +187,7 @@ export function Navbar() {
                 </motion.div>
               )}
             </AnimatePresence>
-            <ThemeToggle />
+            <ThemeToggle forceLight={!effectivelyScrolled && isHomePage} />
           </motion.div>
 
           {/* Center (Desktop Navigation) */}
@@ -286,6 +292,9 @@ export function Navbar() {
                     <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#E4405F] dark:hover:text-[#ffd700] transition-colors" title="Instagram">
                       <InstagramIcon size={18} />
                     </a>
+                    <a href="https://www.tiktok.com/@eng_asu.rovers" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#010101] dark:hover:text-[#ffd700] transition-colors" title="TikTok">
+                      <TikTokIcon size={18} />
+                    </a>
                     <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#FF0000] dark:hover:text-[#ffd700] transition-colors" title="YouTube">
                       <YoutubeIcon size={18} />
                     </a>
@@ -307,21 +316,14 @@ export function Navbar() {
                     </Link>
                   </div>
 
-                  <Link
-                    href="/login"
-                    prefetch={true}
-                    className="flex items-center gap-1.5 text-sm font-bold text-[#475569] dark:text-slate-400 hover:text-[#0b1a30] dark:hover:text-white transition-colors px-2"
-                  >
-                    <LogIn size={16} />
-                    <span>دخول</span>
-                  </Link>
+
                 </motion.div>
               )}
             </AnimatePresence>
 
             {/* Mobile Menu Button */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <SheetTrigger render={<button className="lg:hidden w-10 h-10 flex items-center justify-center text-[#0b1a30] dark:text-white hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors ml-2" aria-label="فتح القائمة" />}>
+              <SheetTrigger render={<button className={cn("lg:hidden w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ml-2", (!effectivelyScrolled && isHomePage) ? "text-white" : "text-[#0b1a30] dark:text-white hover:bg-black/5 dark:hover:bg-white/10")} aria-label="فتح القائمة" />}>
                 <Menu size={24} />
               </SheetTrigger>
               
@@ -399,6 +401,9 @@ export function Navbar() {
                     <a href="https://www.instagram.com/eng_asu_rovers/?hl=en" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#E4405F] dark:hover:text-[#ffd700] transition-colors" title="Instagram">
                       <InstagramIcon size={22} />
                     </a>
+                    <a href="https://www.tiktok.com/@eng_asu.rovers" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#010101] dark:hover:text-[#ffd700] transition-colors" title="TikTok">
+                      <TikTokIcon size={22} />
+                    </a>
                     <a href="https://www.youtube.com/@eng_asurovers3282/featured" target="_blank" rel="noopener noreferrer" className="text-[#475569] dark:text-slate-400 hover:text-[#FF0000] dark:hover:text-[#ffd700] transition-colors" title="YouTube">
                       <YoutubeIcon size={22} />
                     </a>
@@ -414,15 +419,7 @@ export function Navbar() {
                   >
                     انضم إلينا
                   </Link>
-                  <Link
-                    href="/login"
-                    prefetch={true}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-[#475569] dark:text-slate-400 hover:text-[#0b1a30] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-                  >
-                    <LogIn size={16} />
-                    <span>تسجيل الدخول</span>
-                  </Link>
+
                 </div>
               </SheetContent>
             </Sheet>

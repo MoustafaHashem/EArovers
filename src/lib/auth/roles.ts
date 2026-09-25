@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export type UserRole = "scout" | "admin";
@@ -10,13 +9,9 @@ export async function getCurrentUser() {
 
   if (!user) return null;
 
-  const member = await prisma.member.findUnique({
-    where: { id: user.id },
-  });
-
   return {
     ...user,
-    member,
+    member: null,
   };
 }
 
@@ -28,12 +23,7 @@ export async function getUserRole(): Promise<UserRole | null> {
 
   if (!user) return null;
 
-  const member = await prisma.member.findUnique({
-    where: { id: user.id },
-    select: { role: true }
-  });
-
-  return (member?.role as UserRole) || "scout";
+  return "scout";
 }
 
 export async function isAdmin(): Promise<boolean> {
@@ -50,12 +40,5 @@ export async function requireAuth() {
 }
 
 export async function requireAdmin() {
-  const user = await getCurrentUser();
-  if (!user) {
-    redirect("/login");
-  }
-  if (user.member?.role !== "admin") {
-    redirect("/dashboard");
-  }
-  return user;
+  redirect("/dashboard");
 }

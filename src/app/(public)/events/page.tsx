@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { EVENTS_DATA } from "@/data/eventsData";
 import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Identity } from "@/components/layout/Identity";
@@ -11,23 +11,8 @@ export const metadata: Metadata = {
   description: "تعرف على أحدث أنشطتنا ومعسكراتنا القادمة، وانضم إلينا في رحلتنا الكشفية.",
 };
 
-export const revalidate = 60;
-
 export default async function EventsPage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let events: any[] = [];
-  try {
-    events = await prisma.event.findMany({
-      where: {
-        isPublic: true,
-      },
-      orderBy: {
-        startDate: "desc",
-      },
-    });
-  } catch (error) {
-    console.error("Error fetching events from DB:", error);
-  }
+  const events = EVENTS_DATA;
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-transparent text-foreground font-cairo" dir="rtl">

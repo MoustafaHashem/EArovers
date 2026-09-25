@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { ShieldsClient } from "./ShieldsClient";
 import { Navbar } from "@/components/layout/Navbar";
 import { Identity } from "@/components/layout/Identity";
@@ -20,24 +19,7 @@ export default async function ShieldsPage({
 }) {
   const resolvedParams = await searchParams;
 
-  let shields: any[] = [];
-  try {
-    shields = await prisma.shield.findMany({
-      orderBy: { sortOrder: 'asc' }
-    });
-  } catch (err) {
-    console.error("Error fetching shields from DB:", err);
-  }
-
-  // Map to the structure expected by the client component, with fallback to clanData
-  const formattedShields = shields.length > 0 
-    ? shields.map(shield => ({
-        id: shield.id,
-        title: shield.name,
-        description: shield.description,
-        image: shield.image || undefined,
-      }))
-    : shieldsData.map(s => ({
+  const formattedShields = shieldsData.map(s => ({
         id: s.id,
         title: s.title,
         description: s.description,

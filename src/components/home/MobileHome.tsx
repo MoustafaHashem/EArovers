@@ -6,7 +6,7 @@ import { Identity } from "@/components/layout/Identity";
 import Link from "next/link";
 import { fetchBatchShieldsMediaAction } from "@/actions/media";
 import { shieldsData } from "@/data/clanData";
-import { prisma } from "@/lib/prisma";
+import { EVENTS_DATA } from "@/data/eventsData";
 
 export async function MobileHome() {
   const initialMedia = await fetchBatchShieldsMediaAction(
@@ -14,26 +14,7 @@ export async function MobileHome() {
   );
 
   // Fetch latest public events
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let events: any[] = [];
-  try {
-    events = await prisma.event.findMany({
-      where: { isPublic: true },
-      take: 20,
-      orderBy: { startDate: "desc" },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        startDate: true,
-        location: true,
-        eventType: true,
-        coverImage: true,
-      }
-    });
-  } catch (err) {
-    console.error("Error fetching events for mobile home:", err);
-  }
+  const events = EVENTS_DATA;
 
   return (
     <div className="flex flex-col items-center overflow-x-hidden pb-20">

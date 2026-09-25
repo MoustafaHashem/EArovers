@@ -1,13 +1,10 @@
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { EVENTS_DATA } from "@/data/eventsData";
 import { CalendarDays, MapPin, Users, ArrowRight, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Identity } from "@/components/layout/Identity";
-import { createClient } from "@/lib/supabase/server";
-
-export const revalidate = 60;
 
 export default async function EventDetailsPage({
   params,
@@ -16,45 +13,12 @@ export default async function EventDetailsPage({
 }) {
   const { id } = await params;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let event: any = null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let eventPhotos: any[] = [];
-  let user: any = null;
-  let hasJoined = false;
+  const event = EVENTS_DATA.find((e) => e.id === id);
+  const eventPhotos: any[] = [];
+  const user = null;
+  const hasJoined = false;
 
-  try {
-    const supabase = await createClient();
-    const authRes = await supabase.auth.getUser();
-    user = authRes.data.user;
-
-    event = await prisma.event.findUnique({
-      where: { id },
-    });
-
-    if (event) {
-      eventPhotos = await prisma.media.findMany({
-        where: { eventId: event.id },
-        take: 6,
-      });
-
-      if (user) {
-        const existingParticipant = await prisma.eventParticipant.findUnique({
-          where: {
-            eventId_memberId: {
-              eventId: event.id,
-              memberId: user.id,
-            },
-          },
-        });
-        hasJoined = !!existingParticipant;
-      }
-    }
-  } catch (err) {
-    console.error("Error fetching event details:", err);
-  }
-
-  if (!event || !event.isPublic) notFound();
+  if (!event) notFound();
 
   const isUpcoming = new Date(event.startDate) >= new Date();
 
@@ -170,59 +134,7 @@ export default async function EventDetailsPage({
                   </div>
                 </div>
 
-                {/* Max Participants */}
-                {event.maxParticipants && (
-                  <div className="flex items-center gap-4 text-[#334155] dark:text-gray-300">
-                    <div className="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0 border border-emerald-500/10 dark:border-emerald-500/20">
-                      <Users className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#64748b] dark:text-gray-500 font-bold">عدد المشاركين</p>
-                      <p className="font-bold text-[#0b1a30] dark:text-white text-lg">{event.maxParticipants} مشارك</p>
-                    </div>
-                  </div>
-                )}
 
-                {/* Join / Attendance Section */}
-                <div className="pt-6 border-t border-black/10 dark:border-white/10">
-                  {isUpcoming ? (
-                    user ? (
-                      hasJoined ? (
-                        <button disabled className="w-full bg-green-500/20 text-green-700 dark:text-green-400 border border-green-500/50 py-3 rounded-xl font-bold cursor-not-allowed text-center">
-                          تم تسجيل حضورك بنجاح ✓
-                        </button>
-                      ) : (
-                        <form action={async () => {
-                          "use server";
-                          const { prisma } = await import("@/lib/prisma");
-                          await prisma.eventParticipant.create({
-                            data: {
-                              eventId: event.id,
-                              memberId: user.id
-                            }
-                          });
-                          const { revalidatePath } = await import("next/cache");
-                          revalidatePath(`/events/${event.id}`);
-                        }}>
-                          <button type="submit" className="w-full bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] dark:from-[#00f0ff] dark:to-cyan-400 dark:text-[#080b10] py-3.5 rounded-xl font-bold transition-all shadow-md hover:scale-105 active:scale-95 cursor-pointer">
-                            تسجيل الحضور في الفعالية
-                          </button>
-                        </form>
-                      )
-                    ) : (
-                      <div className="text-center space-y-3">
-                        <p className="text-xs text-[#64748b] dark:text-slate-400">سجل الدخول لتتمكن من الانضمام للفعالية</p>
-                        <Link href="/login" className="block w-full bg-[#161e35] text-white dark:bg-white/10 hover:bg-[#1e2746] dark:hover:bg-white/20 border border-black/10 dark:border-white/20 py-2.5 rounded-xl font-bold text-sm transition-colors">
-                          تسجيل الدخول
-                        </Link>
-                      </div>
-                    )
-                  ) : (
-                    <button disabled className="w-full bg-black/5 dark:bg-slate-800 text-[#64748b] dark:text-slate-500 py-3 rounded-xl font-bold cursor-not-allowed text-center">
-                      انتهت الفعالية
-                    </button>
-                  )}
-                </div>
 
               </div>
             </div>

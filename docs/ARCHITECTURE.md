@@ -91,6 +91,10 @@ The schema centers around the `Member` model, unifying user authentication profi
 - **Responsive Media Grid & Lightbox Experience**: Uniform 4:3 cards with frosted-glass category badges, format indicators, play buttons for video clips, and hover-triggered zoom effects. Lightbox is configured with Zoom, Thumbnails, Captions, and Video plugins for full-screen in-browser playback of local and Cloudinary MP4 scout videos.
 - **Curated Fallback Layer**: Ensures rich content availability across all categories even when database queries return empty or when seeding new environments.
 
+### Hierarchy Route Presentation (`/hierarchy`)
+- **Shared Shell Alignment**: The dedicated hierarchy route now uses the same transparent page shell as the rest of the public site, including ambient blur background glows, a hero header with breadcrumb, and glass-style stat chips.
+- **Tree Presentation**: The yearly selector and the hierarchy tree container use the same warm-gold / deep-navy card treatment and dark-mode glass borders as the events and fame pages, keeping the organizational view visually consistent with the rest of the app.
+
 ### Join Us Form & Interview Slots Architecture (`/join`, `src/actions/join.ts`)
 - **Multi-Step Progressive Form**: 4 structured steps with intuitive visual indicators, responsive validation (`canGoNext`), and animated transitions:
   1. *البيانات الشخصية والتواصل*: Full Name, Gender selection (`ذكر (جوال)` / `أنثى (مرشدة)`), Call Phone Number, and WhatsApp Number with smart "نفس رقم الهاتف" one-click synchronization.

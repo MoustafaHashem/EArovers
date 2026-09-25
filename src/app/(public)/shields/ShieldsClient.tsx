@@ -37,8 +37,14 @@ export function ShieldsClient({
   const searchParams = useSearchParams();
   const router = useRouter();
   
-  const currentShieldParam = searchParams.get("shield") || searchParams.get("id") || initialShieldParam;
-  const currentFieldParam = searchParams.get("field") || initialFieldParam;
+  const currentShieldParam =
+    searchParams.get("shield") ||
+    searchParams.get("id") ||
+    (typeof window === "undefined" ? initialShieldParam : undefined);
+
+  const currentFieldParam =
+    searchParams.get("field") ||
+    (typeof window === "undefined" ? initialFieldParam : undefined);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -81,12 +87,13 @@ export function ShieldsClient({
 
   // Sync selected badge when URL query parameter changes
   useEffect(() => {
-    if (currentShieldParam) {
-      const match = findShieldByParam(currentShieldParam);
-      if (match) {
-        setSelectedBadge(match);
-      }
+    if (!currentShieldParam) {
+      setSelectedBadge(null);
+      return;
     }
+
+    const match = findShieldByParam(currentShieldParam);
+    setSelectedBadge(match);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentShieldParam, initialShields]);
 
@@ -101,13 +108,13 @@ export function ShieldsClient({
     setLoadingMedia(true);
 
     fetchShieldMediaAction(selectedBadge.title, selectedBadge.id)
-      .then((data) => {
+      .then((data: any) => {
         if (isMounted) {
           setShieldMedia(data);
           setLoadingMedia(false);
         }
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.error("Failed to load shield media:", err);
         if (isMounted) setLoadingMedia(false);
       });
@@ -141,6 +148,7 @@ export function ShieldsClient({
   const handleBackToAll = () => {
     setSelectedBadge(null);
     router.replace("/shields", { scroll: false });
+    setSearchQuery("");
   };
 
   const handleSelectBadge = (badge: ShieldType) => {
@@ -155,15 +163,15 @@ export function ShieldsClient({
         <div className="space-y-8 animate-in fade-in zoom-in duration-300">
           <button
             onClick={handleBackToAll}
-            className="px-5 py-2.5 bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] text-white dark:from-white/10 dark:to-white/10 dark:hover:bg-white/20 rounded-xl text-sm font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95"
+            className="relative z-20 px-5 py-2.5 bg-gradient-to-r from-[#161e35] to-[#1e2746] hover:from-[#1e2746] hover:to-[#263156] text-white dark:from-white/10 dark:to-white/10 dark:hover:bg-white/20 rounded-xl text-sm font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95"
           >
             ← العودة إلى جميع الدروع
           </button>
 
           {/* Selected Badge Header - Enlarged Shield Image, Title removed (as it is on ribbon), Description only */}
-          <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-10 glass-card p-6 sm:p-10 rounded-3xl border border-[#d4a373]/30 dark:border-white/10 text-center sm:text-right shadow-xl">
+          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-6 md:gap-10 glass-card p-6 sm:p-10 rounded-3xl border border-[#d4a373]/30 dark:border-white/10 text-center sm:text-right shadow-xl">
             {selectedBadge.image && (
-              <div className="relative w-56 h-48 sm:w-64 sm:h-56 md:w-72 md:h-60 flex-shrink-0 overflow-visible flex items-center justify-center">
+              <div className="pointer-events-none relative w-56 h-48 sm:w-64 sm:h-56 md:w-72 md:h-60 flex-shrink-0 overflow-visible flex items-center justify-center">
                 <Image
                   src={selectedBadge.image}
                   alt={selectedBadge.title}

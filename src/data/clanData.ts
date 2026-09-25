@@ -35,12 +35,38 @@ const p = {
   seniorRover: { id: "p-seniorR", name: "أحمد سيد", initials: "أح" },
   seniorGuide: { id: "p-seniorG", name: "سلمى ياسر", initials: "سل" },
   assistantLeader: { id: "p-assist", name: "كريم مجدي", initials: "كر" },
+  mo3sab: { id: "p-mo3sab", name: "مصعب محمد", initials: "مص" },
+  arwi: { id: "p-arwi", name: "أروي زين", initials: "أر" },
+  michael: { id: "p-michael", name: "مايكل جورج", initials: "ما" },
+  ahmedMashal: { id: "p-ahmedMashal", name: "احمد مشعل", initials: "أم" },
+  yusufAlaa: { id: "p-yusufAlaa", name: "يوسف علاء", initials: "يو" },
+  hamsa: { id: "p-hamsa", name: "همسه احمد", initials: "هم" },
   
   media: { id: "p-media", name: "علي حسن", initials: "عل" },
   mediaAssist: { id: "p-mediaA", name: "زياد كمال", initials: "زي" },
   sec: { id: "p-sec", name: "سارة عادل", initials: "سا" },
   secAssist: { id: "p-secA", name: "مريم طارق", initials: "مر" },
   quartermaster: { id: "p-quarter", name: "محمود سعد", initials: "مح" },
+  abdulrahmanWahid: { id: "p-abdulrahmanWahid", name: "عبدالرحمن وحيد", initials: "عب" },
+  malakEhab: { id: "p-malakEhab", name: "ملك ايهاب", initials: "مل" },
+  nourhanShoukat: { id: "p-nourhanShoukat", name: "نورهان شوكت", initials: "نو" },
+  tasneemAhmed: { id: "p-tasneemAhmed", name: "تسنيم احمد", initials: "تن" },
+  omarZaki: { id: "p-omarZaki", name: "عمر ذكي", initials: "عم" },
+  mustafaHashem: { id: "p-mustafaHashem", name: "مصطفي هاشم", initials: "مص" },
+  yuusufAlaa: { id: "p-yuusufAlaa", name: "يوسف علاء", initials: "يو" },
+  ayaSalah: { id: "p-ayaSalah", name: "هيا صالح", initials: "هي" },
+  mazenTaha: { id: "p-mazenTaha", name: "مازن طه", initials: "ما" },
+  abdelhalimShukri: { id: "p-abdelhalimShukri", name: "عبد الحليم شكري", initials: "عب" },
+  jamilaTawfiq: { id: "p-jamilaTawfiq", name: "جميله توفيق", initials: "جم" },
+  maryamBahr: { id: "p-maryamBahr", name: "مريم بحر", initials: "مر" },
+  menaDiab: { id: "p-menaDiab", name: "منه دياب", initials: "من" },
+  minaShahdy: { id: "p-minaShahdy", name: "مينا شهدي", initials: "مي" },
+  mohammedElHassan: { id: "p-mohammedElHassan", name: "محمد الحسن", initials: "مح" },
+  noorKhaled: { id: "p-noorKhaled", name: "نور خالد", initials: "نو" },
+  omarKhamis: { id: "p-omarKhamis", name: "عمر خميس", initials: "عم" },
+  safaaIsmail: { id: "p-safaaIsmail", name: "صفاء اسماعيل", initials: "صف" },
+  yahyaMohammed: { id: "p-yahyaMohammed", name: "يحيي محمد", initials: "يح" },
+  rawanAshraf: { id: "p-rawanAshraf", name: "روان اشرف", initials: "رو" },
 
   rahtLeader1: { id: "p-raht1", name: "خالد محمود", initials: "خا" },
   rahtDeputy1: { id: "p-dep1", name: "يوسف طارق", initials: "يو" },
@@ -56,142 +82,53 @@ const p = {
 
 export const clanTreeData: ComplexYearData[] = [
   {
-    year: 2024,
-    tiers: {
-      highCouncil: {
-        title: "مجلس القيادة",
-        // Ordered to put Leader and Guide Leader in the center. 
-        // We will force flex-nowrap in UI so they stay on one line.
-        members: [
-          { member: p.assistantLeader, role: "مساعد قائد العشيرة" },
-          { member: p.seniorRover, role: "الرائد الأكبر", promotesTo: 2025 },
-          { member: p.leader, role: "قائد العشيرة" },
-          { member: p.guideLeader, role: "قائدة الجوالات" },
-          { member: p.seniorGuide, role: "الرائدة الكبرى" },
-        ],
-      },
-      auxiliary: {
-        title: "الهيكل المعاون",
-        members: [
-          { 
-            member: p.media, role: "قائد الميديا",
-            subordinates: [{ member: p.mediaAssist, role: "مساعد الميديا" }]
-          },
-          { 
-            member: p.sec, role: "قائد السكرتارية",
-            subordinates: [{ member: p.secAssist, role: "مساعد السكرتارية" }]
-          },
-          { 
-            member: p.quartermaster, role: "أمين العهدة" 
-            // No assistant
-          },
-        ],
-      },
-      management: {
-        title: "مجلس الإدارة",
-        members: [
-          { 
-            member: p.rahtLeader1, role: "رائد رهط الفايكنج", promotesTo: 2026,
-            subordinates: [{ member: p.rahtDeputy1, role: "وكيل الرهط" }]
-          },
-          { 
-            member: p.rahtLeader2, role: "رائد رهط الفرسان",
-            subordinates: [{ member: p.rahtDeputy2, role: "وكيل الرهط" }]
-          },
-        ]
-      },
-      base: {
-        title: "قاعدة العشيرة",
-        members: [
-          { member: p.rover1, role: "جوال (فايكنج)" },
-          { member: p.candidate1, role: "مرشح (فايكنج)" },
-          { member: p.rover2, role: "جوال (فرسان)" },
-          { member: p.candidate2, role: "مرشح (فرسان)" },
-        ]
-      },
-    },
-  },
-  {
-    year: 2025,
-    tiers: {
-      highCouncil: {
-        title: "مجلس القيادة",
-        members: [
-          { member: p.guideLeader, role: "مساعد قائد العشيرة" },
-          { member: p.rahtLeader1, role: "الرائد الأكبر", promotesTo: 2026 },
-          { member: p.seniorRover, role: "قائد العشيرة" },
-          { member: p.seniorGuide, role: "قائدة الجوالات" },
-          { member: p.sec, role: "الرائدة الكبرى" },
-        ],
-      },
-      auxiliary: {
-        title: "الهيكل المعاون",
-        members: [
-          { member: p.quartermaster, role: "قائد الميديا" },
-          { member: p.media, role: "أمين العهدة" },
-        ],
-      },
-      management: {
-        title: "مجلس الإدارة",
-        members: [
-          { 
-            member: p.rahtDeputy1, role: "رائد الرهط (فايكنج)",
-            subordinates: [{ member: p.rover1, role: "وكيل الرهط" }]
-          },
-          { 
-            member: p.rahtLeader2, role: "رائد الرهط (فرسان)",
-            subordinates: [{ member: p.candidate2, role: "وكيل الرهط" }]
-          },
-        ]
-      },
-      base: {
-        title: "قاعدة العشيرة",
-        members: [
-          { member: p.candidate1, role: "جوال" }
-        ]
-      }
-    },
-  },
-  {
     year: 2026,
     tiers: {
       highCouncil: {
         title: "مجلس القيادة",
         members: [
-          { member: p.media, role: "مساعد قائد العشيرة" },
-          { member: p.rahtDeputy1, role: "الرائد الأكبر" },
-          { member: p.rahtLeader1, role: "قائد العشيرة" },
-          { member: p.secAssist, role: "قائدة الجوالات" },
-          { member: p.rover1, role: "الرائدة الكبرى" },
+          { member: p.mo3sab, role: "قائد العشيرة" },
+          { member: p.arwi, role: "قائده المرشدات" },
+          { member: p.michael, role: "مساعد قائد العشيرة" },
+          { member: p.ahmedMashal, role: "مساعد قائد العشيرة" },
+          { member: p.yusufAlaa, role: "الرائد الاكير" },
+          { member: p.hamsa, role: "الرائده الكبري" },
         ],
       },
       auxiliary: {
         title: "الهيكل المعاون",
         members: [
-          { 
-            member: p.rover2, role: "قائد الميديا",
-            subordinates: [{ member: p.candidate1, role: "مساعد الميديا" }]
-          },
-          { 
-            member: p.candidate2, role: "قائد السكرتارية",
-            subordinates: [{ member: p.mediaAssist, role: "مساعد السكرتارية" }]
-          },
-          { 
-            member: p.sec, role: "أمين العهدة" 
-          },
+          { member: p.mustafaHashem, role: "قائد التحول الرقمي" },
+          { member: p.abdulrahmanWahid, role: "قائد الميديا" },
+          { member: p.malakEhab, role: "مساعده قائد الميديا" },
+          { member: p.nourhanShoukat, role: "قائده السكرتاريه" },
+          { member: p.tasneemAhmed, role: "مساعده قائده السكرتاريه" },
+          { member: p.omarZaki, role: "امين العهده" },
         ],
       },
       management: {
         title: "مجلس الإدارة",
         members: [
-          { 
-            member: p.rahtDeputy2, role: "رائد رهط الفايكنج",
-            subordinates: [{ member: p.assistantLeader, role: "وكيل الرهط" }]
-          },
-          { 
-            member: p.quartermaster, role: "رائد رهط الفرسان",
-            subordinates: [{ member: p.seniorGuide, role: "وكيل الرهط" }]
-          },
+          { member: p.yusufAlaa, role: "عضو مجلس الإدارة" },
+          { member: p.hamsa, role: "عضو مجلس الإدارة" },
+          { member: p.mustafaHashem, role: "عضو مجلس الإدارة" },
+          { member: p.ayaSalah, role: "عضو مجلس الإدارة" },
+          { member: p.mazenTaha, role: "عضو مجلس الإدارة" },
+          { member: p.abdelhalimShukri, role: "عضو مجلس الإدارة" },
+          { member: p.abdulrahmanWahid, role: "عضو مجلس الإدارة" },
+          { member: p.jamilaTawfiq, role: "عضو مجلس الإدارة" },
+          { member: p.malakEhab, role: "عضو مجلس الإدارة" },
+          { member: p.maryamBahr, role: "عضو مجلس الإدارة" },
+          { member: p.menaDiab, role: "عضو مجلس الإدارة" },
+          { member: p.minaShahdy, role: "عضو مجلس الإدارة" },
+          { member: p.mohammedElHassan, role: "عضو مجلس الإدارة" },
+          { member: p.noorKhaled, role: "عضو مجلس الإدارة" },
+          { member: p.omarKhamis, role: "عضو مجلس الإدارة" },
+          { member: p.safaaIsmail, role: "عضو مجلس الإدارة" },
+          { member: p.tasneemAhmed, role: "عضو مجلس الإدارة" },
+          { member: p.yahyaMohammed, role: "عضو مجلس الإدارة" },
+          { member: p.nourhanShoukat, role: "عضو مجلس الإدارة" },
+          { member: p.rawanAshraf, role: "عضو مجلس الإدارة" },
         ]
       },
       base: {
@@ -229,6 +166,28 @@ export const shieldsData: ShieldCategory[] = [
     ],
   },
   {
+    id: "religious",
+    title: "درع ديني",
+    description: "تنمية الروح الدينية والوعي العقدي لدى الجوالين.",
+    image: "/images/badges/religious.png",
+    items: [
+      { title: "العبادة والتدبر", icon: "🕌" },
+      { title: "أثر الحضور الديني", icon: "📖" },
+      { title: "المحافظة على العبادات", icon: "🕊️" },
+    ],
+  },
+  {
+    id: "scientific",
+    title: "درع علمي",
+    description: "تعزيز التفكير العلمي والابتكار والتجريب.",
+    image: "/images/badges/scientific.png",
+    items: [
+      { title: "العلوم التطبيقية", icon: "🔬" },
+      { title: "البحوث والاختبارات", icon: "🧪" },
+      { title: "الابتكار والتجريب", icon: "⚙️" },
+    ],
+  },
+  {
     id: "art",
     title: "الدرع الفني",
     description: "تنمية المواهب الفنية والإبداعية لدى الجوالين.",
@@ -260,6 +219,7 @@ export const shieldsData: ShieldCategory[] = [
     items: [
       { title: "الأعمال الخيرية", icon: "🤲" },
       { title: "الخدمة المجتمعية", icon: "🧹" },
+      { title: "مساندة الفئات", icon: "🤝" },
     ],
   },
   {
@@ -270,6 +230,29 @@ export const shieldsData: ShieldCategory[] = [
     items: [
       { title: "البامفلت", icon: "📰" },
       { title: "المجلات المسطحة", icon: "🗞️" },
+      { title: "القراءة والمعرفة", icon: "📚" },
+    ],
+  },
+  {
+    id: "sea",
+    title: "درع بحري",
+    description: "الاستعداد البحري والمهارات الملاحية والبيئة البحرية.",
+    image: "/images/badges/sea.png",
+    items: [
+      { title: "المهارات البحرية", icon: "⚓" },
+      { title: "الاستكشاف البحري", icon: "🧭" },
+      { title: "السلامة البحرية", icon: "🛟" },
+    ],
+  },
+  {
+    id: "environmental",
+    title: "درع بيئي",
+    description: "الحفاظ على البيئة وتنمية الوعي البيئي.",
+    image: "/images/badges/environmental.png",
+    items: [
+      { title: "التشجير", icon: "🌱" },
+      { title: "نظافة البيئة", icon: "♻️" },
+      { title: "التوعية البيئية", icon: "🌍" },
     ],
   },
 ];
