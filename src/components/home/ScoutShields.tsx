@@ -22,7 +22,7 @@ export function ScoutShields() {
         className="flex overflow-x-auto md:flex-wrap justify-start md:justify-center items-center gap-2 mb-12 w-full max-w-[95vw] md:max-w-full px-4"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {shieldsData.slice(0, 3).map((tab) => (
+        {shieldsData.filter(s => ['scout', 'art', 'service'].includes(s.id)).map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}

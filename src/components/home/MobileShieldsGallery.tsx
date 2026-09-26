@@ -58,20 +58,20 @@ function ShieldSection({
             </div>
           </Link>
         ) : (
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 px-4 py-4 h-full items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-2 py-4 h-full items-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {/* First slide: Shield badge */}
             <Link
               href={`/shields?shield=${shield.id}`}
-              className="relative w-[85%] max-w-[280px] h-full flex-shrink-0 snap-center rounded-2xl overflow-hidden cursor-pointer flex items-center justify-center bg-white/40 dark:bg-white/5 border border-black/10 dark:border-white/10 p-4"
+              className="relative w-full h-full flex-shrink-0 snap-center rounded-2xl overflow-hidden cursor-pointer flex items-center justify-center bg-white/40 dark:bg-white/5 border border-black/10 dark:border-white/10 p-4"
               title={`عرض تفاصيل ${shield.title}`}
             >
-              <div className="relative w-44 h-40">
+              <div className="relative w-52 h-48">
                 <Image
                   src={shield.image}
                   alt={shield.title}
                   fill
-                  sizes="176px"
-                  className="object-contain filter drop-shadow-md scale-110"
+                  sizes="208px"
+                  className="object-contain filter drop-shadow-md scale-[1.35]"
                 />
               </div>
             </Link>
@@ -80,7 +80,7 @@ function ShieldSection({
                 key={img.id} 
                 whileTap={{ scale: 0.96 }}
                 onClick={() => onOpenLightbox(images, i)}
-                className="relative w-[85%] max-w-[280px] h-full flex-shrink-0 snap-center rounded-2xl overflow-hidden cursor-pointer shadow-md border border-black/10 dark:border-white/10"
+                className="relative w-full h-full flex-shrink-0 snap-center rounded-2xl overflow-hidden cursor-pointer shadow-md border border-black/10 dark:border-white/10"
               >
                 {img.format === 'mp4' && (
                   <div className="absolute inset-0 bg-black/20 flex items-center justify-center z-10">
