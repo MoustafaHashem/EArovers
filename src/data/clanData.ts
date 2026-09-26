@@ -274,3 +274,46 @@ export const shieldsData: ShieldCategory[] = [
     ],
   },
 ];
+
+// --- HALL OF FAME ---
+export type FameItem = {
+  id: string;
+  eventName: string;
+  year: number;
+  placement: string;
+  specialAwards: string[];
+  image?: string;
+};
+
+export const fameData: FameItem[] = [
+  {
+    id: "f1",
+    eventName: "مهرجان الجوالة بجامعة عين شمس",
+    year: 2023,
+    placement: "المركز الأول عام",
+    specialAwards: ["درع التميز الكشفي", "أفضل مخرج سمر"],
+    image: "/images/hero/hero-2.jpg",
+  },
+  {
+    id: "f2",
+    eventName: "المسابقة القمية",
+    year: 2022,
+    placement: "المركز الثاني",
+    specialAwards: ["جوال مثالي"],
+    image: "/images/hero/hero-3.jpg",
+  },
+];
+
+// --- SESSIONS ---
+export type Session = {
+  id: string;
+  title: string;
+  date: string;
+  instructor: string;
+};
+
+export const sessionsData: Session[] = [
+  { id: "s1", title: "دراسة أثر (إعداد قادة)", date: "١٥ سبتمبر ٢٠٢٤", instructor: "القائد/ عمر أحمد" },
+  { id: "s2", title: "أساسيات الريادة", date: "٢٢ أكتوبر ٢٠٢٤", instructor: "القائد/ أحمد سيد" },
+  { id: "s3", title: "الإسعافات الأولية", date: "٥ نوفمبر ٢٠٢٤", instructor: "د. خالد محمود" },
+];
