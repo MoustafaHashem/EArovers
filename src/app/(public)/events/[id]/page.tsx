@@ -14,7 +14,7 @@ export default async function EventDetailsPage({
   const { id } = await params;
 
   const event = EVENTS_DATA.find((e) => e.id === id);
-  const eventPhotos: any[] = [];
+  const eventPhotos = event.photos ?? [];
   const user = null;
   const hasJoined = false;
 
@@ -146,17 +146,17 @@ export default async function EventDetailsPage({
             <div className="space-y-6 pt-8 border-t border-[#d4a373]/20 dark:border-white/10">
               <h2 className="text-3xl font-black text-[#0b1a30] dark:text-white">معرض الصور</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {eventPhotos.map((photo) => (
-                  <div key={photo.id} className="relative aspect-square rounded-2xl overflow-hidden border border-[#d4a373]/20 dark:border-white/10 group shadow-md">
-                    <Image 
-                      src={photo.url} 
-                      alt="Event Photo" 
-                      fill 
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-110 transition-transform duration-500" 
-                    />
-                  </div>
-                ))}
+               {eventPhotos.map((photoUrl, index) => (
+  <div key={index} className="relative aspect-square rounded-2xl overflow-hidden border border-[#d4a373]/20 dark:border-white/10 group shadow-md">
+    <Image
+      src={photoUrl}
+      alt={`${event.title} - photo ${index + 1}`}
+      fill
+      sizes="(max-width: 768px) 50vw, 33vw"
+      className="object-cover group-hover:scale-110 transition-transform duration-500"
+    />
+  </div>
+))}
               </div>
             </div>
           )}
