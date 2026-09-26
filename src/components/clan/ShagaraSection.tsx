@@ -24,10 +24,10 @@ export function ShagaraSection({ currentData }: { currentData: ComplexYearData |
   };
 
   // Build the High Council rows manually to match the rigid layout
-  const row1 = [...getExactRole(highCouncil, "قائد العشيرة"), ...getRoles(highCouncil, ["قائدة الجوالات", "قائدة المرشدات"] )];
+  const row1 = [...getExactRole(highCouncil, "قائد العشيرة"), ...getRoles(highCouncil, ["قائدة الجوالات"] )];
   const row2 = getExactRole(highCouncil, "مساعد قائد العشيرة");
   const row3 = [
-    ...getRoles(highCouncil, ["الرائد الأكبر", "الرائد الاكير"]),
+    ...getRoles(highCouncil, ["الرائد الأكبر", "الرائد الاكبر"]),
     ...getRoles(highCouncil, ["الرائدة الكبرى"]),
   ];
 
@@ -177,9 +177,10 @@ function getImageScaleClass(memberId: string) {
       return "scale-[1.45]";
     case "p-hamsa":
     case "p-ahmedMashal":
-    case "p-mazenTaha":
     case "p-arwi":
       return "scale-[1.3]";
+    case "p-mazenTaha":
+      return "scale-[1.15]";
     case "p-yusufAlaa":
     case "p-michael":
       return "scale-[1.2]";
@@ -195,6 +196,10 @@ function getImagePositionClass(memberId: string) {
 
   if (memberId === "p-maryamBahr") {
     return { wrapper: "translate-y-[18%] mb-6", image: "" };
+  }
+
+  if (memberId === "p-mazenTaha") {
+    return { wrapper: "overflow-hidden", image: "!origin-top" };
   }
 
   return { wrapper: "", image: "" };

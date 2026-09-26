@@ -389,7 +389,7 @@ export function ShieldsClient({
             />
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-4 sm:gap-x-6 sm:gap-y-8 md:gap-x-8 md:gap-y-10 mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12 sm:gap-x-10 sm:gap-y-12 md:gap-x-12 md:gap-y-16 mt-12">
             {filteredBadges.map((badge) => (
               <button
                 key={badge.id}

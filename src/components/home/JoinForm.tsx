@@ -460,7 +460,7 @@ export function JoinForm() {
                           )}
                         >
                           <span className="text-base">👦</span>
-                          <span>ذكر (جوال)</span>
+                          <span>ذكر</span>
                           {formData.gender === "ذكر" && <Check size={16} className="mr-auto text-[#d4a373] dark:text-cyan-300" />}
                         </button>
                         <button
@@ -474,7 +474,7 @@ export function JoinForm() {
                           )}
                         >
                           <span className="text-base">👧</span>
-                          <span>أنثى (مرشدة)</span>
+                          <span>أنثى</span>
                           {formData.gender === "أنثى" && <Check size={16} className="mr-auto text-[#d4a373] dark:text-cyan-300" />}
                         </button>
                       </div>

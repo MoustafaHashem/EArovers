@@ -202,7 +202,7 @@ export function MobileShieldsGallery({ initialMedia }: { initialMedia: Record<st
 
   return (
     <div className="w-full flex flex-col items-center py-6 px-4">
-      {shieldsData.slice(0, 3).map((shield) => (
+      {shieldsData.filter(s => ['scout', 'art', 'service'].includes(s.id)).map((shield) => (
         <ShieldSection 
           key={shield.id} 
           shield={shield} 

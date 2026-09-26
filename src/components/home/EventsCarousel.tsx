@@ -180,7 +180,7 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
               <Link
                 key={event.id}
                 href={`/events/${event.id}`}
-                className="group flex flex-col bg-[#F3ECD6] dark:bg-[#0c1a2e] rounded-3xl overflow-hidden shadow-xl hover:-translate-y-1.5 transition-all duration-300 shrink-0 w-[85%] sm:w-[45%] lg:w-[31%] snap-start border border-[#e5d9ba] dark:border-cyan-500/20 hover:border-[#102A43]/40 dark:hover:border-cyan-400/50"
+                className="group flex flex-col bg-[#F3ECD6] dark:bg-[#0c1a2e] rounded-3xl overflow-hidden shadow-xl hover:-translate-y-1.5 transition-all duration-300 shrink-0 w-full sm:w-[45%] lg:w-[31%] snap-start border border-[#e5d9ba] dark:border-cyan-500/20 hover:border-[#102A43]/40 dark:hover:border-cyan-400/50"
               >
                 {/* Cover Image */}
                 <div className="relative w-full h-48 bg-slate-200 dark:bg-slate-800 overflow-hidden">
