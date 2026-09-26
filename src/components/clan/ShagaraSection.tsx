@@ -137,7 +137,7 @@ function LeaderCard({ item, isAssistant = false }: { item: RoleNode; isAssistant
   return (
     <div className="flex flex-col items-center space-y-3 group text-center">
       <div className={`relative flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${imageSizeClass} ${imagePositionClass.wrapper}`}>
-        <Image src={imageSrc} alt={item.role} fill className={`object-contain origin-bottom ${imageScaleClass} ${imagePositionClass.image}`} priority />
+        <Image src={imageSrc} alt={item.role} fill sizes="(max-width: 640px) 160px, 176px" className={`object-contain origin-bottom ${imageScaleClass} ${imagePositionClass.image}`} priority />
       </div>
 
       <div className="space-y-1 max-w-[180px]">
@@ -160,7 +160,7 @@ function NameOnlyCard({ item }: { item: RoleNode }) {
   return (
     <div className="flex flex-col items-center space-y-3 group text-center">
       <div className={`relative flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${imageSizeClass} ${imagePositionClass.wrapper}`}>
-        <Image src={item.member.avatar || "/gold-circle.png"} alt={item.member.name} fill className={`object-contain origin-bottom ${imageScaleClass} ${imagePositionClass.image}`} priority />
+        <Image src={item.member.avatar || "/gold-circle.png"} alt={item.member.name} fill sizes="(max-width: 640px) 160px, 176px" className={`object-contain origin-bottom ${imageScaleClass} ${imagePositionClass.image}`} priority />
       </div>
 
       <span className="text-sm sm:text-base font-black text-[#0b1a30] dark:text-white leading-snug max-w-[180px]">
