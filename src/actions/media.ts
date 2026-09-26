@@ -122,6 +122,24 @@ export async function fetchShieldMediaAction(category: string, id: string) {
         title: "المشاركة المجتمعية وأعمال التطوع",
         format: "png",
       },
+      {
+        id: "service-3",
+        url: "/images/badges/service3.png",
+        title: "المشاركة المجتمعية وأعمال التطوع",
+        format: "png",
+      },
+      {
+        id: "service-4",
+        url: "/images/badges/service4.png",
+        title: "المشاركة المجتمعية وأعمال التطوع",
+        format: "png",
+      },
+      {
+        id: "service-5",
+        url: "/images/badges/service5.png",
+        title: "المشاركة المجتمعية وأعمال التطوع",
+        format: "png",
+      },
     ];
   }
 
