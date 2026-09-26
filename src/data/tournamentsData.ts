@@ -36,14 +36,14 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
   // ================= 1. المسابقات الوفدية والقمية (wafdeya) =================
   {
     id: "f1",
-    title: "مهرجان الجوالة بجامعة عين شمس",
+    title: "الوفدية ال55",
     category: "wafdeya",
     categoryName: "المسابقات الوفدية والقمية",
-    year: 2023,
-    dateStr: "نوفمبر ٢٠٢٣",
-    location: "المخيم الكشفي الدائم - جامعة عين شمس",
-    placement: "المركز الأول عام",
-    specialAwards: ["درع التميز الكشفي", "أفضل مخرج سمر", "درع الانضباط العام"],
+    year: 2026,
+    dateStr: "فبراير ٢٠٢٦",
+    location: "كلية زراعة - جامعة عين شمس",
+    placement: "المركز الأول ",
+    specialAwards: ["قائد مثالي/ مصعب محمد","مثالية وفد/ تسنيم أحمد", "مثالي وفد/ مصطفى هاشم", "مثالي عام/ عبدالحليم شكري"],
     image: "/images/hero/hero-2.jpg",
     description:
       "المهرجان الكشفي السنوي الأكبر على مستوى جامعة عين شمس، والذي تتنافس فيه عشائر كليات الجامعة على الدرع العام في مختلف الأنشطة الكشفية والوفدية والفنية والرياضية.",
@@ -55,25 +55,35 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       shieldsCount: 4,
     },
     awardsDetailed: [
-      { title: "درع المركز الأول العام على مستوى الجامعة", type: "trophy" },
-      { title: "درع التميز الكشفي للريادة والمخيمات", type: "shield" },
-      { title: "جائزة أفضل مخرج سمر كشفي", type: "star" },
-      { title: "درع الانضباط والتقاليد الكشفية", type: "medal" },
+      { title: "مركز اول جميع الدروع", type: "trophy" },
+
     ],
     delegation: [
-      { name: "القائد / عمر أحمد", role: "قائد الوفد العام", isLeader: true },
-      { name: "القائدة / سارة محمود", role: "قائدة مرشدات الوفد", isLeader: true },
-      { name: "الجوال / أحمد سيد", role: "مسؤول نشاط الريادة والمخيمات" },
-      { name: "الجوال / كريم حسن", role: "مخرج السمر والعروض الفنية" },
-      { name: "الجوال / محمد طارق", role: "مسؤول النشاط الرياضي" },
-      { name: "الجوالة / مريم علي", role: "مسؤولة المعرض والتراث الكشفي" },
-      { name: "الجوال / خالد إبراهيم", role: "مسؤول الإمداد والتجهيزات" },
-      { name: "الجوال / يوسف مصطفى", role: "مسؤول الخدمة العامة والانضباط" },
+      { name: "القائد / مصعب محمد", role: "قائد الوفد العام", isLeader: true },
+      { name: "القائدة / اروى زين", role: "قائدة مرشدات الوفد", isLeader: true },
+      { name: "الجوال / يوسف شوكت", role: "مدرب الوفد" , isLeader: true  },
+      { name: "الجوال / يوسف علاء", role: "وكيل الوفد" },
+      { name: "الجوال / مايكل جورج", role: "قائد الارض" },
+      { name: "الجوال / احمد مشعل", role: "" },
+      { name: "الجوال / مازن طه", role: "" },
+      { name: "الجوال / مصطفى هاشم", role: "" },
+      { name: "الجوال / عبدالحليم شكري", role: "" },
+      { name: "الجوال / محمد الحسن", role: "" },
+      { name: "الجوال / يحيى محمد", role: "" },
+      { name: "الجوالة / همسة احمد", role: "" },
+      { name: "الجوالة / صفاء اسماعيل", role: "" },
+      { name: "الجوالة / تسنيم احمد", role: "" },
+      { name: "الجوالة / نورهان شوكت", role: "" },
+      { name: "الجوالة / مريم بحر", role: "" },
+      { name: "الجوالة / منة دياب", role: "" },
+      { name: "الجوالة / هيا صالح", role: "" },
+
+      
     ],
     gallery: [
       "/images/hero/hero-2.jpg",
-      "/images/hero/hero-1.jpg",
-      "/images/hero/hero-3.jpg",
+      "/images/hero/pic1.jpg",
+      "/images/hero/pic2.jpg",
     ],
   },
   {
@@ -150,40 +160,7 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "/images/hero/hero-3.jpg",
     ],
   },
-  {
-    id: "asu-annual-clans-rally-2023",
-    title: "ملتقى العشائر السنوي لجامعة عين شمس",
-    category: "wafdeya",
-    categoryName: "المسابقات الوفدية والقمية",
-    year: 2023,
-    dateStr: "مارس ٢٠٢٣",
-    location: "أرض الجوالة - المدينة الجامعية بالعباسية",
-    placement: "المركز الأول",
-    specialAwards: ["درع التفوق الكشفي", "أفضل طهي خلوي", "جائزة التقاليد الكشفية"],
-    image: "/images/hero/hero-2.jpg",
-    description:
-      "الملتقى السنوي الجامعي الذي يجمع جميع عشائر كليات عين شمس لاختبار الجاهزية والابتكار الكشفي.",
-    clanStory:
-      "تفوق وفد جوالة هندسة في كافة التحديات التنافسية وتصدر الترتيب العام بجدارة واقتدار.",
-    stats: {
-      participantsCount: 28,
-      competingClans: 15,
-      shieldsCount: 2,
-    },
-    awardsDetailed: [
-      { title: "درع المركز الأول في ملتقى العشائر", type: "trophy" },
-      { title: "وسام الإتقان والطهي الخلوي", type: "star" },
-    ],
-    delegation: [
-      { name: "القائد / أحمد سيد", role: "قائد الوفد", isLeader: true },
-      { name: "الجوال / مروان شريف", role: "مسؤول الطهي الكشفي المبتكر" },
-      { name: "الجوال / هاني رمزي", role: "مسؤول التقاليد والتحكيم" },
-    ],
-    gallery: [
-      "/images/hero/hero-2.jpg",
-    ],
-  },
-
+ 
   // ================= 2. المسابقات والبطولات الرياضية (sports) =================
   {
     id: "university-football-championship-2024",
@@ -221,282 +198,11 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "/images/hero/hero-3.jpg",
     ],
   },
-  {
-    id: "rovers-athletic-marathon-2023",
-    title: "ماراثون الجوالة وتحدي اللياقة البدنية",
-    category: "sports",
-    categoryName: "المسابقات والبطولات الرياضية",
-    year: 2023,
-    dateStr: "ديسمبر ٢٠٢٣",
-    location: "مضمار ألعاب القوى - ستاد الجامعة",
-    placement: "المركز الأول",
-    specialAwards: ["درع القوة والتحمل", "الميدالية الذهبية للسباق", "وسام السرعة"],
-    image: "/images/hero/hero-1.jpg",
-    description:
-      "سباق الضاحية والتتابع وتحديات اللياقة البدنية الشاملة بين شباب العشائر الكشفية.",
-    clanStory:
-      "حصد جوالو هندسة المراكز الفردية الأولى وحققوا الدرع العام للياقة البدنية بجدارة.",
-    stats: {
-      participantsCount: 20,
-      competingClans: 12,
-      shieldsCount: 2,
-    },
-    awardsDetailed: [
-      { title: "درع بطولة اللياقة البدنية والتحمل", type: "shield" },
-      { title: "الميدالية الذهبية لسباق الضاحية 5 كم", type: "medal" },
-    ],
-    delegation: [
-      { name: "الجوال / ماجد سامي", role: "بطل سباق 5 كم (الميدالية الذهبية)", isLeader: true },
-      { name: "الجوال / كمال بدر", role: "عداء تتابع ومدرب لياقة", isLeader: true },
-      { name: "الجوال / عادل يونس", role: "فريق تحدي الضاحية" },
-    ],
-    gallery: [
-      "/images/hero/hero-1.jpg",
-    ],
-  },
-  {
-    id: "engineering-volleyball-cup-2023",
-    title: "كأس بطولة الطائرة لجوالة الجامعات",
-    category: "sports",
-    categoryName: "المسابقات والبطولات الرياضية",
-    year: 2023,
-    dateStr: "أبريل ٢٠٢٣",
-    location: "الصالة المغطاة - جامعة القاهرة",
-    placement: "المركز الثاني",
-    specialAwards: ["الميدالية الفضية", "درع الروح الرياضية"],
-    image: "/images/hero/hero-3.jpg",
-    description:
-      "منافسات الكرة الطائرة التنافسية بين فرق عشائر كليات الهندسة بالجامعات المصرية.",
-    clanStory:
-      "أداء بطولي حتى المباراة النهائية والتتويج بالفضية وسط إشادة كبيرة من جميع المنظمين.",
-    stats: {
-      participantsCount: 12,
-      competingClans: 14,
-      shieldsCount: 2,
-    },
-    awardsDetailed: [
-      { title: "الميدالية الفضية للكرة الطائرة", type: "medal" },
-      { title: "درع الفريق المثالي والروح الرياضية", type: "shield" },
-    ],
-    delegation: [
-      { name: "الجوال / وائل مجدي", role: "قائد فريق الكرة الطائرة", isLeader: true },
-      { name: "الجوال / سامح رفعت", role: "معد الفريق" },
-      { name: "الجوال / إيهاب شكري", role: "ضارب رئيسي" },
-    ],
-    gallery: [
-      "/images/hero/hero-3.jpg",
-    ],
-  },
 
   // ================= 3. المسابقات والمهارات الكشفية (scout) =================
-  {
-    id: "scout-skills-rally-2024",
-    title: "مهرجان المهارات وفنون الخلاء الكشفية",
-    category: "scout",
-    categoryName: "المسابقات والمهارات الكشفية",
-    year: 2024,
-    dateStr: "فبراير ٢٠٢٤",
-    location: "المخيم الكشفي الدائم - وادي النطرون",
-    placement: "المستوى الأول متميز",
-    specialAwards: ["درع الريادة الكشفية", "وسام الطهي الخلوي المبتكر", "شارة الملاحة الأرضية"],
-    image: "/images/hero/hero-6-pioneering.jpg",
-    description:
-      "المنافسة الكشفية الأصيلة في بناء نماذج الريادة باستخدام الأخشاب والحبال، الطهي الخلوي بدون أواني، والمسير الكشفي في الطبيعة.",
-    clanStory:
-      "شيدت العشيرة نموذج برج استطلاع وجسر هوائي بارتفاع ٦ أمتار في وقت قياسي وبتقنية هندسية نالت الدرجة الكاملة من لجنة التحكيم الدولية.",
-    stats: {
-      participantsCount: 30,
-      competingClans: 10,
-      shieldsCount: 3,
-    },
-    awardsDetailed: [
-      { title: "درع المستوى الأول في الريادة ونماذج الحبال", type: "shield" },
-      { title: "وسام الابتكار في الطهي الخلوي", type: "star" },
-      { title: "شارة المسير والملاحة الأرضية", type: "medal" },
-    ],
-    delegation: [
-      { name: "القائد / أحمد سيد", role: "قائد وفد المهارات الكشفية", isLeader: true },
-      { name: "الجوال / حسام علاء", role: "مسؤول هندسة وتصميم الريادة", isLeader: true },
-      { name: "الجوال / مروان شريف", role: "مسؤول الطهي الخلوي" },
-      { name: "الجوال / طارق سامي", role: "مسؤول الملاحة وفنون الخلاء" },
-      { name: "الجوال / هيثم عادل", role: "مسؤول العقد والدورات الكشفية" },
-    ],
-    gallery: [
-      "/images/hero/hero-6-pioneering.jpg",
-      "/images/hero/hero-2.jpg",
-    ],
-  },
-  {
-    id: "pioneering-projects-cup-2023",
-    title: "مسابقة نماذج الريادة وتخطيط المخيمات",
-    category: "scout",
-    categoryName: "المسابقات والمهارات الكشفية",
-    year: 2023,
-    dateStr: "أكتوبر ٢٠٢٣",
-    location: "أرض المخيم الكشفي - جامعة عين شمس",
-    placement: "المركز الأول",
-    specialAwards: ["أفضل بوابة هندسية", "درع الإتقان الميداني", "أسرع فك وتركيب"],
-    image: "/images/hero/hero-6-pioneering.jpg",
-    description:
-      "مسابقة هندسية كشفية خالصة تركز على العقد والدورات والربطات الحبلية وبناء بوابات وأبراج المخيمات الكشفية.",
-    clanStory:
-      "صمم فريق جوالة هندسة بوابة تراثية متقنة جمعت بين الفن الفرعوني والتقنيات الكشفية الحديثة وحصدت المركز الأول بإجماع الآراء.",
-    stats: {
-      participantsCount: 25,
-      competingClans: 12,
-      shieldsCount: 2,
-    },
-    awardsDetailed: [
-      { title: "كأس المركز الأول لأفضل بوابة كشفية هندسية", type: "trophy" },
-      { title: "درع الإتقان والسرعة الميدانية", type: "shield" },
-    ],
-    delegation: [
-      { name: "الجوال / حسام علاء", role: "كبير مهندسي البوابة", isLeader: true },
-      { name: "الجوال / باسم منير", role: "مسؤول الربطات والجسور المعلقة" },
-      { name: "الجوال / فريد عزمي", role: "مسؤول الأخشاب والتجهيز" },
-    ],
-    gallery: [
-      "/images/hero/hero-6-pioneering.jpg",
-    ],
-  },
-  {
-    id: "desert-navigation-challenge-2023",
-    title: "تحدي الملاحة الصحراوية والمسير الكشفي",
-    category: "scout",
-    categoryName: "المسابقات والمهارات الكشفية",
-    year: 2023,
-    dateStr: "يناير ٢٠٢٣",
-    location: "صحراء وادي دجلة - المعادي",
-    placement: "المستوى الأول",
-    specialAwards: ["شارة المغامرة المتقدمة", "المركز الأول في تحديد المواقع بالبوصلة"],
-    image: "/images/hero/hero-1.jpg",
-    description:
-      "مسير جبلي وصحراوي شاق لمسافة ٢٠ كم يعتمد على الخرائط الطبوغرافية والبوصلة وتتبع الأثر وقراءة النجوم ليلاً.",
-    clanStory:
-      "اجتاز جميع أفراد الرهط المسير بنجاح ودقة مطلقة مسجلين أسرع زمن وصول لكافة نقاط الفحص.",
-    stats: {
-      participantsCount: 15,
-      competingClans: 8,
-      shieldsCount: 1,
-    },
-    awardsDetailed: [
-      { title: "وسام المستوى الأول في الملاحة الصحراوية", type: "star" },
-      { title: "شارة الاستكشاف والمغامرة المتقدمة", type: "medal" },
-    ],
-    delegation: [
-      { name: "الجوال / طارق سامي", role: "دليل المسير والبوصلة", isLeader: true },
-      { name: "الجوال / عصام جابر", role: "مسؤول الإسعافات الأولية والسلامة" },
-      { name: "الجوال / شادي رمزي", role: "مسؤول الاتصال اللاسلكي" },
-    ],
-    gallery: [
-      "/images/hero/hero-1.jpg",
-    ],
-  },
 
   // ================= 4. المسابقات والأنشطة البحرية (naval) =================
-  {
-    id: "naval-rowing-sailing-championship-2024",
-    title: "سباق التجديف والشراع لكشافة الجامعات",
-    category: "naval",
-    categoryName: "المسابقات والأنشطة البحرية",
-    year: 2024,
-    dateStr: "مايو ٢٠٢٤",
-    location: "النادي النهري للكشافة البحرية - الدقي",
-    placement: "المركز الأول عام",
-    specialAwards: ["كأس البطولة الملاحية", "درع التميز البحري", "أفضل طاقم تجديف متزامن"],
-    image: "/images/hero/hero-4.jpg",
-    description:
-      "المنافسة المائية السنوية لسباقات قوارب التجديف والشراع المائي بين العشائر الكشفية على صفحة مياه النيل الخالد.",
-    clanStory:
-      "أثبت أبطال جوالة هندسة مهاراتهم المائية العالية وحصدوا كأس التجديف الرباعي والشراع محققين الصدارة العامة للبطولة البحرية.",
-    stats: {
-      participantsCount: 18,
-      competingClans: 10,
-      shieldsCount: 3,
-    },
-    awardsDetailed: [
-      { title: "كأس البطولة الملاحية والتجديف النهري", type: "trophy" },
-      { title: "درع التميز والمهارات البحرية", type: "shield" },
-      { title: "شارة أفضل طاقم تجديف متزامن", type: "star" },
-    ],
-    delegation: [
-      { name: "القائد / يوسف مصطفى", role: "قبطان الوفد البحري", isLeader: true },
-      { name: "الجوال / معتز أمين", role: "مجدف رئيسي (سكول)", isLeader: true },
-      { name: "الجوال / حازم شوقي", role: "مسؤول الشراع والملاحة النهرية" },
-      { name: "الجوال / رامي فايز", role: "مجدف الفريق" },
-      { name: "الجوال / أشرف كرم", role: "مجدف الفريق ومسؤول الإنقاذ" },
-    ],
-    gallery: [
-      "/images/hero/hero-4.jpg",
-      "/images/hero/hero-1.jpg",
-    ],
-  },
-  {
-    id: "semaphore-morse-navigation-cup-2023",
-    title: "بطولة الملاحة وإشارات السيمافور والمورس",
-    category: "naval",
-    categoryName: "المسابقات والأنشطة البحرية",
-    year: 2023,
-    dateStr: "سبتمبر ٢٠٢٣",
-    location: "نادي الصيد البحري - الإسكندرية",
-    placement: "المستوى الأول متميز",
-    specialAwards: ["درع التفوق الملاحي", "سرعة فك شفرات المورس", "شارة الإشارات البحرية"],
-    image: "/images/hero/hero-4.jpg",
-    description:
-      "مسابقات التخاطب البحري بالأعلام (السيمافور) وإشارات الضوء والصوت (المورس) والعقد المائية المتخصصة.",
-    clanStory:
-      "تألق شباب العشيرة في مسابقة الإشارات وسجلوا زمناً قياسياً في فك وإرسال الرسائل المشفرة بدقة تامة.",
-    stats: {
-      participantsCount: 14,
-      competingClans: 11,
-      shieldsCount: 2,
-    },
-    awardsDetailed: [
-      { title: "درع التفوق الملاحي والاتصالات البحرية", type: "shield" },
-      { title: "وسام السرعة والدقة في شفرة المورس", type: "medal" },
-    ],
-    delegation: [
-      { name: "الجوال / حازم شوقي", role: "كبير مسؤولي إشارات السيمافور", isLeader: true },
-      { name: "الجوال / سامر وفيق", role: "أخصائي شفرات المورس الضوئي" },
-      { name: "الجوال / مدحت خليل", role: "مسؤول عقد الحبال الملاحية" },
-    ],
-    gallery: [
-      "/images/hero/hero-4.jpg",
-    ],
-  },
-  {
-    id: "scout-seamanship-regatta-2022",
-    title: "رالي الكشافة البحرية والسباحة والإنقاذ",
-    category: "naval",
-    categoryName: "المسابقات والأنشطة البحرية",
-    year: 2022,
-    dateStr: "أغسطس ٢٠٢٢",
-    location: "بحيرة التمساح - الإسماعيلية",
-    placement: "المركز الثاني",
-    specialAwards: ["الميدالية الفضية للسباحة الحرة", "شارة السلامة والإنقاذ المائي"],
-    image: "/images/hero/hero-4.jpg",
-    description:
-      "منافسات السباحة الحرة والإنقاذ المائي وفنون التجديف الفردي في البيئات المائية المفتوحة.",
-    clanStory:
-      "مشاركة قوية توجت بالفضية وشهادات تقدير في مهارات الغطس والإنقاذ الكشفي.",
-    stats: {
-      participantsCount: 12,
-      competingClans: 9,
-      shieldsCount: 2,
-    },
-    awardsDetailed: [
-      { title: "الميدالية الفضية لسباقات السباحة والإنقاذ", type: "medal" },
-      { title: "شارة السلامة البحرية المعتمدة", type: "star" },
-    ],
-    delegation: [
-      { name: "الجوال / أشرف كرم", role: "سباح ومنقذ معتمد", isLeader: true },
-      { name: "الجوال / هاني عزت", role: "غطاس الفريق" },
-    ],
-    gallery: [
-      "/images/hero/hero-4.jpg",
-    ],
-  },
-
+ 
   // ================= 5. مسابقات الفنون والأسمار (arts) =================
   {
     id: "grand-scout-samar-festival-2024",
@@ -535,71 +241,7 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "/images/hero/hero-1.jpg",
     ],
   },
-  {
-    id: "scout-heritage-art-exhibition-2023",
-    title: "معرض الفنون التشكيلية والتراث الكشفي",
-    category: "arts",
-    categoryName: "مسابقات الفنون والأسمار",
-    year: 2023,
-    dateStr: "ديسمبر ٢٠٢٣",
-    location: "قاعة المعارض المركزية - قصر الزعفران",
-    placement: "المركز الأول",
-    specialAwards: ["درع المعرض التراثي والفني", "شارة الإتقان في الأعمال اليدوية", "أفضل توثيق تاريخي"],
-    image: "/images/hero/hero-3.jpg",
-    description:
-      "معرض الإبداعات الفنية والأعمال اليدوية والأركيت والحرق على الخشب، وتوثيق تاريخ الحركة الكشفية وهندسة عين شمس.",
-    clanStory:
-      "قدم جناح العشيرة مجسمات هندسية خشبية ولوحات زيتية وتوثيقاً نادراً لمسيرة العشيرة حاز إعجاب رئيس الجامعة وعميد الكلية.",
-    stats: {
-      participantsCount: 20,
-      competingClans: 15,
-      shieldsCount: 3,
-    },
-    awardsDetailed: [
-      { title: "درع المركز الأول للمعرض التراثي والفني", type: "shield" },
-      { title: "وسام الإتقان في النحت والأعمال اليدوية", type: "star" },
-    ],
-    delegation: [
-      { name: "الجوالة / مريم علي", role: "منسقة المعرض والفنون التشكيلية", isLeader: true },
-      { name: "الجوال / شريف نبيل", role: "مسؤول أعمال الأركيت والنحت الخشبي" },
-      { name: "الجوال / وليد سامح", role: "مسؤول التوثيق والأرشيف التاريخي" },
-    ],
-    gallery: [
-      "/images/hero/hero-3.jpg",
-    ],
-  },
-  {
-    id: "scout-choir-anthems-cup-2022",
-    title: "مسابقة الأناشيد والصيحات الكشفية",
-    category: "arts",
-    categoryName: "مسابقات الفنون والأسمار",
-    year: 2022,
-    dateStr: "نوفمبر ٢٠٢٢",
-    location: "المدرج الكبير - كلية الهندسة",
-    placement: "المركز الأول",
-    specialAwards: ["كأس الإنشاد الكشفي", "أفضل صيحة حماسية هادفة"],
-    image: "/images/hero/hero-2.jpg",
-    description:
-      "مسابقة التنافس في الأداء الجماعي للأناشيد الكشفية والوطنية والصيحات الحماسية المنضبطة.",
-    clanStory:
-      "تألق كورال العشيرة بأداء نشيد العشيرة الرسمي وصيحات كشفية نالت تصفيق الجميع والمركز الأول بجدارة.",
-    stats: {
-      participantsCount: 25,
-      competingClans: 12,
-      shieldsCount: 2,
-    },
-    awardsDetailed: [
-      { title: "كأس المركز الأول للإنشاد الكشفي الجماعي", type: "trophy" },
-      { title: "وسام الصيحة الكشفية الأكثر حماساً", type: "star" },
-    ],
-    delegation: [
-      { name: "الجوال / عمر خالد", role: "مايسترو وقائد الكورال الكشفي", isLeader: true },
-      { name: "الجوال / هاني رفعت", role: "منشد رئيسي وعازف إيقاع" },
-    ],
-    gallery: [
-      "/images/hero/hero-2.jpg",
-    ],
-  },
+  
 ];
 
 export function getTournamentById(id: string): TournamentItem | undefined {
