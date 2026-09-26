@@ -106,7 +106,7 @@ function buildGalleryMedia(): GalleryMediaItem[] {
         media.push({
           id: `event-photo-${event.id}-${index}`,
           url: photoUrl,
-          title: `${event.title} - صورة ${index + 1}`,
+          title: event.title,
           category: "فعاليات",
           subcategory: normalizeEventCategory(event.eventType),
           format: "image",
