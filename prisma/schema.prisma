@@ -15,20 +15,26 @@ datasource db {
 // Join Requests (Public Form Submissions)
 // ============================================================
 model JoinRequest {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fullName       String    @map("full_name")
-  phone          String
-  whatsapp       String?   @map("whatsapp")
-  gender         String?   @map("gender") // "ذكر" | "أنثى"
-  email          String?
-  academicYear   String    @map("academic_year")
-  department     String?   @map("department")
-  interests      String?
-  interviewSlots String[]  @default([]) @map("interview_slots")
-  status         String    @default("pending") // "pending", "approved", "rejected"
-  reviewedBy     String?   @map("reviewed_by") @db.Uuid
-  createdAt      DateTime  @default(now()) @map("created_at")
-  reviewedAt     DateTime? @map("reviewed_at")
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName              String   @map("full_name")
+  phone                 String
+  whatsapp              String?  @map("whatsapp")
+  gender                String?  @map("gender") // "ذكر" | "أنثى"
+  email                 String?
+  academicYear          String   @map("academic_year")
+  programType           String   @default("mainstream") @map("program_type") // "mainstream" | "credit"
+  department            String?  @map("department")
+  interests             String?
+  interviewSlots        String[] @default([]) @map("interview_slots")
+  selectedInterviewTime String?  @map("selected_interview_time")
+  interviewNotes        String?  @map("interview_notes")
+
+  // Status MUST be in Arabic to sync with the Dashboard
+  status String @default("جديد") // "جديد", "تم تحديد موعد", "مقبول", "مرفوض", "مؤجل", "لم يحضر"
+
+  reviewedBy String?   @map("reviewed_by") @db.Uuid
+  createdAt  DateTime  @default(now()) @map("created_at")
+  reviewedAt DateTime? @map("reviewed_at")
 
   @@map("join_requests")
 }

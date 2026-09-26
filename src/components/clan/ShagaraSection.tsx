@@ -24,11 +24,11 @@ export function ShagaraSection({ currentData }: { currentData: ComplexYearData |
   };
 
   // Build the High Council rows manually to match the rigid layout
-  const row1 = [...getExactRole(highCouncil, "قائد العشيرة"), ...getRoles(highCouncil, ["قائدة الجوالات", "قائده المرشدات"] )];
+  const row1 = [...getExactRole(highCouncil, "قائد العشيرة"), ...getRoles(highCouncil, ["قائدة الجوالات", "قائدة المرشدات"] )];
   const row2 = getExactRole(highCouncil, "مساعد قائد العشيرة");
   const row3 = [
     ...getRoles(highCouncil, ["الرائد الأكبر", "الرائد الاكير"]),
-    ...getRoles(highCouncil, ["الرائدة الكبرى", "الرائده الكبري"]),
+    ...getRoles(highCouncil, ["الرائدة الكبرى"]),
   ];
 
   // Pre-process auxiliary groups
@@ -64,7 +64,7 @@ export function ShagaraSection({ currentData }: { currentData: ComplexYearData |
             )}
 
             {row2.length > 0 && (
-              <div className="flex justify-center flex-wrap gap-10 sm:gap-16 w-full">
+              <div className="flex justify-center flex-wrap gap-10 sm:gap-16 w-full pt-8 sm:pt-10">
                 {row2.map((item, idx: number) => (
                   <LeaderCard key={idx} item={item} isAssistant />
                 ))}
@@ -130,12 +130,14 @@ export function ShagaraSection({ currentData }: { currentData: ComplexYearData |
 
 function LeaderCard({ item, isAssistant = false }: { item: RoleNode; isAssistant?: boolean }) {
   const imageSrc = item.member.avatar || "/gold-circle.png";
-  const circleSizeClass = "w-32 h-32 sm:w-36 sm:h-36";
+  const imageSizeClass = "w-40 h-40 sm:w-44 sm:h-44";
+  const imageScaleClass = getImageScaleClass(item.member.id);
+  const imagePositionClass = getImagePositionClass(item.member.id);
 
   return (
     <div className="flex flex-col items-center space-y-3 group text-center">
-      <div className={`relative flex items-center justify-center rounded-full bg-white/85 dark:bg-white/5 border border-[#d4a373]/20 dark:border-cyan-500/20 shadow-lg shadow-[#d4a373]/10 dark:shadow-[0_0_20px_rgba(0,240,255,0.08)] transition-transform duration-300 group-hover:scale-105 ${circleSizeClass}`}>
-        <Image src={imageSrc} alt={item.role} fill className="object-contain p-1" priority />
+      <div className={`relative flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${imageSizeClass} ${imagePositionClass.wrapper}`}>
+        <Image src={imageSrc} alt={item.role} fill className={`object-contain origin-bottom ${imageScaleClass} ${imagePositionClass.image}`} priority />
       </div>
 
       <div className="space-y-1 max-w-[180px]">
@@ -151,12 +153,14 @@ function LeaderCard({ item, isAssistant = false }: { item: RoleNode; isAssistant
 }
 
 function NameOnlyCard({ item }: { item: RoleNode }) {
-  const circleSizeClass = "w-32 h-32 sm:w-36 sm:h-36";
+  const imageSizeClass = "w-40 h-40 sm:w-44 sm:h-44";
+  const imageScaleClass = getImageScaleClass(item.member.id);
+  const imagePositionClass = getImagePositionClass(item.member.id);
 
   return (
     <div className="flex flex-col items-center space-y-3 group text-center">
-      <div className={`relative flex items-center justify-center rounded-full bg-white/85 dark:bg-white/5 border border-[#d4a373]/20 dark:border-cyan-500/20 shadow-lg shadow-[#d4a373]/10 dark:shadow-[0_0_20px_rgba(0,240,255,0.08)] transition-transform duration-300 group-hover:scale-105 ${circleSizeClass}`}>
-        <Image src={item.member.avatar || "/gold-circle.png"} alt={item.member.name} fill className="object-contain p-1" priority />
+      <div className={`relative flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${imageSizeClass} ${imagePositionClass.wrapper}`}>
+        <Image src={item.member.avatar || "/gold-circle.png"} alt={item.member.name} fill className={`object-contain origin-bottom ${imageScaleClass} ${imagePositionClass.image}`} priority />
       </div>
 
       <span className="text-sm sm:text-base font-black text-[#0b1a30] dark:text-white leading-snug max-w-[180px]">
@@ -164,4 +168,34 @@ function NameOnlyCard({ item }: { item: RoleNode }) {
       </span>
     </div>
   );
+}
+
+function getImageScaleClass(memberId: string) {
+  switch (memberId) {
+    case "p-maryamBahr":
+    case "p-menaDiab":
+      return "scale-[1.45]";
+    case "p-hamsa":
+    case "p-ahmedMashal":
+    case "p-mazenTaha":
+    case "p-arwi":
+      return "scale-[1.3]";
+    case "p-yusufAlaa":
+    case "p-michael":
+      return "scale-[1.2]";
+    default:
+      return "";
+  }
+}
+
+function getImagePositionClass(memberId: string) {
+  if (memberId === "p-ahmedMashal") {
+    return { wrapper: "", image: "[clip-path:inset(0_0_12%_0)]" };
+  }
+
+  if (memberId === "p-maryamBahr") {
+    return { wrapper: "translate-y-[18%] mb-6", image: "" };
+  }
+
+  return { wrapper: "", image: "" };
 }
