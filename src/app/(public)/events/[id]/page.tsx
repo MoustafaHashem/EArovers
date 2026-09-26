@@ -14,11 +14,12 @@ export default async function EventDetailsPage({
   const { id } = await params;
 
   const event = EVENTS_DATA.find((e) => e.id === id);
+
+  if (!event) notFound();
+
   const eventPhotos = event.photos ?? [];
   const user = null;
   const hasJoined = false;
-
-  if (!event) notFound();
 
   const isUpcoming = new Date(event.startDate) >= new Date();
 

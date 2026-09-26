@@ -20,7 +20,7 @@ type GalleryImage = {
 };
 
 export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] }) {
-  const categories = ["مسابقات", "دروع", "معسكرات", "كواليس"];
+  const categories = ["الكل", "دروع", "مسابقات", "فعاليات", "كواليس"];
   const [activeCategory, setActiveCategory] = useState(categories[0]);
   const [images, setImages] = useState<GalleryImage[]>(initialImages || []);
   const [loading, setLoading] = useState(false);

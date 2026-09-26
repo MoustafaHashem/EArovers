@@ -13,14 +13,10 @@ import {
   Trophy,
   Shield,
   Clapperboard,
-  Compass,
   PlayCircle,
   Film,
-  ImageIcon,
-  Layers,
   Maximize2,
   RefreshCw,
-  Clock,
   Images,
 } from "lucide-react";
 import { fetchMediaAction } from "@/actions/media";
@@ -39,6 +35,7 @@ export type GalleryMediaItem = {
   url: string;
   title: string;
   category?: string;
+  subcategory?: string;
   format: string;
 };
 
@@ -48,18 +45,18 @@ interface FullGalleryProps {
 
 const CATEGORIES = [
   { key: "الكل", label: "الكل", icon: Sparkles },
-  { key: "معسكرات", label: "معسكرات", icon: Tent },
-  { key: "مسابقات", label: "مسابقات", icon: Trophy },
   { key: "دروع", label: "دروع", icon: Shield },
+  { key: "مسابقات", label: "مسابقات", icon: Trophy },
+  { key: "فعاليات", label: "فعاليات", icon: Tent },
   { key: "كواليس", label: "كواليس", icon: Clapperboard },
-  { key: "رحلات", label: "رحلات", icon: Compass },
 ] as const;
 
 export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
   const [mediaList, setMediaList] = useState<GalleryMediaItem[]>(initialMedia);
   const [activeCategory, setActiveCategory] = useState<string>("الكل");
+  const [activeSubcategory, setActiveSubcategory] = useState<string>("الكل");
+  const [activeItem, setActiveItem] = useState<string>("الكل");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [mediaType, setMediaType] = useState<"all" | "image" | "video">("all");
   const [loading, setLoading] = useState<boolean>(initialMedia.length === 0);
   const [lightboxIndex, setLightboxIndex] = useState<number>(-1);
 
@@ -68,7 +65,6 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
     if (initialMedia.length > 0) return;
 
     let mounted = true;
-    setLoading(true);
 
     fetchMediaAction("الكل")
       .then((data) => {
@@ -98,11 +94,35 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
     return counts;
   }, [mediaList]);
 
-  // Total videos count
-  const videoCount = useMemo(
-    () => mediaList.filter((m) => m.format === "mp4").length,
-    [mediaList]
-  );
+  const availableSubcategories = useMemo(() => {
+    if (activeCategory === "الكل") return [];
+
+    return [
+      "الكل",
+      ...new Set(
+        mediaList
+          .filter((item) => item.category === activeCategory && item.subcategory)
+          .map((item) => item.subcategory as string),
+      ),
+    ];
+  }, [activeCategory, mediaList]);
+
+  const availableItems = useMemo(() => {
+    if (activeCategory === "الكل" || activeSubcategory === "الكل") return [];
+
+    return [
+      "الكل",
+      ...new Set(
+        mediaList
+          .filter(
+            (item) =>
+              item.category === activeCategory &&
+              item.subcategory === activeSubcategory,
+          )
+          .map((item) => item.title),
+      ),
+    ];
+  }, [activeCategory, activeSubcategory, mediaList]);
 
   // Filtered Media
   const filteredMedia = useMemo(() => {
@@ -112,11 +132,17 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
         return false;
       }
 
-      // 2. Type Filter (all / image / video)
-      if (mediaType === "video" && item.format !== "mp4") return false;
-      if (mediaType === "image" && item.format === "mp4") return false;
+      // 2. Subcategory Filter
+      if (activeSubcategory !== "الكل" && item.subcategory !== activeSubcategory) {
+        return false;
+      }
 
-      // 3. Search Query
+      // 3. Item-level filter (a specific tournament or event)
+      if (activeItem !== "الكل" && item.title !== activeItem) {
+        return false;
+      }
+
+      // 4. Search Query
       if (searchQuery.trim()) {
         const query = searchQuery.trim().toLowerCase();
         const titleMatch = item.title?.toLowerCase().includes(query);
@@ -126,12 +152,13 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
 
       return true;
     });
-  }, [mediaList, activeCategory, mediaType, searchQuery]);
+  }, [mediaList, activeCategory, activeSubcategory, activeItem, searchQuery]);
 
   const handleResetFilters = () => {
     setActiveCategory("الكل");
+    setActiveSubcategory("الكل");
+    setActiveItem("الكل");
     setSearchQuery("");
-    setMediaType("all");
   };
 
   // Convert filtered media to Lightbox slides
@@ -187,44 +214,6 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
             </p>
           </div>
 
-          {/* Quick Stats Chips */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 gap-3 self-start md:self-auto w-full md:w-auto">
-            <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-              <div className="text-2xl font-black text-[#0b1a30] dark:text-cyan-400">
-                {mediaList.length}
-              </div>
-              <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                إجمالي الوسائط
-              </div>
-            </div>
-
-            <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-              <div className="text-2xl font-black text-[#d4a373] dark:text-teal-300">
-                {categoryCounts["معسكرات"] || 4}
-              </div>
-              <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                معسكرات كشفية
-              </div>
-            </div>
-
-            <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-              <div className="text-2xl font-black text-amber-500 dark:text-amber-400">
-                {categoryCounts["مسابقات"] || 4}
-              </div>
-              <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                بطولات ومسابقات
-              </div>
-            </div>
-
-            <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-              <div className="text-2xl font-black text-blue-600 dark:text-blue-400">
-                {videoCount || 1}
-              </div>
-              <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                مقاطع فيديو
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -252,52 +241,6 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
             )}
           </div>
 
-          {/* Media Type Filter (الكل / صور / فيديوهات) */}
-          <div className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 p-1 rounded-2xl border border-black/5 dark:border-white/10 self-center sm:self-auto">
-            <button
-              onClick={() => setMediaType("all")}
-              className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer",
-                mediaType === "all"
-                  ? "bg-white dark:bg-cyan-500/20 text-[#0b1a30] dark:text-cyan-300 shadow-sm border border-black/5 dark:border-cyan-400/30"
-                  : "text-[#64748b] dark:text-gray-400 hover:text-[#0b1a30] dark:hover:text-white"
-              )}
-            >
-              <Layers size={15} />
-              <span>الكل</span>
-            </button>
-
-            <button
-              onClick={() => setMediaType("image")}
-              className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer",
-                mediaType === "image"
-                  ? "bg-white dark:bg-cyan-500/20 text-[#0b1a30] dark:text-cyan-300 shadow-sm border border-black/5 dark:border-cyan-400/30"
-                  : "text-[#64748b] dark:text-gray-400 hover:text-[#0b1a30] dark:hover:text-white"
-              )}
-            >
-              <ImageIcon size={15} />
-              <span>صور</span>
-            </button>
-
-            <button
-              onClick={() => setMediaType("video")}
-              className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer",
-                mediaType === "video"
-                  ? "bg-white dark:bg-cyan-500/20 text-[#0b1a30] dark:text-cyan-300 shadow-sm border border-black/5 dark:border-cyan-400/30"
-                  : "text-[#64748b] dark:text-gray-400 hover:text-[#0b1a30] dark:hover:text-white"
-              )}
-            >
-              <Film size={15} />
-              <span>فيديوهات</span>
-              {videoCount > 0 && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-red-500 text-white font-black">
-                  {videoCount}
-                </span>
-              )}
-            </button>
-          </div>
         </div>
 
         {/* Category Pills */}
@@ -313,7 +256,11 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
             return (
               <button
                 key={cat.key}
-                onClick={() => setActiveCategory(cat.key)}
+                onClick={() => {
+                  setActiveCategory(cat.key);
+                  setActiveSubcategory("الكل");
+                  setActiveItem("الكل");
+                }}
                 className={cn(
                   "relative flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer select-none",
                   isActive
@@ -344,6 +291,47 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
             );
           })}
         </div>
+
+        {availableSubcategories.length > 0 && (
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            {availableSubcategories.map((subcategory) => (
+              <button
+                key={subcategory}
+                onClick={() => {
+                  setActiveSubcategory(subcategory);
+                  setActiveItem("الكل");
+                }}
+                className={cn(
+                  "flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors border",
+                  activeSubcategory === subcategory
+                    ? "bg-[#161e35] text-white border-[#161e35] dark:bg-cyan-400 dark:text-[#080b10] dark:border-cyan-400"
+                    : "bg-white/70 dark:bg-white/5 text-[#64748b] dark:text-gray-300 border-[#d4a373]/20 dark:border-white/10 hover:border-[#161e35] dark:hover:border-cyan-400"
+                )}
+              >
+                {subcategory}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {availableItems.length > 0 && (
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+            {availableItems.map((item) => (
+              <button
+                key={item}
+                onClick={() => setActiveItem(item)}
+                className={cn(
+                  "flex-shrink-0 max-w-[260px] truncate px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors border",
+                  activeItem === item
+                    ? "bg-[#161e35] text-white border-[#161e35] dark:bg-cyan-400 dark:text-[#080b10] dark:border-cyan-400"
+                    : "bg-white/70 dark:bg-white/5 text-[#64748b] dark:text-gray-300 border-[#d4a373]/20 dark:border-white/10 hover:border-[#161e35] dark:hover:border-cyan-400"
+                )}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ================= RESULTS COUNTER ================= */}
@@ -352,7 +340,7 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
           عرض <strong className="text-[#0b1a30] dark:text-white">{filteredMedia.length}</strong> من أصل{" "}
           {mediaList.length} وسائط
         </span>
-        {(activeCategory !== "الكل" || searchQuery || mediaType !== "all") && (
+        {(activeCategory !== "الكل" || activeSubcategory !== "الكل" || activeItem !== "الكل" || searchQuery) && (
           <button
             onClick={handleResetFilters}
             className="flex items-center gap-1.5 text-[#161e35] dark:text-cyan-400 hover:underline font-bold"

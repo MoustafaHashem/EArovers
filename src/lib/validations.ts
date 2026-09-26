@@ -18,6 +18,8 @@ export const joinFormSchema = z.object({
   academicYear: z
     .string()
     .min(1, "يرجى اختيار الفرقة الدراسية"),
+  programType: z
+    .enum(["mainstream", "credit"], "يرجى اختيار نوع البرنامج"),
   department: z
     .string()
     .min(1, "يرجى تحديد التخصص / القسم الأكاديمي"),

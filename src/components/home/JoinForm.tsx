@@ -37,10 +37,6 @@ const ASU_DEPARTMENTS = [
   "هندسة التصميم والإنتاج",
   "هندسة الميكاترونكس",
   "هندسة السيارات",
-  "هندسة البترول والتعدين",
-  "الهندسة الحيوية الطبية والمنظومات",
-  "هندسة التخطيط العمراني",
-  "برامج الساعات المعتمدة (Credit)",
   "أخرى (تحديد يدوي)"
 ];
 
@@ -92,6 +88,7 @@ export function JoinForm() {
     phone: "",
     whatsapp: "",
     academicYear: "إعدادي",
+    programType: "mainstream" as "mainstream" | "credit",
     department: "إعدادي عام",
     interests: "",
     interviewSlots: [] as string[]
@@ -196,7 +193,7 @@ export function JoinForm() {
       return validName && validPhone && validWhatsapp && validGender;
     }
     if (step === 2) {
-      return Boolean(formData.academicYear && formData.department && formData.department.trim().length > 0);
+      return Boolean(formData.academicYear && formData.programType && formData.department && formData.department.trim().length > 0);
     }
     if (step === 3) {
       return true; // interests is optional
@@ -222,6 +219,7 @@ export function JoinForm() {
       phone: "",
       whatsapp: "",
       academicYear: "إعدادي",
+      programType: "mainstream",
       department: "إعدادي عام",
       interests: "",
       interviewSlots: []
@@ -293,7 +291,7 @@ export function JoinForm() {
                 </div>
                 <div>
                   <span className="text-gray-500 dark:text-gray-400 ml-1">الفرقة والتخصص:</span>
-                  <span className="font-bold text-[#0b1a30] dark:text-gray-200">{state.data.academicYear} - {state.data.department}</span>
+                  <span className="font-bold text-[#0b1a30] dark:text-gray-200">{state.data.academicYear} - {state.data.department} ({state.data.programType})</span>
                 </div>
                 <div>
                   <span className="text-gray-500 dark:text-gray-400 ml-1">رقم الهاتف (اتصال):</span>
@@ -399,6 +397,7 @@ export function JoinForm() {
             <input type="hidden" name="phone" value={formData.phone} />
             <input type="hidden" name="whatsapp" value={sameAsPhone ? formData.phone : formData.whatsapp} />
             <input type="hidden" name="academicYear" value={formData.academicYear} />
+            <input type="hidden" name="programType" value={formData.programType} />
             <input type="hidden" name="department" value={formData.department} />
             <input type="hidden" name="interests" value={formData.interests} />
             <input type="hidden" name="interviewSlotsStr" value={JSON.stringify(formData.interviewSlots)} />
@@ -579,6 +578,25 @@ export function JoinForm() {
                         <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2" value="الفرقة الثانية">الفرقة الثانية</option>
                         <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2" value="الفرقة الثالثة">الفرقة الثالثة</option>
                         <option className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white py-2" value="الفرقة الرابعة">الفرقة الرابعة</option>
+                      </select>
+                    </div>
+
+                    {/* Program Type */}
+                    <div>
+                      <label className="block text-sm font-bold text-[#0b1a30] dark:text-gray-300 mb-2 flex items-center gap-2">
+                        <GraduationCap size={16} className="text-[#161e35] dark:text-cyan-400" />
+                        نوع الدراسة
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        name="programType"
+                        required
+                        value={formData.programType}
+                        onChange={handleChange}
+                        className="w-full bg-black/[0.03] dark:bg-black/40 border border-[#d4a373]/30 dark:border-white/10 rounded-2xl px-4 py-4 text-[#0b1a30] dark:text-gray-200 focus:outline-none focus:border-[#161e35] dark:focus:border-cyan-400 focus:ring-1 focus:ring-[#161e35] dark:focus:ring-cyan-400 transition-all cursor-pointer text-sm sm:text-base"
+                      >
+                        <option value="mainstream" className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white">Mainstream</option>
+                        <option value="credit" className="bg-white dark:bg-[#0f172a] text-[#0b1a30] dark:text-white">Credit</option>
                       </select>
                     </div>
 

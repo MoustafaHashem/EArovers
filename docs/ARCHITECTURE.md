@@ -87,21 +87,26 @@ The schema centers around the `Member` model, unifying user authentication profi
 ### Media Gallery Architecture (`/gallery`)
 - **Visual & Layout Alignment**: Integrated with the global `<Navbar />` (highlighting the "الميديا" link) and `<Identity />` footer, with ambient glowing backdrop and RTL styling.
 - **Server Preloading & Client Hydration**: Server Component preloads initial media via `fetchMediaAction("الكل")` to eliminate layout shifts and spinners on first load.
-- **Interactive Control Suite**: Includes real-time textual search across titles and categories, media format toggling (`all` / `image` / `video`), and 6 category filters (`الكل`, `معسكرات`, `مسابقات`, `دروع`, `كواليس`, `رحلات`) with animated selection indicators and live count badges.
+- **Unified Feed**: `src/actions/media.ts` normalizes tournament covers and galleries (`TOURNAMENTS_DATA`) plus event covers (`EVENTS_DATA`) into one server-side feed. Shield artwork is excluded from the feed; the dedicated shield action is reserved for uploaded shield media.
+- **Interactive Control Suite**: Includes real-time textual search and four main filters (`دروع`, `مسابقات`, `فعاليات`, `كواليس`). Subfilters are derived only from media that exists: competitions expose `وفديات`, `رياضية`, `فنون واسمار`, `كشفي`, and `بحري`, then each specific tournament; events expose their event type, then each specific event. `كواليس` intentionally has no subfilter.
 - **Responsive Media Grid & Lightbox Experience**: Uniform 4:3 cards with frosted-glass category badges, format indicators, play buttons for video clips, and hover-triggered zoom effects. Lightbox is configured with Zoom, Thumbnails, Captions, and Video plugins for full-screen in-browser playback of local and Cloudinary MP4 scout videos.
-- **Curated Fallback Layer**: Ensures rich content availability across all categories even when database queries return empty or when seeding new environments.
+- **Current Data Boundary**: The feed currently reflects the repository's static page datasets. A future Cloudinary/Prisma upload path can append records to the same normalized shape without changing the gallery UI.
 
 ### Hierarchy Route Presentation (`/hierarchy`)
 - **Shared Shell Alignment**: The dedicated hierarchy route now uses the same transparent page shell as the rest of the public site, including ambient blur background glows, a hero header with breadcrumb, and glass-style stat chips.
 - **Tree Presentation**: The yearly selector and the hierarchy tree container use the same warm-gold / deep-navy card treatment and dark-mode glass borders as the events and fame pages, keeping the organizational view visually consistent with the rest of the app.
+- **2026 Static Archive Assets**: The 2026 hierarchy uses local member photos from `public/images/hierarchy/2026/`, with role assignments maintained in `src/data/clanData.ts`. Yahya Mohammed is grouped beneath the Digital Transformation Leader as an assistant, and Abdulrahman Wahid is excluded from the Board of Directors while remaining the Media Leader.
+- **2026 Presentation Refinement**: The Custodian role reuses Omar Khamis's shared member record, feminine Arabic role labels use `قائدة` and `مساعدة`, and hierarchy photos render larger without decorative circular frames.
+- **Portrait Normalization**: `ShagaraSection.tsx` applies targeted scale classes to portraits with different transparent margins so members appear visually consistent without changing the grid layout.
 
 ### Join Us Form & Interview Slots Architecture (`/join`, `src/actions/join.ts`)
 - **Multi-Step Progressive Form**: 4 structured steps with intuitive visual indicators, responsive validation (`canGoNext`), and animated transitions:
   1. *البيانات الشخصية والتواصل*: Full Name, Gender selection (`ذكر (جوال)` / `أنثى (مرشدة)`), Call Phone Number, and WhatsApp Number with smart "نفس رقم الهاتف" one-click synchronization.
-  2. *البيانات الأكاديمية*: Academic Year and Faculty of Engineering Ain Shams University department/specialization dropdown with free-text fallback for custom credit programs.
+  2. *البيانات الأكاديمية*: Academic Year, a required `Mainstream`/`Credit` program type, and the Faculty of Engineering Ain Shams University department/specialization dropdown with free-text fallback. The four excluded departments are not offered in the dropdown.
   3. *الاهتمامات الكشفية*: Multi-select activity pills (Camping, Arts, Sports, Media, Community Service, Marine Scouting) and notes.
   4. *مواعيد المقابلة الشخصية (Interview Slots)*: Multi-day calendar slots selector (Saturday through Thursday, 4 periods per day). Supports selecting multiple slots across different days, with per-day badges and removable chip summaries.
 - **Submission & State Persistence**: Employs hidden inputs outside step animations to guarantee complete form data capture across unmounted steps.
+- **Review Fields**: `JoinRequest` stores optional `selected_interview_time` and `interview_notes` fields for the reviewer workflow; they are intentionally not submitted by the public applicant form.
 - **Post-Submission Feedback**: Custom celebratory success screen with registration recap and official message:
   *"تمام، تم تسجيل بياناتك بنجاح! هنبعتلك على الواتساب أو هنكلمك علشان نبلغك بميعاد الإنترفيو."*
 - **Admin Management (`/admin/requests`)**: Enhanced review cards with direct call links, 1-click WhatsApp web/app messaging (`wa.me`), academic specialization, and visual tags of candidate interview availability.
