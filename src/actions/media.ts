@@ -37,12 +37,7 @@ export async function fetchShieldMediaAction(category: string, id: string) {
         title: "روح الفريق والتعاون بين الجوالة والجوالات",
         format: "jpg",
       },
-      {
-        id: "scout-3",
-        url: "/images/badges/scout3.png",
-        title: "أجواء الحماس في المعسكر التدريبي",
-        format: "png",
-      },
+      
       {
         id: "scout-2",
         url: "/images/badges/scout2.png",
