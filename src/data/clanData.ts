@@ -270,18 +270,18 @@ export type FameItem = {
 export const fameData: FameItem[] = [
   {
     id: "f1",
-    eventName: "مهرجان الجوالة بجامعة عين شمس",
-    year: 2023,
-    placement: "المركز الأول عام",
-    specialAwards: ["درع التميز الكشفي", "أفضل مخرج سمر"],
+    eventName: "الوفدية ال 55",
+    year: 2026,
+    placement: "المركز الأول ",
+    specialAwards: ["مثالي عام", "قائد مثالي"],
     image: "/images/hero/hero-2.jpg",
   },
   {
     id: "f2",
-    eventName: "المسابقة القمية",
-    year: 2022,
-    placement: "المركز الثاني",
-    specialAwards: ["جوال مثالي"],
+    eventName: "الرياضية ال28 لجوالين و 11 للجولات",
+    year: 2025,
+    placement: "اول جوالين واول جوالات",
+    specialAwards: ["مثالي عام", "قائد مثالي"],
     image: "/images/hero/hero-3.jpg",
   },
 ];
