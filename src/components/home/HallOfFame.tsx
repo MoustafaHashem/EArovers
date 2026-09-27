@@ -18,76 +18,88 @@ export function HallOfFame({ dbData }: { dbData?: FameItem[] }) {
       </div>
 
       <div className="w-full relative border-r-2 border-[#d4a373]/30 dark:border-[#ffd700]/30 pr-4 sm:pr-6 space-y-8 sm:space-y-12">
-        {data.map((item) => (
-          <div key={item.id} className="relative">
-            {/* Timeline Dot */}
-            <div className="absolute -right-[23px] sm:-right-[33px] top-6 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#d4a373] dark:bg-[#ffd700] shadow-[0_0_10px_rgba(212,163,115,0.5)] dark:shadow-[0_0_15px_#ffd700] z-20" />
-            
-            <Link
-              href={`/fame/tournaments/${item.id}`}
-              className="block glass-card honor-card p-5 sm:p-7 rounded-2xl mr-2 sm:mr-4 hover:-translate-x-2 transition-all duration-500 relative overflow-hidden group cursor-pointer"
-            >
-              {/* Background Image Layer */}
-              {item.image && (
-                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                  <Image
-                    src={item.image}
-                    alt={item.eventName}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 900px"
-                    className="object-cover object-center scale-100 group-hover:scale-105 transition-transform duration-700 ease-out opacity-30 dark:opacity-35 group-hover:opacity-45 dark:group-hover:opacity-50 filter saturate-125 brightness-95"
-                  />
-                  {/* Subtle Vignette & Gradient Overlays for High Contrast Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-l from-white/95 via-white/80 to-white/50 dark:from-[#060c18]/95 dark:via-[#081324]/85 dark:to-[#0b1a32]/50" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/40 to-transparent dark:from-[#060c18]/95 dark:via-transparent dark:to-transparent" />
-                </div>
-              )}
-
-              {/* Foreground Content */}
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-4 sm:mb-5 flex-col sm:flex-row gap-3 sm:gap-4">
-                  <div>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0b1a30] dark:text-white mb-2 drop-shadow-sm group-hover:text-[#d4a373] dark:group-hover:text-cyan-300 transition-colors">
-                      {item.eventName}
-                    </h3>
-                    <div className="inline-flex items-center gap-2 bg-[#d4a373]/15 text-[#0b1a30] border border-[#d4a373]/30 dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30 px-3 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold backdrop-blur-md">
-                      <span>{item.year}</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 sm:gap-3 shrink-0 self-end sm:self-start">
-                    <div className="bg-gradient-to-r from-amber-400 to-[#d4a373] text-[#0b1a30] dark:from-yellow-400 dark:to-amber-500 dark:text-[#080b10] font-black px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg shadow-md dark:shadow-[0_0_18px_rgba(255,215,0,0.35)] flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm backdrop-blur-sm">
-                      <Medal size={18} />
-                      <span>{item.placement}</span>
-                    </div>
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-[#0b1a30] dark:text-white group-hover:bg-[#d4a373] dark:group-hover:bg-cyan-400 group-hover:text-white dark:group-hover:text-[#080b10] group-hover:-translate-x-1 transition-all shadow-sm">
-                      <ChevronLeft size={16} />
-                    </div>
-                  </div>
-                </div>
-
-                {item.specialAwards.length > 0 && (
-                  <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-black/10 dark:border-white/10">
-                    <h4 className="text-[#475569] dark:text-slate-300 mb-2 sm:mb-3 text-xs sm:text-sm font-semibold">
-                      شارات التميز الخاصة:
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                      {item.specialAwards.map((award, i) => (
-                        <span 
-                          key={i} 
-                          className="flex items-center gap-1 sm:gap-1.5 bg-white/70 border border-black/10 text-[#334155] dark:bg-black/40 dark:border-white/15 dark:text-slate-200 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm backdrop-blur-md shadow-sm"
-                        >
-                          <Star size={13} className="text-amber-500 dark:text-[#00f0ff]" />
-                          {award}
-                        </span>
-                      ))}
-                    </div>
+        {data.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-8 sm:p-12 text-center bg-white/40 dark:bg-black/20 rounded-2xl border border-dashed border-[#d4a373]/40 dark:border-[#ffd700]/40 backdrop-blur-sm">
+            <Trophy className="w-12 h-12 text-gray-400 dark:text-gray-500 mb-4 opacity-50" />
+            <h3 className="text-lg sm:text-xl font-bold text-[#0b1a30]/70 dark:text-white/70 mb-2">
+              لا توجد مسابقات مسجلة حالياً
+            </h3>
+            <p className="text-sm text-[#475569] dark:text-slate-400">
+              سيتم إضافة الإنجازات والبطولات هنا قريباً.
+            </p>
+          </div>
+        ) : (
+          data.map((item) => (
+            <div key={item.id} className="relative">
+              {/* Timeline Dot */}
+              <div className="absolute -right-[23px] sm:-right-[33px] top-6 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#d4a373] dark:bg-[#ffd700] shadow-[0_0_10px_rgba(212,163,115,0.5)] dark:shadow-[0_0_15px_#ffd700] z-20" />
+              
+              <Link
+                href={`/fame/tournaments/${item.id}`}
+                className="block glass-card honor-card p-5 sm:p-7 rounded-2xl mr-2 sm:mr-4 hover:-translate-x-2 transition-all duration-500 relative overflow-hidden group cursor-pointer"
+              >
+                {/* Background Image Layer */}
+                {item.image && (
+                  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                    <Image
+                      src={item.image}
+                      alt={item.eventName}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 900px"
+                      className="object-cover object-center scale-100 group-hover:scale-105 transition-transform duration-700 ease-out opacity-30 dark:opacity-35 group-hover:opacity-45 dark:group-hover:opacity-50 filter saturate-125 brightness-95"
+                    />
+                    {/* Subtle Vignette & Gradient Overlays for High Contrast Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-l from-white/95 via-white/80 to-white/50 dark:from-[#060c18]/95 dark:via-[#081324]/85 dark:to-[#0b1a32]/50" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/40 to-transparent dark:from-[#060c18]/95 dark:via-transparent dark:to-transparent" />
                   </div>
                 )}
-              </div>
-            </Link>
-          </div>
-        ))}
+
+                {/* Foreground Content */}
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-4 sm:mb-5 flex-col sm:flex-row gap-3 sm:gap-4">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0b1a30] dark:text-white mb-2 drop-shadow-sm group-hover:text-[#d4a373] dark:group-hover:text-cyan-300 transition-colors">
+                        {item.eventName}
+                      </h3>
+                      <div className="inline-flex items-center gap-2 bg-[#d4a373]/15 text-[#0b1a30] border border-[#d4a373]/30 dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30 px-3 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-bold backdrop-blur-md">
+                        <span>{item.year}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0 self-end sm:self-start">
+                      <div className="bg-gradient-to-r from-amber-400 to-[#d4a373] text-[#0b1a30] dark:from-yellow-400 dark:to-amber-500 dark:text-[#080b10] font-black px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg shadow-md dark:shadow-[0_0_18px_rgba(255,215,0,0.35)] flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm backdrop-blur-sm">
+                        <Medal size={18} />
+                        <span>{item.placement}</span>
+                      </div>
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/5 dark:bg-white/10 flex items-center justify-center text-[#0b1a30] dark:text-white group-hover:bg-[#d4a373] dark:group-hover:bg-cyan-400 group-hover:text-white dark:group-hover:text-[#080b10] group-hover:-translate-x-1 transition-all shadow-sm">
+                        <ChevronLeft size={16} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {item.specialAwards.length > 0 && (
+                    <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-black/10 dark:border-white/10">
+                      <h4 className="text-[#475569] dark:text-slate-300 mb-2 sm:mb-3 text-xs sm:text-sm font-semibold">
+                        شارات التميز الخاصة:
+                      </h4>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        {item.specialAwards.map((award, i) => (
+                          <span 
+                            key={i} 
+                            className="flex items-center gap-1 sm:gap-1.5 bg-white/70 border border-black/10 text-[#334155] dark:bg-black/40 dark:border-white/15 dark:text-slate-200 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm backdrop-blur-md shadow-sm"
+                          >
+                            <Star size={13} className="text-amber-500 dark:text-[#00f0ff]" />
+                            {award}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            </div>
+          ))
+        )}
       </div>
 
       {/* View All Championships Button */}

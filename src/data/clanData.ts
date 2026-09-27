@@ -289,24 +289,7 @@ export type FameItem = {
   image?: string;
 };
 
-export const fameData: FameItem[] = [
-  {
-    id: "f1",
-    eventName: "مهرجان الجوالة بجامعة عين شمس",
-    year: 2023,
-    placement: "المركز الأول عام",
-    specialAwards: ["درع التميز الكشفي", "أفضل مخرج سمر"],
-    image: "/images/hero/hero-2.jpg",
-  },
-  {
-    id: "f2",
-    eventName: "المسابقة القمية",
-    year: 2022,
-    placement: "المركز الثاني",
-    specialAwards: ["جوال مثالي"],
-    image: "/images/hero/hero-3.jpg",
-  },
-];
+export const fameData: FameItem[] = [];
 
 // --- SESSIONS ---
 export type Session = {
