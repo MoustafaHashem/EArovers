@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
+import { TournamentGallery } from "./TournamentGallery";
 import { Identity } from "@/components/layout/Identity";
 import {
   getTournamentById,
@@ -118,15 +119,17 @@ export default async function TournamentDetailPage({
         {/* ================= HERO CHAMPIONSHIP CARD ================= */}
         <section className="relative rounded-3xl overflow-hidden glass-card honor-card shadow-2xl border border-[#d4a373]/40 dark:border-[#ffd700]/40">
           {/* Background Tournament Image */}
-          <div className="relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden">
-            <Image
-              src={tournament.image}
-              alt={tournament.title}
-              fill
-              priority
-              sizes="(max-width: 1200px) 100vw, 1200px"
-              className="object-cover object-center filter saturate-125 brightness-90"
-            />
+          <div className="relative w-full h-80 sm:h-96 md:h-[420px] overflow-hidden bg-slate-900">
+            {tournament.image ? (
+              <Image
+                src={tournament.image}
+                alt={tournament.title}
+                fill
+                priority
+                sizes="(max-width: 1200px) 100vw, 1200px"
+                className="object-cover object-center filter saturate-125 brightness-90"
+              />
+            ) : null}
             {/* Cinematic Gradient Overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#060c18] via-[#060c18]/70 to-black/30" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#060c18]/90 via-[#060c18]/50 to-transparent" />
@@ -341,27 +344,11 @@ export default async function TournamentDetailPage({
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-              {tournament.gallery.map((photo, i) => (
-                <div
-                  key={i}
-                  className="group relative h-56 sm:h-64 rounded-2xl overflow-hidden border border-[#d4a373]/20 dark:border-white/10 shadow-md bg-slate-100 dark:bg-slate-800"
-                >
-                  <Image
-                    src={photo}
-                    alt={`${tournament.title} - صورة ${i + 1}`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                    <span className="text-white text-xs font-bold">
-                      {tournament.title} ({tournament.year})
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <TournamentGallery
+              photos={tournament.gallery}
+              title={tournament.title}
+              year={tournament.year}
+            />
           </section>
         )}
 

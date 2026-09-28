@@ -20,7 +20,7 @@ type GalleryImage = {
 };
 
 export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] }) {
-  const categories = ["مسابقات", "دروع", "معسكرات", "كواليس"];
+  const categories = ["الكل", "دروع", "مسابقات", "فعاليات", "كواليس"];
   const [activeCategory, setActiveCategory] = useState(categories[0]);
   const [images, setImages] = useState<GalleryImage[]>(initialImages || []);
   const [loading, setLoading] = useState(false);
@@ -54,6 +54,8 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory]);
   
+  const validImages = images.filter(img => img.url && img.url.trim() !== "");
+
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col items-center">
       <div className="text-center mb-10">
@@ -97,14 +99,14 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
             <Loader2 className="animate-spin mb-4" size={48} />
             <p className="text-[#475569] dark:text-slate-400 font-bold">جاري تحميل الذكريات...</p>
           </div>
-        ) : images.length === 0 ? (
+        ) : validImages.length === 0 ? (
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-500 py-20">
             <ImageIcon size={64} className="mb-4 opacity-50 text-[#d4a373]/50 dark:text-slate-500" />
             <p className="text-lg font-bold text-[#475569] dark:text-slate-400">لا توجد صور في هذا القسم حالياً</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
-            {images.map((img, i) => (
+            {validImages.map((img, i) => (
               <div 
                 key={img.id} 
                 onClick={() => setLightboxIndex(i)}
@@ -114,13 +116,15 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
                   <PlayCircle className="absolute text-white/70 group-hover:text-white transition-colors z-20" size={48} />
                 ) : null}
                 
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={img.url} 
-                  alt="Gallery Item" 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  loading="lazy"
-                />
+                {img.url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img 
+                    src={img.url} 
+                    alt="Gallery Item" 
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                ) : null}
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-end p-4 z-10">
                   <span className="text-white font-bold text-sm">ذكرى جديدة</span>
@@ -131,7 +135,7 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
         )}
       </div>
       
-      {!loading && images.length > 0 && (
+      {!loading && validImages.length > 0 && (
         <Link 
           href="/gallery" 
           className="mt-12 inline-flex items-center justify-center px-8 py-3.5 rounded-full font-black text-base transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 bg-gradient-to-r from-[#e0a96d] to-[#d4a373] hover:from-[#d4a373] hover:to-[#c69260] text-[#0b1a30] shadow-[0_4px_16px_rgba(212,163,115,0.35)] dark:from-[#00f0ff] dark:to-[#38f4ff] dark:hover:from-[#38f4ff] dark:hover:to-[#00d8e6] dark:text-[#080b10] dark:shadow-[0_0_25px_rgba(0,240,255,0.5)] border border-[#d4a373]/30"
@@ -144,7 +148,7 @@ export function MediaGallery({ initialImages }: { initialImages: GalleryImage[] 
         index={lightboxIndex}
         open={lightboxIndex >= 0}
         close={() => setLightboxIndex(-1)}
-        slides={images.map(img => ({ src: img.url }))}
+        slides={validImages.map(img => ({ src: img.url }))}
         plugins={[Zoom, Thumbnails]}
         zoom={{
           maxZoomPixelRatio: 3,

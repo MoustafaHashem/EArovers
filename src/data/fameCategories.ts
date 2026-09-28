@@ -14,7 +14,7 @@ export const FAME_CATEGORIES: FameCategory[] = [
     slug: "wafdeya",
     name: "وفدية",
     title: "المسابقات الوفدية والقمية",
-    image: "/images/fame/wafdeya.jpg",
+    image: "/images/fame/wafdeya1.jpg",
     description:
       "مسابقات الوفود والأنشطة القمية الرسمية لعشيرة جوالة هندسة عين شمس، وسجل الدروع العامة والتمثيل الرسمي للعشيرة في كبرى المحافل والجامعات المصرية.",
     keywords: ["وفد", "قمي", "قمية", "صداقة", "العشائر", "درع عام"],
@@ -24,7 +24,7 @@ export const FAME_CATEGORIES: FameCategory[] = [
     slug: "sports",
     name: "رياضية",
     title: "المسابقات والبطولات الرياضية",
-    image: "/images/fame/sports.jpg",
+    image: "/images/fame/sports1.jpg",
     description:
       "المسابقات والبطولات الرياضية في ألعاب القوى، كرة القدم، اللياقة البدنية والأنشطة التنافسية المختلفة التي تعزز الروح الرياضية والقوة البدنية.",
     keywords: ["رياض", "كرة", "دوري", "قدم", "ماراثون", "لياقة", "طائرة", "سباق جري"],
@@ -34,7 +34,7 @@ export const FAME_CATEGORIES: FameCategory[] = [
     slug: "scout",
     name: "كشفي",
     title: "المسابقات والمهارات الكشفية",
-    image: "/images/fame/scout.jpg",
+    image: "/images/fame/scout1.jpg",
     description:
       "المسابقات والمهارات الكشفية الأصيلة، إقامة المخيمات ونماذج الريادة، الطهي الخلوي، الملاحة واستخدامات الحبال وفنون الخلاء.",
     keywords: ["كشف", "معسكر", "مخيم", "ريادة", "خلاء", "طهي خلوي"],
@@ -44,7 +44,7 @@ export const FAME_CATEGORIES: FameCategory[] = [
     slug: "naval",
     name: "بحري",
     title: "المسابقات والأنشطة البحرية",
-    image: "/images/fame/naval.jpg",
+    image: "/images/fame/naval1.jpg",
     description:
       "المسابقات والمهارات الملاحية والبحرية، التجديف والشراع، إشارات المورس والسيمافور، وعقد وفنون الملاحة في الكشافة البحرية.",
     keywords: ["بحر", "ملاح", "تجديف", "شراع", "مورس", "سيمافور"],
@@ -54,7 +54,7 @@ export const FAME_CATEGORIES: FameCategory[] = [
     slug: "arts",
     name: "فنون واسمار",
     title: "مسابقات الفنون والأسمار",
-    image: "/images/fame/arts.jpg",
+    image: "/images/fame/arts1.jpg",
     description:
       "حفلات السمر الكشفي، معارض الفنون والتصميم، التمثيل المسرحي، الإنشاد والمواهب الثقافية والإبداعية التي تميز عشيرة الجوالة.",
     keywords: ["فن", "سمر", "أسمار", "حفل", "مسرح", "معرض", "إنشاد", "تشكيل"],

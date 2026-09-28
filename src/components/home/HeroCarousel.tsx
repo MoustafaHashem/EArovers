@@ -119,7 +119,7 @@ export function HeroCarousel() {
           preload="auto"
           className="w-full h-full object-cover object-center"
         >
-          <source src="/videos/hero-mobile.mp4" type="video/mp4" />
+          <source src="/videos/hero-mobile2.mp4" type="video/mp4" />
         </video>
       </div>
 
