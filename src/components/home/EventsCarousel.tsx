@@ -15,6 +15,7 @@ interface Event {
   location: string | null;
   eventType: string;
   coverImage: string | null;
+  endDate?: Date | string | null;
 }
 
 interface EventsCarouselProps {
@@ -51,16 +52,29 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
   const now = new Date();
 
   // Upcoming events sorted from newest to oldest (startDate desc)
+  // An event is considered "upcoming" if:
+  //   - It hasn't started yet (startDate >= now), OR
+  //   - It has started but has an endDate that hasn't passed yet (ongoing)
   const upcomingEvents = useMemo(() => {
     return events
-      .filter((e) => new Date(e.startDate) >= now)
+      .filter((e) => {
+        const started = new Date(e.startDate) < now;
+        const ended = e.endDate ? new Date(e.endDate) < now : true;
+        // upcoming = not started yet, OR started but not ended
+        return !started || (started && !ended);
+      })
       .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
   }, [events]);
 
   // Past events sorted from newest to oldest (startDate desc)
   const pastEvents = useMemo(() => {
     return events
-      .filter((e) => new Date(e.startDate) < now)
+      .filter((e) => {
+        const started = new Date(e.startDate) < now;
+        const ended = e.endDate ? new Date(e.endDate) < now : true;
+        // past = started AND (no endDate OR endDate has passed)
+        return started && ended;
+      })
       .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
   }, [events]);
 

@@ -45,7 +45,7 @@ export function ShagaraClient({ clanData }: { clanData: any[] }) {
             </h1>
 
             <p className="text-[#475569] dark:text-slate-300 text-base sm:text-lg leading-relaxed max-w-3xl">
-              تصفح الأرشيف الكامل لمجالس القيادة والهيكل المعاون عبر السنين في عرض بصري متناسق مع بقية الويب سايت.
+              تعرّف على قيادات عشيرة جوالة هندسة عين شمس عبر السنين — من مجالس الرواد والمعاونين إلى أعضاء الفريق، موثّقةً في سجل قيادي يُجسّد تاريخ العشيرة وهويتها.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-1">

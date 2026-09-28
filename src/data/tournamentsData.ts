@@ -103,7 +103,7 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "مسامرة مثالية/ مريم هندي",
       "مثالي ميديا/ محمد علاء",
     ],
-    image: "",
+    image: "/images/hero/541.jpg",
     description: "",
     clanStory: "",
     awardsDetailed: [
@@ -151,7 +151,7 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "مثالية الوفد/ مريم علي",
       "مسامر مثالي/ احمد خالد و حنين احمد",
     ],
-    image: "",
+    image: "/images/hero/pic1.jpg",
     description: "",
     clanStory: "",
     awardsDetailed: [
@@ -196,7 +196,7 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "مثالية وفد/ دارين هاني",
       "قائد مثالي/ احمد صابر (دراجون)",
     ],
-    image: "",
+    image: "/images/hero/hero-3.jpg",
     description: "",
     clanStory: "",
     awardsDetailed: [
@@ -268,7 +268,7 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "مثالي سواعد/ كريم احمد",
       "مثالي لجنة اعلامية/ يوسف هيثم",
     ],
-    image: "",
+    image: "/images/hero/mm1.jpg",
     description: "",
     clanStory: "",
     awardsDetailed: [

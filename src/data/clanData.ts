@@ -289,7 +289,24 @@ export type FameItem = {
   image?: string;
 };
 
-export const fameData: FameItem[] = [];
+export const fameData: FameItem[] = [
+  {
+    id: "f1",
+    eventName: "الوفدية ال 55",
+    year: 2026,
+    placement: "المركز الأول ",
+    specialAwards: ["مثالي عام", "قائد مثالي"],
+    image: "/images/hero/hero-2.jpg",
+  },
+  {
+    id: "f2",
+    eventName: "الرياضية ال28 لجوالين و 11 للجولات",
+    year: 2025,
+    placement: "اول جوالين واول جوالات",
+    specialAwards: ["مثالي عام", "قائد مثالي"],
+    image: "/images/hero/hero-3.jpg",
+  },
+];
 
 // --- SESSIONS ---
 export type Session = {

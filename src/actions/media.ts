@@ -139,8 +139,31 @@ export async function fetchMediaAction(category: string, limit?: number) {
   return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
 }
 
+const SHIELD_SUBCATEGORY_MAP: Record<string, string> = {
+  religious: "ديني",
+  scout: "كشفي",
+  sports: "رياضي",
+  art: "فني",
+  service: "خدمة",
+  sea: "بحري",
+  culture: "ثقافي",
+  cultural: "ثقافي",
+  scientific: "علمي",
+  environmental: "بيئي",
+};
+
 export async function fetchShieldMediaAction(category: string, id: string) {
-  return GALLERY_MEDIA.filter(
-    (item) => item.category === "دروع" && (item.subcategory === category || item.id.startsWith(id + "-")),
-  );
+  // Map the shield id to a known subcategory keyword
+  const mappedSubcategory = SHIELD_SUBCATEGORY_MAP[id.toLowerCase()] ?? null;
+
+  return GALLERY_MEDIA.filter((item) => {
+    if (item.category !== "دروع") return false;
+    // Match by shield id prefix (e.g. "religion-1")
+    if (item.id.startsWith(id + "-")) return true;
+    // Match by mapped subcategory (e.g. id="religious" → subcategory="ديني")
+    if (mappedSubcategory && item.subcategory === mappedSubcategory) return true;
+    // Match directly by subcategory string passed in (category param)
+    if (item.subcategory === category) return true;
+    return false;
+  });
 }

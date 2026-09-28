@@ -52,7 +52,9 @@ const CATEGORIES = [
 ] as const;
 
 export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
-  const [mediaList, setMediaList] = useState<GalleryMediaItem[]>(initialMedia);
+  const [mediaList, setMediaList] = useState<GalleryMediaItem[]>(
+    initialMedia.filter(m => m.url && m.url.trim() !== "")
+  );
   const [activeCategory, setActiveCategory] = useState<string>("الكل");
   const [activeSubcategory, setActiveSubcategory] = useState<string>("الكل");
   const [activeItem, setActiveItem] = useState<string>("الكل");
@@ -69,7 +71,7 @@ export function FullGallery({ initialMedia = [] }: FullGalleryProps) {
     fetchMediaAction("الكل")
       .then((data) => {
         if (mounted) {
-          setMediaList(data);
+          setMediaList(data.filter((m: GalleryMediaItem) => m.url && m.url.trim() !== ""));
           setLoading(false);
         }
       })
