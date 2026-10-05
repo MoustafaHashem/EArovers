@@ -106,7 +106,6 @@ export const clanTreeData: ComplexYearData[] = [
           { member: p.tasneemAhmed, role: "مساعدة قائدة السكرتارية" },
           { member: p.ahmedMashal, role: "قائد الطبول الكشفية" },
           { member: p.stevenGirgis, role: "مساعد قائد الطبول الكشفية" },
-          { member: p.safaaIsmail, role: "قائدة الابتكار" },
           { member: p.omarKhamis, role: "أمين العهدة" },
         ],
       },

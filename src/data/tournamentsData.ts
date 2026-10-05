@@ -150,8 +150,9 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "قائدة مثالية/ ندي رافت",
       "مثالية الوفد/ مريم علي",
       "مسامر مثالي/ احمد خالد و حنين احمد",
+      "مثالية عامه الدورة/ ماسا داهام",
     ],
-    image: "/images/hero/pic1.jpg",
+    image: "/images/hero/wafdeya53.jpg",
     description: "",
     clanStory: "",
     awardsDetailed: [
@@ -177,7 +178,9 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       { name: "الجوالة / ايه حمدي", role: "" },
       { name: "الجوالة / مايا شرف", role: "" },
     ],
-    gallery: [],
+    gallery: [
+      "/images/hero/wafdeya53.jpg",
+    ],
   },
 
   // ================= 2. المسابقات والبطولات الرياضية (sports) =================
@@ -268,7 +271,7 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       "مثالي سواعد/ كريم احمد",
       "مثالي لجنة اعلامية/ يوسف هيثم",
     ],
-    image: "/images/hero/mm1.jpg",
+    image: "/images/hero/arts-festival-4-2.jpeg",
     description: "",
     clanStory: "",
     awardsDetailed: [
@@ -304,7 +307,18 @@ export const TOURNAMENTS_DATA: TournamentItem[] = [
       { name: "الجوالة / نوران هاني", role: "" },
       { name: "الجوالة / مريم قللي", role: "" },
     ],
-    gallery: [],
+    gallery: [
+      "/images/hero/arts-festival-4-1.jpeg",
+      "/images/hero/arts-festival-4-2.jpeg",
+      "/images/hero/arts-festival-4-3.jpeg",
+      "/images/hero/arts-festival-4-4.jpeg",
+      "/images/hero/arts-festival-4-5.jpeg",
+      "/images/hero/arts-festival-4-6.jpeg",
+      "/images/hero/arts-festival-4-7.jpeg",
+      "/images/hero/arts-festival-4-8.jpeg",
+      "/images/hero/arts-festival-4-9.jpeg",
+      "/images/hero/arts-festival-4-10.jpeg",
+    ],
   },
 
 ];
