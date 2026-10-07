@@ -128,7 +128,7 @@ export const EVENTS_DATA: EventStatic[] = [
     startDate: new Date("2026-10-12T00:00:00Z"),
     endDate: new Date("2026-10-17T00:00:00Z"),
     coverImage: "/images/events/deraset-rwad-rohot-4.jpg",
-      photos: [
+    photos: [
       "/images/events/deraset-rwad-rohot-2.jpg",
       "/images/events/deraset-rwad-rohot-3.jpg",
       "/images/events/deraset-rwad-rohot-1.jpg",
