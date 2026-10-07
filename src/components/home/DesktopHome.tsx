@@ -9,8 +9,8 @@ import { fetchMediaAction } from "@/actions/media";
 import { EVENTS_DATA } from "@/data/eventsData";
 
 export async function DesktopHome() {
-  // Fetch initial media for the default category "مسابقات"
-  const initialImages = await fetchMediaAction("مسابقات", 12);
+  // Fetch initial media for the default category "الكل"
+  const initialImages = await fetchMediaAction("الكل", 12);
 
   // Fetch latest public events for the carousel
   const events = EVENTS_DATA;

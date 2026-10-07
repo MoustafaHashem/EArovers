@@ -15,6 +15,7 @@ interface Event {
   location: string | null;
   eventType: string;
   coverImage: string | null;
+  endDate?: Date | string | null;
 }
 
 interface EventsCarouselProps {
@@ -51,16 +52,29 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
   const now = new Date();
 
   // Upcoming events sorted from newest to oldest (startDate desc)
+  // An event is considered "upcoming" if:
+  //   - It hasn't started yet (startDate >= now), OR
+  //   - It has started but has an endDate that hasn't passed yet (ongoing)
   const upcomingEvents = useMemo(() => {
     return events
-      .filter((e) => new Date(e.startDate) >= now)
+      .filter((e) => {
+        const started = new Date(e.startDate) < now;
+        const ended = e.endDate ? new Date(e.endDate) < now : true;
+        // upcoming = not started yet, OR started but not ended
+        return !started || (started && !ended);
+      })
       .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
   }, [events]);
 
   // Past events sorted from newest to oldest (startDate desc)
   const pastEvents = useMemo(() => {
     return events
-      .filter((e) => new Date(e.startDate) < now)
+      .filter((e) => {
+        const started = new Date(e.startDate) < now;
+        const ended = e.endDate ? new Date(e.endDate) < now : true;
+        // past = started AND (no endDate OR endDate has passed)
+        return started && ended;
+      })
       .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
   }, [events]);
 
@@ -180,7 +194,7 @@ export function EventsCarousel({ events }: EventsCarouselProps) {
               <Link
                 key={event.id}
                 href={`/events/${event.id}`}
-                className="group flex flex-col bg-[#F3ECD6] dark:bg-[#0c1a2e] rounded-3xl overflow-hidden shadow-xl hover:-translate-y-1.5 transition-all duration-300 shrink-0 w-[85%] sm:w-[45%] lg:w-[31%] snap-start border border-[#e5d9ba] dark:border-cyan-500/20 hover:border-[#102A43]/40 dark:hover:border-cyan-400/50"
+                className="group flex flex-col bg-[#F3ECD6] dark:bg-[#0c1a2e] rounded-3xl overflow-hidden shadow-xl hover:-translate-y-1.5 transition-all duration-300 shrink-0 w-full sm:w-[45%] lg:w-[31%] snap-start border border-[#e5d9ba] dark:border-cyan-500/20 hover:border-[#102A43]/40 dark:hover:border-cyan-400/50"
               >
                 {/* Cover Image */}
                 <div className="relative w-full h-48 bg-slate-200 dark:bg-slate-800 overflow-hidden">

@@ -60,44 +60,6 @@ export default function FamePage() {
               </p>
             </div>
 
-            {/* Quick Stats Chips */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4 gap-3 self-start md:self-auto w-full md:w-auto">
-              <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-                <div className="text-2xl font-black text-[#0b1a30] dark:text-cyan-400">
-                  {totalTournaments}
-                </div>
-                <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                  إجمالي البطولات
-                </div>
-              </div>
-
-              <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-                <div className="text-2xl font-black text-[#d4a373] dark:text-amber-400">
-                  {FAME_CATEGORIES.length}
-                </div>
-                <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                  أقسام تخصصية
-                </div>
-              </div>
-
-              <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-                <div className="text-2xl font-black text-amber-500 dark:text-[#ffd700]">
-                  ١٥+
-                </div>
-                <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                  دروع وجوائز
-                </div>
-              </div>
-
-              <div className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-white/5 border border-[#d4a373]/20 dark:border-white/10 shadow-sm backdrop-blur-sm text-center">
-                <div className="text-2xl font-black text-teal-600 dark:text-teal-400">
-                  100%
-                </div>
-                <div className="text-xs text-[#64748b] dark:text-gray-400 font-semibold mt-0.5">
-                  سجل التميز الكشفي
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 

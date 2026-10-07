@@ -9,6 +9,7 @@ const joinSchema = z.object({
   whatsapp: z.string().regex(/^01[0125][0-9]{8}$/, "برجاء إدخال رقم واتساب مصري صحيح (11 رقماً)"),
   gender: z.string().min(1, "يرجى تحديد النوع"),
   academicYear: z.string().min(1, "برجاء اختيار الفرقة الدراسية"),
+  programType: z.enum(["mainstream", "credit"], "برجاء اختيار نوع البرنامج"),
   department: z.string().min(1, "برجاء تحديد التخصص أو القسم الأكاديمي"),
   interests: z.string().optional(),
   interviewSlots: z.array(z.string()).min(1, "برجاء اختيار موعد واحد على الأقل للمقابلة الشخصية"),
@@ -24,6 +25,7 @@ export type JoinActionState = {
     whatsapp: string;
     gender: string;
     academicYear: string;
+    programType: "mainstream" | "credit";
     department: string;
     interviewSlots: string[];
   };
@@ -60,6 +62,7 @@ export async function submitJoinRequest(
       whatsapp,
       gender: (formData.get("gender") as string)?.trim() || "ذكر",
       academicYear: (formData.get("academicYear") as string)?.trim() || "",
+      programType: (formData.get("programType") as string)?.trim() || "",
       department: (formData.get("department") as string)?.trim() || "",
       interests: (formData.get("interests") as string)?.trim() || undefined,
       interviewSlots: slots,
@@ -81,10 +84,11 @@ export async function submitJoinRequest(
         whatsapp: validatedData.data.whatsapp,
         gender: validatedData.data.gender,
         academicYear: validatedData.data.academicYear,
+        programType: validatedData.data.programType,
         department: validatedData.data.department,
         interests: validatedData.data.interests,
         interviewSlots: validatedData.data.interviewSlots,
-        status: "pending",
+        status: "جديد",
       },
     });
 
@@ -98,6 +102,7 @@ export async function submitJoinRequest(
         whatsapp: validatedData.data.whatsapp,
         gender: validatedData.data.gender,
         academicYear: validatedData.data.academicYear,
+        programType: validatedData.data.programType,
         department: validatedData.data.department,
         interviewSlots: validatedData.data.interviewSlots,
       },

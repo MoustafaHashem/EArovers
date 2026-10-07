@@ -28,7 +28,7 @@ const scarves: ScarfItem[] = [
   {
     id: "board",
     title: "هيكل العشيرة",
-    role: "مجلس الإدارة ومسؤولو اللجان",
+    role: "مساعدو قائد العشيرة ,الرائد والرائده الكبرى   ",
     badge: "الهيكل الإداري",
     image: "/images/scarfs/board-scarf.png",
     alt: "منديل هيكل عشيرة جوالة هندسة ذو الخط الأحمر",
@@ -36,14 +36,14 @@ const scarves: ScarfItem[] = [
     borderHoverClass: "hover:border-red-500/40 dark:hover:border-red-400/50",
     glowClass: "from-red-500/15 via-rose-500/5 to-transparent",
   },
-  // 2. Center (Middle item): منديل قائد العشيرة / قائدة المرشدات (اللبني)
+  // 2. Center (Middle item): منديل قائد العشيرة / قائدة الجوالات (اللبني)
   {
     id: "leader",
-    title: "قائد العشيرة / قائدة المرشدات",
-    role: "القيادة العامة للعشيرة والمرشدات",
+    title: "قائد العشيرة / قائدة الجوالات ",
+    role: "القيادة العامة للعشيرة والجوالات",
     badge: "القيادة العليا",
     image: "/images/scarfs/leader-scarf.png",
-    alt: "منديل قائد العشيرة وقائدة المرشدات اللبني",
+    alt: "منديل قائد العشيرة وقائدة الجوالات اللبني",
     badgeClass: "bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30",
     borderHoverClass: "hover:border-amber-500/50 dark:hover:border-amber-400/60",
     glowClass: "from-blue-500/20 via-cyan-400/10 to-transparent",
@@ -53,7 +53,7 @@ const scarves: ScarfItem[] = [
   {
     id: "member",
     title: "أعضاء العشيرة",
-    role: "جوالو ومرشدات عشيرة الهندسة",
+    role: "جوالو و جوالات عشيرة الهندسة",
     badge: "عضوية العشيرة",
     image: "/images/scarfs/member-scarf.png",
     alt: "منديل أعضاء عشيرة جوالة هندسة ذو الخط اللبني",

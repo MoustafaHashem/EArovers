@@ -31,7 +31,7 @@ export const EVENTS_DATA: EventStatic[] = [
     eventType: "متنوع",
     location: "كلية الهندسة",
     startDate: new Date("2026-09-28T00:00:00Z"),
-    endDate: new Date("2026-10-05T00:00:00Z"),
+    endDate: new Date("2026-10-07T00:00:00Z"),
     coverImage: "/images/events/estekbal.jpeg",
     photos: [
       "/images/events/estekbal2.jpeg",
@@ -40,6 +40,10 @@ export const EVENTS_DATA: EventStatic[] = [
       "/images/events/estekbal5.jpeg",
       "/images/events/estekbal6.jpeg",
       "/images/events/estekbal7.jpeg",
+      "/images/events/estekbal8.jpeg",
+      "/images/events/estekbal9.jpeg",
+      "/images/events/estekbal10.jpeg",
+      "/images/events/estekbal11.jpeg",
     ],
   },
   {
@@ -113,6 +117,21 @@ export const EVENTS_DATA: EventStatic[] = [
       "/images/events/mo3askar-el39-2 (4).jpeg",
       "/images/events/mo3askar-el39-2 (5).jpeg",
       "/images/events/mo3askar-el39-2 (6).jpeg",
+    ],
+  },
+  {
+    id: "e9",
+    title: "دراسة رواد الرهوط",
+    description: "تهدف هذه الدراسة إلى إعداد أفراد قادرين على إدارة الرهط بشكل منظم وفعال. تركز الدراسة على تغيير مفهوم رائد الرهط التقليدي من شخص ينتظر التوجيهات إلى شخص مبادر، مسؤول، وقادر على قيادة رهطه بنفسه. سيتمكن المشاركون من تطوير مهاراتهم في القيادة، وتحسين قدرتهم على التواصل الجيد وجذب أفراد الرهط لنشاط العشيرة، بالإضافة إلى تعلم كيفية التعامل مع الشخصيات المختلفة داخل الرهط.",
+    eventType: "دراسة",
+    location: "غرفة العشيرة، كلية الهندسة",
+    startDate: new Date("2026-10-12T00:00:00Z"),
+    endDate: new Date("2026-10-17T00:00:00Z"),
+    coverImage: "/images/events/deraset-rwad-rohot-4.jpg",
+    photos: [
+      "/images/events/deraset-rwad-rohot-2.jpg",
+      "/images/events/deraset-rwad-rohot-3.jpg",
+      "/images/events/deraset-rwad-rohot-1.jpg",
     ],
   },
 ];

@@ -1,5 +1,10 @@
 # EArovers - Memory & Context
 
+## Join Form Update (2026-09-26)
+- Added required `programType` (`mainstream` or `credit`) to the public join form and `JoinRequest` model.
+- Removed the four requested department options: petroleum/mining, biomedical systems, urban planning, and credit-hours program.
+- Added optional reviewer fields mapped to `selected_interview_time` and `interview_notes`; no admin request screen exists in the current checkout, so these remain persistence-ready only.
+
 ## 🛠️ Tech Stack & Architecture
 - **Framework**: Next.js 16.3 (App Router). *Note: The middleware file convention has changed to `src/proxy.ts` in this version.*
 - **Database ORM**: Prisma (`prisma/schema.prisma`).
@@ -32,12 +37,21 @@
   Full support for both Organic Light and Deep Tech Dark themes, keyboard ESC exit, and backdrop click-to-close.
 - **Health Check Infrastructure**: A direct internal API route (`GET /api/health/ping`) performs a `prisma.$queryRaw` to keep the Supabase connection warm, triggered by a GitHub Actions workflow (`keep-alive.yml`).
 - **Hierarchy Route Visual Refresh**: `/hierarchy` now uses the shared site shell and glass-card treatment (ambient blur background, hero header, gold-accent pills, and updated year selector) so it visually matches the rest of the public site.
+- **2026 Hierarchy Photos and Roles**: Added the supplied 2026 council, auxiliary, and management photos under `public/images/hierarchy/2026/`. Updated the static hierarchy so Yahya Mohammed is assistant to the Digital Transformation Leader, removed Abdulrahman Wahid from the Board of Directors, and aligned Rawan's name with the supplied photo.
+- **2026 Hierarchy Presentation Refinement**: Unified the Custodian role with Omar Khamis's Board of Directors member record, corrected feminine Arabic role endings to `قائدة` and `مساعدة`, and removed decorative photo circles while enlarging the local hierarchy images.
+- **Hierarchy Portrait Scaling**: Added per-member image scaling in `ShagaraSection.tsx` for portraits with extra transparent padding, keeping card dimensions and labels unchanged.
 
 ## 🚨 Known Gotchas
 1. **Next.js 16.3 proxy.ts**: Do not recreate a `middleware.ts` file; it is now `proxy.ts` with the exported function named `proxy`.
 2. **Cloudinary Images**: Do not query the Cloudinary API directly to render images on the frontend. We fetch the `Media` model from Prisma because it supports `sortOrder` for drag-and-drop.
 3. **Tailwind JIT**: Be careful with string interpolation for Tailwind classes (e.g., `bg-[${color}]/20`). Tailwind scans files for *static* class strings. Always explicitly define the full class string (like `bg-blue-400/20`) in an object or array to ensure it compiles.
 4. **Icons**: Using `lucide-react` for iconography. When passing icons to client components, pass their string name (e.g. `iconName: "users"`) instead of the raw React Component to avoid Server/Client boundary serialization errors.
+
+## Unified Media Gallery (2026-09-26)
+- `src/actions/media.ts` now builds the gallery feed from the existing tournament and event datasets instead of returning an empty stub. Shield artwork is intentionally excluded; only uploaded shield media should appear there.
+- Tournament covers and gallery images plus event cover images are normalized into one media shape with a main category and optional subcategory.
+- `/gallery` now exposes the requested main filters: `دروع`, `مسابقات`, `فعاليات`, and `كواليس`. Subfilters are generated only when matching media exists, and a third level lists each specific tournament or event.
+- The old gallery statistic cards and image/video type filter were removed. Search and the lightbox remain available.
 
 ## 🚀 Current Session Context & Next Steps (Read First for New Agents!)
 **Current Branch:** `master`
